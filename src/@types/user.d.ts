@@ -3,9 +3,14 @@ interface ReqLogin {
   password: string
 }
 interface ResLoginApi extends Res {
+  code: string
   data: {
-    access_token: string
+    token: string
+    id: number
+    name: string
+    avatarUrl: string
   }
+  status: number
 }
 
-interface ResLogin extends ActionRedux {}
+interface ResLogin extends ActionRedux { }

@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom"
 import ProductRoutes from "./ProductRoutes"
 import LoginRoutes from "./LoginRoutes"
 import HomeRoutes from "./HomeRoutes"
+import RegisterRoutes from "./RegisterRoutes"
 
 export default function Routes() {
   return (
@@ -10,6 +11,7 @@ export default function Routes() {
       <HomeRoutes />
       <ProductRoutes />
       <LoginRoutes />
+      <RegisterRoutes />
     </BrowserRouter>
   )
 }

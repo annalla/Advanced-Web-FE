@@ -1,18 +1,18 @@
-export const loginApi = ({
+import axios from "axios"
+
+export const loginApi = async ({
   username,
   password
-}: ReqLogin): Promise<ResLoginApi> =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (username === "admin" && password === "123") {
-        resolve({
-          data: {
-            access_token: "82jdu82193yh90sad83hxfgsd"
-          },
-          message: "Login thành công"
-        })
-      } else {
-        reject(new Error("Login thất bại"))
-      }
-    }, 100)
-  })
+}: ReqLogin): Promise<ResLoginApi> => {
+  return axios
+    .post("http://localhost:8002/api/v1/account/login", {
+      username,
+      password
+    })
+    .then(function (response) {
+      return response.data
+    })
+    .catch(function (error) {
+      return error
+    })
+}
