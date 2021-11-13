@@ -1,0 +1,13 @@
+.boxForm{
+    width: 100%;
+    align-self: center;
+}
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #33333377;
+    z-index: 10;
+  }

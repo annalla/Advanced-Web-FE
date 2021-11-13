@@ -1,0 +1,12 @@
+.classList{
+    /* margin: 100 500 50 10; */
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    flex-wrap: wrap;
+
+}
+.classList .classItem{
+    margin-left: 30px;
+    margin-top: 40px;
+}
