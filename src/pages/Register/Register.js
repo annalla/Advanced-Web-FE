@@ -1,10 +1,12 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react/jsx-no-comment-textnodes */
 // import { loginApi } from "../../apis/user.api"
 // import { Title } from "./Register.styles"
 // import { useHistory } from "react-router-dom"
 import { PATH } from "../../constants/paths"
 
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -53,6 +55,7 @@ export default function SignUp() {
     const [identityCard, setIdentityCard] = useState("")
     const [gender, setGender] = useState(0);
     const [uploadFile, setUploadFile] = useState();
+    const [preview, setPreview] = useState()
     const [error, setError] = useState("");
 
     //const history = useHistory()
@@ -89,6 +92,29 @@ export default function SignUp() {
     const handleGender = (event) => {
         setGender(event.target.value)
     }
+    const handleUploadFile = e => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setUploadFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+        setUploadFile(e.target.files[0])
+    }
+
+    useEffect(() => {
+        if (!uploadFile) {
+            setPreview(undefined)
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(uploadFile)
+        setPreview(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [uploadFile])
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -271,9 +297,12 @@ export default function SignUp() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={6}>
                                 <InputLabel id="avatarInputLabel">Avatar</InputLabel>
-                                <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={(e) => setUploadFile(e.target.files)} /> </Button>
+                                <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={handleUploadFile} /> </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                {uploadFile && <img id="previewImage" src={preview} width="300px" />}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -297,8 +326,8 @@ export default function SignUp() {
                             Sign Up
                         </Button>
                         {error && (
-                                <div className="mb-3 text-danger text-xl-center">{error}</div>
-                            )}
+                            <div className="mb-3 text-danger text-xl-center">{error}</div>
+                        )}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <NavLink to={PATH.LOGIN}>
