@@ -1,5 +1,6 @@
 import React from "react"
+import LinearProgress from '@mui/material/LinearProgress';
 
 export default function Loading() {
-  return <div>loading...</div>
+  return <LinearProgress></LinearProgress>
 }

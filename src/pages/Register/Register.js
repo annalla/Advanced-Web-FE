@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable react/jsx-no-comment-textnodes */
 // import { loginApi } from "../../apis/user.api"
 // import { Title } from "./Register.styles"
-// import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { PATH } from "../../constants/paths"
 
 import * as React from 'react';
@@ -24,8 +23,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import axios from "axios";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-import './Register.css';
+import './Register.css'
+import Loading from '../../components/Loading/Loading'
+import { STATUS } from './Register.const'
 
 function Copyright(props) {
     return (
@@ -43,6 +49,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [birthday, setBirthday] = useState("1900-01-01")
     const [firstName, setFirstName] = useState("")
@@ -56,9 +64,20 @@ export default function SignUp() {
     const [gender, setGender] = useState(0);
     const [uploadFile, setUploadFile] = useState();
     const [preview, setPreview] = useState()
-    const [error, setError] = useState("");
+    const [status, setStatus] = useState(STATUS.START);
+    const [notify, setNotify] = useState("");
 
-    //const history = useHistory()
+    const [open, setOpen] = useState(true);
+
+    const handleClose = () => {
+        setStatus(STATUS.START);
+        setNotify("");
+        setOpen(false);
+        if (status === STATUS.SUCCESSFULLY) {
+            history.push(`/`);
+        }
+    };
+
     const handleUsername = (event) => {
         setUsername(event.target.value)
     }
@@ -115,9 +134,9 @@ export default function SignUp() {
         return () => URL.revokeObjectURL(objectUrl)
     }, [uploadFile])
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true);
         const dataArray = new FormData();
         dataArray.append("username", username);
         dataArray.append("password", password);
@@ -133,22 +152,30 @@ export default function SignUp() {
         dataArray.append("avatar", uploadFile);
 
 
-        axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
+        await axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
         })
             .then((response) => {
-                console.log(response.data)
+                if (response.data.status === 1) {
+                    setOpen(true);
+                    setStatus(STATUS.SUCCESSFULLY);
+                    setNotify('Register successfully!');
+                }
+                else if (response.data.status === 0) {
+                    setOpen(true);
+                    setStatus(STATUS.FAIL);
+                    setNotify("ERROR: " + response.data.code);
+                }
             })
-            .catch((error) => {
-                setError(setError);
-                console.log(error);
-            });
+
+        setIsLoading(false);
     };
 
     return (
         <ThemeProvider theme={theme}>
+            {isLoading && <Loading></Loading>}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -159,6 +186,28 @@ export default function SignUp() {
                         alignItems: 'center',
                     }}
                 >
+                    {(status !== STATUS.START) &&
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {"Notification"}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    {notify}
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose} autoFocus>
+                                    OK
+                                </Button>
+                            </DialogActions>
+                        </Dialog>}
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
@@ -214,7 +263,6 @@ export default function SignUp() {
                                     autoComplete="code"
                                     value={code}
                                     onChange={handleCode}
-                                    type="number"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -326,9 +374,6 @@ export default function SignUp() {
                         >
                             Sign Up
                         </Button>
-                        {error && (
-                            <div className="mb-3 text-danger text-xl-center">{error}</div>
-                        )}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <NavLink to={PATH.LOGIN}>
