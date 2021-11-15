@@ -126,7 +126,8 @@ export default function SignUp() {
         dataArray.append("code", code);
         dataArray.append("email", email);
         dataArray.append("phone", phone);
-        dataArray.append("birthday", birthday);
+        let birthdayUnix = new Date(birthday).valueOf() / 1000
+        dataArray.append("birthday", birthdayUnix);
         dataArray.append("gender", gender);
         dataArray.append("identityCard", identityCard);
         dataArray.append("avatar", uploadFile);
