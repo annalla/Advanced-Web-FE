@@ -16,8 +16,9 @@ import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-
 import { FiLock } from "react-icons/fi"
+
+import './Login.css'
 
 const Login = (props) => {
     const AuthCtx = useContext(AuthContext)
@@ -110,61 +111,69 @@ const Login = (props) => {
                             Sign in
                         </Typography>
                         <Box
-                            component="form"
                             noValidate
                             onSubmit={handleSubmit}
                             sx={{ mt: 1 }}
                         >
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                onChange={handleUsername}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={handlePassword}
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                            >
-                                Sign In
-                            </Button>
-                            {error && (
-                                <div className="mb-3 text-danger text-xl-center">{error}</div>
-                            )}
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
+                            <form>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                    onChange={handleUsername}
+                                />
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    onChange={handlePassword}
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Sign In
+                                </Button>
+                                <Grid container>
+                                    <Grid item xs>
+                                    </Grid>
+                                    <Grid item xs>
+                                        <div id="error">{error}</div>
+                                    </Grid>
+                                    <Grid item xs>
+                                    </Grid>
+
                                 </Grid>
-                                <Grid item>
-                                    <NavLink to={PATH.REGISTER}>
-                                        Don't have an account? Sign Up
-                                    </NavLink>
+                                <Grid container>
+                                    <Grid item xs>
+                                        <Link href="#" variant="body2">
+                                            Forgot password?
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        <NavLink to={PATH.REGISTER}>
+                                            Don't have an account? Sign Up
+                                        </NavLink>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Copyright sx={{ mt: 5 }} />
+                                <Copyright sx={{ mt: 5 }} />
+                            </form>
                         </Box>
                     </Box>
                 </Grid>
@@ -173,4 +182,4 @@ const Login = (props) => {
     )
 }
 
-export default (Login)
+export default Login

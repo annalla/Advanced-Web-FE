@@ -214,173 +214,175 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                    value={username}
-                                    onChange={handleUsername}
-                                />
+                    <Box noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <form>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Username"
+                                        name="username"
+                                        autoComplete="username"
+                                        value={username}
+                                        onChange={handleUsername}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="given-name"
+                                        name="firstName"
+                                        required
+                                        fullWidth
+                                        id="firstName"
+                                        label="First Name"
+                                        autoFocus
+                                        value={firstName}
+                                        onChange={handleFirstName}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="lastName"
+                                        label="Last Name"
+                                        name="lastName"
+                                        autoComplete="family-name"
+                                        value={lastName}
+                                        onChange={handleLastName}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="code"
+                                        label="Code"
+                                        name="code"
+                                        autoComplete="code"
+                                        value={code}
+                                        onChange={handleCode}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="email"
+                                        label="Email"
+                                        type="email"
+                                        id="email"
+                                        autoComplete="email"
+                                        value={email}
+                                        onChange={handleEmail}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="password"
+                                        type="password"
+                                        label="Password"
+                                        name="password"
+                                        autoComplete="password"
+                                        value={password}
+                                        onChange={handlePassword}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="retypePassword"
+                                        type="password"
+                                        label="Retype Password"
+                                        name="retypePassword"
+                                        autoComplete="retypePassword"
+                                        value={retypePassword}
+                                        onChange={handleRetypePassword}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="phone"
+                                        label="Phone"
+                                        name="phone"
+                                        type="number"
+                                        autoComplete="phone"
+                                        value={phone}
+                                        onChange={handlePhone}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="birthday"
+                                        type="date"
+                                        label="Birthday"
+                                        name="birthday"
+                                        autoComplete="birthday"
+                                        value={birthday}
+                                        onChange={handleBirthday}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl variant="standard" fullWidth>
+                                        <InputLabel id="genderInputLabel">Gender</InputLabel>
+                                        <Select
+                                            labelId="genderId"
+                                            id="gender"
+                                            label="Gender"
+                                            value={gender}
+                                            onChange={handleGender}
+                                        >
+                                            <MenuItem value={0}>
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={1}>Male</MenuItem>
+                                            <MenuItem value={2}>Female</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <InputLabel id="avatarInputLabel">Avatar</InputLabel>
+                                    <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={handleUploadFile} /> </Button>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    {uploadFile && <img id="previewImage" src={preview} width="300px" />}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="identityCard"
+                                        type="number"
+                                        label="Identity Card Number"
+                                        name="identityCard"
+                                        autoComplete="identityCard"
+                                        value={identityCard}
+                                        onChange={handleIdentityCard}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="firstName"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First Name"
-                                    autoFocus
-                                    value={firstName}
-                                    onChange={handleFirstName}
-                                />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justifyContent="flex-end">
+                                <Grid item>
+                                    <NavLink to={PATH.LOGIN}>
+                                        Already have an account? Sign in
+                                    </NavLink>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="family-name"
-                                    value={lastName}
-                                    onChange={handleLastName}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="code"
-                                    label="Code"
-                                    name="code"
-                                    autoComplete="code"
-                                    value={code}
-                                    onChange={handleCode}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="email"
-                                    label="Email"
-                                    type="email"
-                                    id="email"
-                                    autoComplete="email"
-                                    value={email}
-                                    onChange={handleEmail}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="password"
-                                    type="password"
-                                    label="Password"
-                                    name="password"
-                                    autoComplete="password"
-                                    value={password}
-                                    onChange={handlePassword}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="retypePassword"
-                                    type="password"
-                                    label="Retype Password"
-                                    name="retypePassword"
-                                    autoComplete="retypePassword"
-                                    value={retypePassword}
-                                    onChange={handleRetypePassword}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    id="phone"
-                                    label="Phone"
-                                    name="phone"
-                                    type="number"
-                                    autoComplete="phone"
-                                    value={phone}
-                                    onChange={handlePhone}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    id="birthday"
-                                    type="date"
-                                    label="Birthday"
-                                    name="birthday"
-                                    autoComplete="birthday"
-                                    value={birthday}
-                                    onChange={handleBirthday}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl variant="standard" fullWidth>
-                                    <InputLabel id="genderInputLabel">Gender</InputLabel>
-                                    <Select
-                                        labelId="genderId"
-                                        id="gender"
-                                        label="Gender"
-                                        value={gender}
-                                        onChange={handleGender}
-                                    >
-                                        <MenuItem value={0}>
-                                            <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={1}>Male</MenuItem>
-                                        <MenuItem value={2}>Female</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <InputLabel id="avatarInputLabel">Avatar</InputLabel>
-                                <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={handleUploadFile} /> </Button>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                {uploadFile && <img id="previewImage" src={preview} width="300px" />}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    id="identityCard"
-                                    type="number"
-                                    label="Identity Card Number"
-                                    name="identityCard"
-                                    autoComplete="identityCard"
-                                    value={identityCard}
-                                    onChange={handleIdentityCard}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign Up
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <NavLink to={PATH.LOGIN}>
-                                    Already have an account? Sign in
-                                </NavLink>
-                            </Grid>
-                        </Grid>
+                        </form>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
