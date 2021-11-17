@@ -1,25 +1,73 @@
+.contentInfor{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+}
 .classNameBlock{
     display: flex;
     width: 100%;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     justify-content: space-between;
+    line-height: 1.75rem;
+
+}
+.className{
+    align-self: center;
+    line-height: 1.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.classTopic{
+    align-self: center;
+    line-height: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.teacherBlockImg{
+    display: flex;
+    position: relative;
+}
+.teacherBlockImg img{
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    position: absolute;
+    right: 15px;
+    bottom: -2px;
 }
 .teacherBlock{
     font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-size: 0.8rem;
     display: flex;
 }
-.teacherBlock img{
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    
-}
+
 .teacherBlock div{
-    margin-left: 15px;
     text-align: center;
     font-weight: 430;
-    line-height: 40px;
+    font-size: 15px;
+    line-height: 25px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.blockEnd{
+    /* display: flex; */
+    display: block;
+    margin-top: 30px;
+    /* flex-direction: row; */
+}
+.blockEnd .divide{
+    margin-top: 30px;
+
+}
+.blockEnd .work{
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+    /* width: 100%; */
 }

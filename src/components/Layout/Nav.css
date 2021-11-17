@@ -33,12 +33,12 @@
     height: 100%;
   }
   .header ul {
-    width: 100%;
+    width: 70%;
     height: 4rem;
     list-style: none;
     display: flex;
     margin: 0;
-    margin-right: 4rem;
+    margin-right: 3rem;
   }
   .header li{
     padding: 0.4rem;

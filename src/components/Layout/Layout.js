@@ -8,7 +8,6 @@ function Layout() {
       {/* <Nav /> */}
       <main className="main">
           {/* {props.children} */}
-          <p>skifjk</p>
       </main>
     </div>
   );

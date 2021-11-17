@@ -42,11 +42,11 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
     opacity: 1,
   },
   '&.Mui-selected': {
-    color: '#2D2C2C',
-    fontWeight: theme.typography.fontWeightMedium,
+    color: '#000000',
+    fontWeight:"650"
   },
   '&.Mui-focusVisible': {
-    backgroundColor: '#d1eaff',
+    backgroundColor: '#1E1E1E',
   },
 }));
 function TabsItem() {

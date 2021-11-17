@@ -4,9 +4,10 @@
     padding-top: 10px;
     padding-bottom: 50px;
     flex-wrap: wrap;
-
+    /* background-color: #F8F9F9; */
+    /* min-height: 100%; */
 }
 .classList .classItem{
     margin-left: 30px;
-    margin-top: 40px;
+    margin-top: 0px;
 }

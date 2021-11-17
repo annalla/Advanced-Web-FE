@@ -6,6 +6,8 @@ const AuthContext = React.createContext({
   id: "",
   name: "",
   avatarUrl: "",
+  teachingClass:[],
+  enrolledClass:[],
   onLogout: () => {},
   onLogin: (data) => {},
 });
@@ -13,6 +15,8 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [teachingClass, setTeachingClass] = useState([]);
+  const [enrolledClass, setEnrolledClass] = useState([]);
 
   useEffect(() => {
     const storedUserLoggedInInformation =
@@ -30,6 +34,10 @@ export const AuthContextProvider = (props) => {
         avatarUrl: storedUserAvatarInformation,
       };
       setUser(currentUser)
+      const EnrolledClass=localStorage.getItem("enrolled");
+      const teachingClass=localStorage.getItem("teaching");
+      setEnrolledClass(EnrolledClass);
+      setTeachingClass(teachingClass);
     }
   }, []);
 
@@ -40,15 +48,36 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem("name");
     localStorage.removeItem("avatarUrl");
     localStorage.removeItem("token");
+    localStorage.removeItem("teaching");
+    localStorage.removeItem("enrolled");
     setUser(null);
+    setTeachingClass([]);
+    setEnrolledClass([]);
   };
-
+  const classListHandleTeaching=(data)=>{
+    var dataCustom=[];
+    data.map((item)=>{
+      dataCustom.push(item.name);
+    })
+    localStorage.setItem("teaching",dataCustom);
+    setTeachingClass(dataCustom)
+  }
+  const classListHandleEnrolled=(data)=>{
+    var dataCustom=[];
+    data.map((item)=>{
+      dataCustom.push(item.name);
+    })
+    localStorage.setItem("teaching",dataCustom);
+    setEnrolledClass(dataCustom)
+  }
   const loginHandler = (data) => {
     localStorage.setItem("isAuthenticated", "1");
     localStorage.setItem("id", data.id);
     localStorage.setItem("name", data.name);
     localStorage.setItem("avatarUrl", data.avatarUrl);
     localStorage.setItem("token", data.token);
+    localStorage.setItem("teaching",[]);
+    localStorage.setItem("teaching",[]);
     setIsAuthenticated(true);
     const currentUser = {
       token: data.token,
@@ -64,6 +93,10 @@ export const AuthContextProvider = (props) => {
       value={{
         isAuthenticated: isAuthenticated,
         user: user,
+        teachingClass:teachingClass,
+        enrolledClass:enrolledClass,
+        handleEnrolled:classListHandleEnrolled,
+        handleTeaching:classListHandleTeaching,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}

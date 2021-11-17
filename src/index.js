@@ -2,10 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {App} from './App.js'
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-// import { ClassList } from './Components/Class/ClassList';
-// import { Nav } from './Components/Layout/Nav';
-// import { Header } from './Components/Form/Add';
 
 
 ReactDOM.render(  

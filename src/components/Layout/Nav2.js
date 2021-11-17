@@ -1,16 +1,17 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import './Nav.css';
-import { FormAdd } from '../Form/FormAdd';
-import { ButtonAdd } from './NavItems/ButtonAdd';
+// import { FormAdd } from '../Form/FormAdd';
+// import { ButtonAdd } from './NavItems/ButtonAdd';
 import Divider from '@mui/material/Divider';
 
 import { AvatarIcon } from './NavItems/Avatar';
 import { MenuDrawer } from './NavItems/Menu';
+import {TabsItem} from './NavItems/TabsItem';
 
 
-function Nav() {
+function Nav2() {
   //set button Add
-  const [isOpenAdd, setIsOpenAdd] = useState(false); 
+//   const [isOpenAdd, setIsOpenAdd] = useState(false); 
   return (
     <Fragment>
       <header >
@@ -21,11 +22,14 @@ function Nav() {
             </span>
             <div className="name">Classroom</div>
           </div>
+          <div className='tabs'>
+            <TabsItem/>
+          </div>
           <nav>
             <ul>
-              <li>
+              {/* <li>
                 <ButtonAdd onOpen={() => setIsOpenAdd(true)}></ButtonAdd>
-              </li>
+              </li> */}
               <li>
                <AvatarIcon/>
               </li>
@@ -36,9 +40,9 @@ function Nav() {
       <Divider/>
       <div className="divide">
       </div>
-      {isOpenAdd ? <FormAdd onclose={() => setIsOpenAdd(false)} /> : ""}
+      {/* {isOpenAdd ? <FormAdd onclose={() => setIsOpenAdd(false)} /> : ""} */}
     </Fragment>
   );
 }
 
-export { Nav };
+export { Nav2 };
