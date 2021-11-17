@@ -1,7 +1,8 @@
-.boxForm{
+.boxForm {
     width: 100%;
     align-self: center;
 }
+
 .backdrop {
     position: fixed;
     top: 0;
@@ -10,4 +11,17 @@
     height: 100vh;
     background-color: #33333377;
     z-index: 10;
-  }
+}
+
+#previewImage {
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+
+#imageContainer{
+    margin-top: 20px;
+}

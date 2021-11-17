@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import { PATH } from "../../constants/paths"
 
 import * as React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,6 +28,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import AuthContext from "../../store/store"
 
 import './Register.css'
 import Loading from '../../components/Loading/Loading'
@@ -66,6 +67,7 @@ export default function SignUp() {
     const [preview, setPreview] = useState()
     const [status, setStatus] = useState(STATUS.START);
     const [notify, setNotify] = useState("");
+    const AuthCtx = useContext(AuthContext)
 
     const [open, setOpen] = useState(true);
 
@@ -74,7 +76,7 @@ export default function SignUp() {
         setNotify("");
         setOpen(false);
         if (status === STATUS.SUCCESSFULLY) {
-            history.push(`/`);
+            history.push('/');
         }
     };
 
@@ -161,6 +163,7 @@ export default function SignUp() {
                 if (response.data.status === 1) {
                     setOpen(true);
                     setStatus(STATUS.SUCCESSFULLY);
+                    AuthCtx.onLogin(response.data.data);
                     setNotify('Register successfully!');
                 }
                 else if (response.data.status === 0) {

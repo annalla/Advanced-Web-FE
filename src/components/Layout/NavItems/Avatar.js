@@ -2,7 +2,6 @@ import React from "react";
 import { Fragment, useState,useContext } from "react";
 import '../Nav.css';
 import AuthContext from "../../../store/store";
-import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -44,7 +43,8 @@ function AvatarIcon() {
                 <Tooltip title="Account settings">
                     <IconButton onClick={handleClickAccountMenu} >
                         {/* <Avatar sx={{ width: 32, height: 32 }}>M</Avatar> */}
-                        <Avatar alt={AuthCtx.user.name} sx={{ width: 37, height: 37 }} src="/images/avatar/rose.jpg" />
+                        {/*<Avatar alt={AuthCtx.user.name} sx={{ width: 37, height: 37 }} src="/images/avatar/rose.jpg" />*/}
+                        <Avatar sx={{ width: 37, height: 37 }} src="/images/avatar/rose.jpg" />
                     </IconButton>
                 </Tooltip>
                 <Menu
@@ -81,13 +81,6 @@ function AvatarIcon() {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-
-                    <MenuItem>
-                        <Avatar />
-                        <ListItemText color='secondary'>{}</ListItemText>
-                    </MenuItem>
-                    <Divider />
-
                     <MenuItem>
                         <ListItemIcon>
                             <Settings fontSize="small" color='secondary'/>

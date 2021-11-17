@@ -158,7 +158,6 @@ const Login = (props) => {
                                     </Grid>
                                     <Grid item xs>
                                     </Grid>
-
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs>
