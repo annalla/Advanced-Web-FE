@@ -40,9 +40,9 @@ export const AuthContextProvider = (props) => {
       };
       // console.log(currentUser);
       setUser(currentUser);
-      const EnrolledClass = localStorage.getItem("enrolled");
-      const TeachingClass = localStorage.getItem("teaching");
-      if (EnrolledClass.length === 0) {
+      const EnrolledClass=localStorage.getItem("enrolled");
+      const TeachingClass=localStorage.getItem("teaching");
+      if(!EnrolledClass){
         setEnrolledClass([]);
       } else {
         setEnrolledClass(EnrolledClass);
