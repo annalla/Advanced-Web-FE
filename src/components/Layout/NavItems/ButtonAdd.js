@@ -13,26 +13,30 @@ import Tooltip from '@mui/material/Tooltip';
 
 const theme = createTheme({
     palette: {
-      secondary: {
-        // This is green.A700 as hex.
-        main: '#2D2C2C',
-      },
+        secondary: {
+            // This is green.A700 as hex.
+            main: '#2D2C2C',
+        },
     },
-  });
-function ButtonAdd({onOpen}) {
+});
+
+function ButtonAdd({ onOpen }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     const handleOpenAdd = () => {
         setAnchorEl(null);
         onOpen();
-        // setIsOpenAdd(true);
     };
+
     return (
         <Fragment>
             <div className="addIcon">
