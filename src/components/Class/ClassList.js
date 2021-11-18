@@ -38,7 +38,7 @@ const ClassList = ({ isTeaching}) => {
       .catch((err) => {
         setIsLoaded(true);
       });
-  }, []);
+  }, [AuthCtx, isTeaching, items]);
 
   if (error) {
     return <div>Error: {error.message}</div>;
