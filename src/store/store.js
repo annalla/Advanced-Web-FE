@@ -8,6 +8,8 @@ const AuthContext = React.createContext({
   avatarUrl: "",
   teachingClass:[],
   enrolledClass:[],
+  handleEnrolled:(data) => {},
+  handleTeaching:(data) => {},
   onLogout: () => {},
   onLogin: (data) => {},
 });
@@ -33,23 +35,30 @@ export const AuthContextProvider = (props) => {
         name: storedUserNameInformation,
         avatarUrl: storedUserAvatarInformation,
       };
-      setUser(currentUser)
+      setUser(currentUser);
       const EnrolledClass=localStorage.getItem("enrolled");
-      const teachingClass=localStorage.getItem("teaching");
-      setEnrolledClass(EnrolledClass);
-      setTeachingClass(teachingClass);
+      const TeachingClass=localStorage.getItem("teaching");
+      if(EnrolledClass.length===0){
+        setEnrolledClass([]);
+      }
+      else{
+        setEnrolledClass(EnrolledClass);
+      }
+      if(TeachingClass.length===0){
+        setTeachingClass([]);
+      }
+      else{
+        setTeachingClass(TeachingClass);
+      }
     }
   }, []);
 
   const logoutHandler = () => {
-    // localStorage.removeItem("isAuthenticated");
     setIsAuthenticated(false);
     localStorage.removeItem("id");
     localStorage.removeItem("name");
     localStorage.removeItem("avatarUrl");
     localStorage.removeItem("token");
-    localStorage.removeItem("teaching");
-    localStorage.removeItem("enrolled");
     setUser(null);
     setTeachingClass([]);
     setEnrolledClass([]);
@@ -67,7 +76,7 @@ export const AuthContextProvider = (props) => {
     data.map((item)=>{
       dataCustom.push(item.name);
     })
-    localStorage.setItem("teaching",dataCustom);
+    localStorage.setItem("enrolled",dataCustom);
     setEnrolledClass(dataCustom)
   }
   const loginHandler = (data) => {
@@ -77,7 +86,7 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem("avatarUrl", data.avatarUrl);
     localStorage.setItem("token", data.token);
     localStorage.setItem("teaching",[]);
-    localStorage.setItem("teaching",[]);
+    localStorage.setItem("enrolled",[]);
     setIsAuthenticated(true);
     const currentUser = {
       token: data.token,

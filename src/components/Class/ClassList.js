@@ -6,8 +6,9 @@ import { getClassListApi } from "../../apis/class.api";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
+import { JWT_TYPE } from "../../constants/const";
 
-const ClassList = ({ isTeaching}) => {
+const ClassList = ({ isTeaching }) => {
   const AuthCtx = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,19 +16,20 @@ const ClassList = ({ isTeaching}) => {
   const [isHeader, setIsHeader] = useState(false);
   const headerList = isTeaching ? "Teaching" : "Enrolled";
   useEffect(() => {
-    const jwt_type = isTeaching ? "1" : "2";
+    const jwt_type = isTeaching
+      ? JWT_TYPE.JWT_TYPE_TEACHER
+      : JWT_TYPE.JWT_TYPE_STUDENT;
     getClassListApi(AuthCtx.user.token, jwt_type)
       .then((res) => {
         if (res.status === 1) {
           setIsLoaded(true);
           setItems(res.data);
           if (res.data.length > 0) {
-			if(isTeaching){
-				AuthCtx.handleTeaching(res.data);
-			}
-			else{
-				AuthCtx.handleEnrolled(res.data);
-			}
+            if (isTeaching) {
+              AuthCtx.handleTeaching(res.data);
+            } else {
+              AuthCtx.handleEnrolled(res.data);
+            }
             setIsHeader(true);
           }
         } else {
@@ -38,7 +40,7 @@ const ClassList = ({ isTeaching}) => {
       .catch((err) => {
         setIsLoaded(true);
       });
-  }, [AuthCtx, isTeaching, items]);
+  }, []);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -46,14 +48,14 @@ const ClassList = ({ isTeaching}) => {
     return <div>Loading...</div>;
   } else {
     return (
-      <Box sx={{ backgroundColor: grey[50], ml: 2, mr: 2,borderRadius:3 }}>
+      <Box sx={{ backgroundColor: grey[50], ml: 1, mr: 2, borderRadius: 3 }}>
         {isHeader ? (
           <Fragment>
             <Typography
               sx={{
                 mt: 3,
                 ml: 1,
-                mb: 1,
+                mb: 0,
                 fontSize: 22,
                 fontFamily: "Raleway, Arial",
               }}
@@ -67,7 +69,7 @@ const ClassList = ({ isTeaching}) => {
             <div className="classList">
               {items.map((item) => (
                 <div className="classItem" key={item.id}>
-                  <ClassItem data={item} isTeacher={isTeaching}/>
+                  <ClassItem data={item} isOwner={isTeaching} />
                 </div>
               ))}
             </div>

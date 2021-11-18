@@ -4,22 +4,24 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import "./ClassItem.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
+import { SRC_IMG } from "../../constants/const";
 
-export function ClassItem({ data, isTeacher }) {
+
+export function ClassItem({ data, isOwner }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const srcCoverImg =
-    data.coverImageUrl === "" ? "images/class/bg6.jpg" : data.coverImageUrl;
+    data.coverImageUrl === "" ? SRC_IMG.COVER_IMAGE_CLASS : data.coverImageUrl;
+    const srcAvatarImg =
+    data.ownerAvatar=== "" ? SRC_IMG.DEFAULT_AVATAR : data.ownerAvatar;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,18 +33,18 @@ export function ClassItem({ data, isTeacher }) {
       <CardMedia
         component="img"
         height="110"
-        image="images/class/bg6.jpg"
-        alt="green iguana"
+        image={srcCoverImg}
+        alt="coverImage"
       />
       <CardContent>
-        {!isTeacher ? (
+        {!isOwner ? (
           <span className="teacherBlockImg">
-            <img src={srcCoverImg} />
+            <img src={srcCoverImg} alt="coverImage"/>
           </span>
         ) : (
           ""
         )}
-        <span className="contentInfor">
+        <span className="contentInformation">
           <span>
             <span className="classNameBlock">
               <span className="className">{data.name}</span>
@@ -73,10 +75,10 @@ export function ClassItem({ data, isTeacher }) {
             <Typography variant="body2" color="text.secondary">
               <span className="classTopic"> {data.description}</span>
             </Typography>
-            {!isTeacher ? (
+            {!isOwner ? (
               <Typography>
                 <span className="teacherBlock">
-                  <span>data.owner</span>
+                  <span>{data.ownerName}</span>
                 </span>
               </Typography>
             ) : (

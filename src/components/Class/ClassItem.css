@@ -1,4 +1,4 @@
-.contentInfor{
+.contentInformation{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -22,11 +22,13 @@
     white-space: nowrap;
 }
 .classTopic{
+    display: block;
     align-self: center;
     line-height: 1rem;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    width: 250px;
 }
 
 .teacherBlockImg{

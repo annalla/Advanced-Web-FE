@@ -12,6 +12,8 @@ import axios from 'axios';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
+import { useHistory } from 'react-router';
+import { PATH} from '../../constants/paths'
 
 const theme = createTheme({
     palette: {
@@ -22,6 +24,8 @@ const theme = createTheme({
 });
 
 function FormAdd({ onclose }) {
+
+    const history = useHistory();
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadFile, setUploadFile] = useState();
@@ -61,7 +65,7 @@ function FormAdd({ onclose }) {
 
         if (data.description) dataArray.append("description", data.description);
 
-        dataArray.append("avatar", uploadFile);
+        dataArray.append("coverImageUrl", uploadFile);
 
         await axios.post("http://localhost:8002/api/v1/classroom/", dataArray, {
             headers: {
@@ -72,6 +76,7 @@ function FormAdd({ onclose }) {
             .then((response) => {
                 console.log(response.data)
                 if (response.data.status === 1) {
+                    history.push(PATH.ADD_CLASS);
                     onclose();
                 }
                 else if (response.data.status === 0) {

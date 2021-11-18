@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import "../Nav.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import "./menu.css"
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -94,7 +94,7 @@ function MenuDrawer() {
               {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
               <ClassIcon/> 
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText><span>{text}</span></ListItemText>
           </ListItem>
         ))}
       </List>

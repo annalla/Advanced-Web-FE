@@ -9,11 +9,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
-// import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ListItemText } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { SRC_IMG } from "../../../constants/const";
 const theme = createTheme({
   palette: {
     secondary: {
@@ -28,7 +29,7 @@ function AvatarIcon() {
   const AuthCtx = useContext(AuthContext);
   const srcAvatar =
     AuthCtx.user.avatarUrl === ""
-      ? "/images/avatar/avatar.jpg"
+      ? SRC_IMG.DEFAULT_AVATAR
       : AuthCtx.user.avatarUrl;
   //MenuAccount
   const [anchorElAccountMenu, setAnchorElAccountMenu] = useState(null);
@@ -89,8 +90,11 @@ function AvatarIcon() {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <MenuItem>
-            <Avatar />
-            <ListItemText color="secondary">{}</ListItemText>
+            <ListItemText color="secondary">
+            <Typography align='center'>
+                {AuthCtx.user.name}
+                </Typography>
+            </ListItemText>
           </MenuItem>
           <Divider />
 
