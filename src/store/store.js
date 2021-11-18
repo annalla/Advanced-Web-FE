@@ -38,7 +38,7 @@ export const AuthContextProvider = (props) => {
       setUser(currentUser);
       const EnrolledClass=localStorage.getItem("enrolled");
       const TeachingClass=localStorage.getItem("teaching");
-      if(EnrolledClass.length===0){
+      if(!EnrolledClass){
         setEnrolledClass([]);
       }
       else{
