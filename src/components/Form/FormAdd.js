@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
 
@@ -26,6 +27,7 @@ function FormAdd({ onclose }) {
     const [isLoading, setIsLoading] = useState(false);
     const [uploadFile, setUploadFile] = useState();
     const [preview, setPreview] = useState();
+    const [errorResponse, setErrorResponse] = useState(null);
 
     const { register, handleSubmit, formState: { errors }, } = useForm();
 
@@ -69,12 +71,12 @@ function FormAdd({ onclose }) {
             }
         })
             .then((response) => {
+                console.log(response.data)
                 if (response.data.status === 1) {
                     onclose();
                 }
                 else if (response.data.status === 0) {
-                    console.log("that bai");
-                    setError("Created class failed!");
+                    setErrorResponse(response.data.code);
                 }
             })
         setIsLoading(false);
@@ -132,6 +134,9 @@ function FormAdd({ onclose }) {
                                     <Grid item xs={12} sm={6}>
                                         {uploadFile && <img id="previewImage" src={preview} width="150" />}
                                     </Grid>
+                                </Grid>
+                                <Grid container justifyContent="center">
+                                    <FormHelperText error>{errorResponse}</FormHelperText>
                                 </Grid>
                                 <Grid container justifyContent="flex-end">
                                     <Button
