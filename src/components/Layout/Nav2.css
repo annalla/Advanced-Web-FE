@@ -1,0 +1,80 @@
+.header2 {
+  /* background-color: #ffffff; */
+  background-color: #f8f9f9;
+  /* background-color:#E9F7F4; */
+  /* background-color:#F1F2F4; */
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0px;
+}
+.part1{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.logo2 {
+  width: 100%;
+  font-size: 1.1rem;
+  color: #2d2c2c;
+  font-weight: 500;
+  padding-top: 1.3%;
+  padding-left: 1%;
+  display: flex;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.logo2 span {
+  margin-right: 10px;
+}
+.logo2 .name {
+  line-height: 40px;
+  /* width: 140px; */
+}
+.header2 .tabs {
+  /* width: 50%; */
+  margin-left: 60px;
+  height: 100%;
+}
+
+.header2 ul {
+  min-width: none;
+  align-self: end;
+  height: 4rem;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  margin-right: 3rem;
+}
+.header2 li {
+  padding: 0.4rem;
+}
+
+.divide {
+  display: block;
+  width: 100%;
+  height: 0.17rem;
+  background-color: #2d2c2c;
+}
+.logo2 .blockName {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  width: 350px;
+  height: 52px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.logo2 .blockName .code {
+  /* display: block; */
+  font-size: 0.8rem;
+  opacity: 70%;
+  max-width: 400px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+}

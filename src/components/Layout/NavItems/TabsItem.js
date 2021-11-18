@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     secondary: {
-      // This is green.A700 as hex.
       main: '#2D2C2C',
     },
   },
@@ -49,12 +48,13 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
     backgroundColor: '#1E1E1E',
   },
 }));
-function TabsItem() {
-  const [value, setValue] = React.useState(0);
+function TabsItem({value}) {
+  // const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    console.log(newValue);
   };
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -64,7 +64,9 @@ function TabsItem() {
           indicatorColor="secondary"
           sx={{ mt: 1.7 }}
           value={value}
-          onChange={handleChange} centered>
+          // onClick={handleClick}
+          onChange={handleChange}
+           centered>
           <AntTab label='Stream'></AntTab>
           <AntTab label='Classwork'></AntTab>
           <AntTab label='People'></AntTab>

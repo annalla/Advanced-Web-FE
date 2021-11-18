@@ -3,15 +3,16 @@ import { BrowserRouter } from "react-router-dom"
 import LoginRoutes from "./LoginRoutes"
 import HomeRoutes from "./HomeRoutes"
 import RegisterRoutes from "./RegisterRoutes"
-import AddRoutes from "./AddRoutes"
-
+import AddClassRoutes from "./AddClassRoutes"
+import DetailClassRoutes from "./DetailClassRoutes"
 export default function Routes() {
   return (
     <BrowserRouter>
-      <AddRoutes />
+      <AddClassRoutes />
       <HomeRoutes />
       <LoginRoutes />
       <RegisterRoutes />
+      <DetailClassRoutes/>
     </BrowserRouter>
   )
 }

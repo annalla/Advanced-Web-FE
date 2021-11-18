@@ -6,10 +6,10 @@ const AuthContext = React.createContext({
   id: "",
   name: "",
   avatarUrl: "",
-  teachingClass:[],
-  enrolledClass:[],
-  handleEnrolled:(data) => {},
-  handleTeaching:(data) => {},
+  teachingClass: [],
+  enrolledClass: [],
+  handleEnrolled: (data) => {},
+  handleTeaching: (data) => {},
   onLogout: () => {},
   onLogin: (data) => {},
 });
@@ -28,26 +28,28 @@ export const AuthContextProvider = (props) => {
       const storedUserTokenInformation = localStorage.getItem("token");
       const storedUserIdInformation = localStorage.getItem("id");
       const storedUserNameInformation = localStorage.getItem("name");
-      const storedUserAvatarInformation = localStorage.getItem("avatarUrl");
+      var storedUserAvatarInformation = localStorage.getItem("avatarUrl");
+      if (storedUserAvatarInformation === null) {
+        storedUserAvatarInformation = "";
+      }
       const currentUser = {
         token: storedUserTokenInformation,
         id: storedUserIdInformation,
         name: storedUserNameInformation,
         avatarUrl: storedUserAvatarInformation,
       };
+      // console.log(currentUser);
       setUser(currentUser);
-      const EnrolledClass=localStorage.getItem("enrolled");
-      const TeachingClass=localStorage.getItem("teaching");
-      if(EnrolledClass.length===0){
+      const EnrolledClass = localStorage.getItem("enrolled");
+      const TeachingClass = localStorage.getItem("teaching");
+      if (EnrolledClass.length === 0) {
         setEnrolledClass([]);
-      }
-      else{
+      } else {
         setEnrolledClass(EnrolledClass);
       }
-      if(TeachingClass.length===0){
+      if (TeachingClass.length === 0) {
         setTeachingClass([]);
-      }
-      else{
+      } else {
         setTeachingClass(TeachingClass);
       }
     }
@@ -63,30 +65,30 @@ export const AuthContextProvider = (props) => {
     setTeachingClass([]);
     setEnrolledClass([]);
   };
-  const classListHandleTeaching=(data)=>{
-    var dataCustom=[];
-    data.map((item)=>{
+  const classListHandleTeaching = (data) => {
+    var dataCustom = [];
+    data.map((item) => {
       dataCustom.push(item.name);
-    })
-    localStorage.setItem("teaching",dataCustom);
-    setTeachingClass(dataCustom)
-  }
-  const classListHandleEnrolled=(data)=>{
-    var dataCustom=[];
-    data.map((item)=>{
+    });
+    localStorage.setItem("teaching", dataCustom);
+    setTeachingClass(dataCustom);
+  };
+  const classListHandleEnrolled = (data) => {
+    var dataCustom = [];
+    data.map((item) => {
       dataCustom.push(item.name);
-    })
-    localStorage.setItem("enrolled",dataCustom);
-    setEnrolledClass(dataCustom)
-  }
+    });
+    localStorage.setItem("enrolled", dataCustom);
+    setEnrolledClass(dataCustom);
+  };
   const loginHandler = (data) => {
     localStorage.setItem("isAuthenticated", "1");
     localStorage.setItem("id", data.id);
     localStorage.setItem("name", data.name);
     localStorage.setItem("avatarUrl", data.avatarUrl);
     localStorage.setItem("token", data.token);
-    localStorage.setItem("teaching",[]);
-    localStorage.setItem("enrolled",[]);
+    localStorage.setItem("teaching", []);
+    localStorage.setItem("enrolled", []);
     setIsAuthenticated(true);
     const currentUser = {
       token: data.token,
@@ -94,6 +96,7 @@ export const AuthContextProvider = (props) => {
       name: data.name,
       avatarUrl: data.avatarUrl,
     };
+    console.log(user);
     setUser(currentUser);
   };
 
@@ -102,10 +105,10 @@ export const AuthContextProvider = (props) => {
       value={{
         isAuthenticated: isAuthenticated,
         user: user,
-        teachingClass:teachingClass,
-        enrolledClass:enrolledClass,
-        handleEnrolled:classListHandleEnrolled,
-        handleTeaching:classListHandleTeaching,
+        teachingClass: teachingClass,
+        enrolledClass: enrolledClass,
+        handleEnrolled: classListHandleEnrolled,
+        handleTeaching: classListHandleTeaching,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}

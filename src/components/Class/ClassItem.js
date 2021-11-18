@@ -39,7 +39,7 @@ export function ClassItem({ data, isOwner }) {
       <CardContent>
         {!isOwner ? (
           <span className="teacherBlockImg">
-            <img src={srcCoverImg} alt="coverImage"/>
+            <img src={srcAvatarImg} alt="owner"/>
           </span>
         ) : (
           ""

@@ -3,7 +3,7 @@ export const JWT_TYPE = {
     JWT_TYPE_STUDENT: "2",
   }
   export const SRC_IMG = {
-    COVER_IMAGE_CLASS: "images/class/bg6.jpg",
+    COVER_IMAGE_CLASS: "/images/class/bg12.jpg",
     DEFAULT_AVATAR: "/images/avatar/avatar.jpg",
   }
   
