@@ -93,7 +93,7 @@ function FormAdd({ onclose }) {
     return (
         <div className="backdrop">
             {isLoading && <Loading></Loading>}
-            <Container maxWidth="sm" sx={{ my: '120px' }}>
+            <Container maxWidth="sm" sx={{ mt: '80px' }}>
                 <Card sx={{ MaxWidth: 900 }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 18 }} gutterBottom>

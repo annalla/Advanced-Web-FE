@@ -3,5 +3,6 @@ export const PATH = {
   PRODUCT: "/product",
   LOGIN: "/login",
   REGISTER: "/register",
-  ADD_CLASS:"/addClass"
+  ADD_CLASS:"/addClass",
+  DETAIL_CLASS:"/detailedClass/"
 }

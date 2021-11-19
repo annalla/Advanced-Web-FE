@@ -3,7 +3,7 @@ import { Switch } from "react-router-dom"
 import AuthenticatedGuard from "../guard/AuthenticatedGuard"
 import { PATH } from "../constants/paths"
 import { Header } from "../components/Form/Add"
-export default function AddRoutes() {
+export default function AddClassRoutes() {
   return (
     <Switch>
       <AuthenticatedGuard

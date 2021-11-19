@@ -1,45 +1,47 @@
-import React, { Fragment } from 'react';
-import './Nav.css';
+import React, { Fragment } from "react";
+import "./Nav2.css";
 // import { FormAdd } from '../Form/FormAdd';
 // import { ButtonAdd } from './NavItems/ButtonAdd';
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
-import { AvatarIcon } from './NavItems/Avatar';
-import { MenuDrawer } from './NavItems/Menu';
-import {TabsItem} from './NavItems/TabsItem';
-
+import { AvatarIcon } from "./NavItems/Avatar";
+import { MenuDrawer } from "./NavItems/Menu";
+import { TabsItem } from "./NavItems/TabsItem";
+import { Box } from "@mui/system";
 
 function Nav2() {
   //set button Add
-//   const [isOpenAdd, setIsOpenAdd] = useState(false); 
+  //   const [isOpenAdd, setIsOpenAdd] = useState(false);
   return (
     <Fragment>
-      <header >
-        <div className="header">
-          <div className="logo">
-            <span>
-              <MenuDrawer/>
-            </span>
-            <div className="name">Classroom</div>
+      <header>
+        <div className="header2">
+          <div className="part1">
+            <div className="logo2">
+              <span>
+                <MenuDrawer />
+              </span>
+              <div className="blockName">
+                <span>Cla sdjf skejf sjfd esjr sdjifh sdfh dsfhssName</span>
+                <span className="code">MMH</span>
+              </div>
+            </div>
+            <div className="tabs">
+              <TabsItem value={0} />
+            </div>
           </div>
-          <div className='tabs'>
-            <TabsItem/>
-          </div>
+
           <nav>
             <ul>
-              {/* <li>
-                <ButtonAdd onOpen={() => setIsOpenAdd(true)}></ButtonAdd>
-              </li> */}
               <li>
-               <AvatarIcon/>
+                <AvatarIcon />
               </li>
             </ul>
           </nav>
         </div>
       </header>
-      <Divider/>
-      <div className="divide">
-      </div>
+      <Divider />
+      <div className="divide"></div>
       {/* {isOpenAdd ? <FormAdd onclose={() => setIsOpenAdd(false)} /> : ""} */}
     </Fragment>
   );

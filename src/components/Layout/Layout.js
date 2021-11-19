@@ -1,6 +1,5 @@
 import React from 'react';
-import Nav from './Nav';
-import './layoutcss';
+import './layout.css';
 
 function Layout() {
   return (
