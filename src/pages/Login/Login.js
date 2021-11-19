@@ -18,6 +18,8 @@ import Typography from "@mui/material/Typography"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { FiLock } from "react-icons/fi"
 
+import LoginHooks from "../../components/GoogleAuth/LoginHook";
+
 import './Login.css'
 
 const Login = (props) => {
@@ -164,6 +166,9 @@ const Login = (props) => {
                                         <Link href="#" variant="body2">
                                             Forgot password?
                                         </Link>
+                                    </Grid>
+                                    <Grid>
+                                        <LoginHooks></LoginHooks>
                                     </Grid>
                                     <Grid item>
                                         <NavLink to={PATH.REGISTER}>
