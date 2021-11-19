@@ -14,7 +14,6 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Loading from '../Loading/Loading';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants/paths'
-import { ResetTv } from '@mui/icons-material';
 
 const theme = createTheme({
     palette: {
@@ -138,7 +137,7 @@ function FormAdd({ onclose }) {
                                         <Button variant="contained" component="label" id="coverImage"> Cover Image <input type="file" hidden onChange={handleUploadFile} /> </Button>
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        {uploadFile && <img id="previewImage" src={preview} width="150" />}
+                                        {uploadFile && <img alt="coverIamge" id="previewImage" src={preview} width="150" />}
                                     </Grid>
                                 </Grid>
                                 <Grid container justifyContent="center">

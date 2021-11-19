@@ -78,7 +78,7 @@ export const AuthContextProvider = (props) => {
   const classListHandleTeaching = (data) => {
     var dataCustom = [];
     data.map((item) => {
-      dataCustom.push(item.name);
+      return dataCustom.push(item.name);
     });
     localStorage.setItem("teaching", dataCustom);
     setTeachingClass(dataCustom);
@@ -86,7 +86,7 @@ export const AuthContextProvider = (props) => {
   const classListHandleEnrolled = (data) => {
     var dataCustom = [];
     data.map((item) => {
-      dataCustom.push(item.name);
+      return dataCustom.push(item.name);
     });
     localStorage.setItem("enrolled", dataCustom);
     setEnrolledClass(dataCustom);
