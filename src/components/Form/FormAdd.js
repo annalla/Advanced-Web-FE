@@ -13,7 +13,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
 import { useHistory } from 'react-router';
-import { PATH} from '../../constants/paths'
+import { PATH } from '../../constants/paths'
+import { ResetTv } from '@mui/icons-material';
 
 const theme = createTheme({
     palette: {
@@ -32,7 +33,7 @@ function FormAdd({ onclose }) {
     const [preview, setPreview] = useState();
     const [errorResponse, setErrorResponse] = useState(null);
 
-    const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleUploadFile = e => {
         if (!e.target.files || e.target.files.length === 0) {
@@ -49,12 +50,14 @@ function FormAdd({ onclose }) {
             setPreview(undefined)
             return
         }
-
         const objectUrl = URL.createObjectURL(uploadFile)
         setPreview(objectUrl)
 
         // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
+        return () => {
+            URL.revokeObjectURL(objectUrl);
+            setPreview();
+        }
     }, [uploadFile])
 
     const onSubmit = async (data) => {
@@ -65,9 +68,9 @@ function FormAdd({ onclose }) {
 
         if (data.description) dataArray.append("description", data.description);
 
-        dataArray.append("coverImageUrl", uploadFile);
+        dataArray.append("coverImage", uploadFile);
 
-        await axios.post("http://localhost:8002/api/v1/classroom/", dataArray, {
+        axios.post("http://localhost:8002/api/v1/classroom/", dataArray, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 "Content-Type": "multipart/form-data",
