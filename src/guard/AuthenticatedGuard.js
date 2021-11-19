@@ -4,6 +4,7 @@ import {
     Redirect,
 } from "react-router-dom"
 import AuthContext from "../store/store"
+import {PATH} from "../constants/paths"
 
 function AuthenticatedGuard(props) {
     const { component: Component, ...rest } = props
@@ -14,7 +15,7 @@ function AuthenticatedGuard(props) {
             {...rest}
             render={props => {
                 if (!isAuthenticated && !localStorage.getItem("token")) {
-                    return <Redirect to="/login" />
+                    return <Redirect to={PATH.LOGIN} />
                 }
                 return <Component {...props} />
             }}

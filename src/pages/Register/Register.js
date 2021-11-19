@@ -76,7 +76,7 @@ export default function SignUp() {
         setNotify("");
         setOpen(false);
         if (status === STATUS.SUCCESSFULLY) {
-            history.push('/');
+            history.push(PATH.HOME);
         }
     };
 

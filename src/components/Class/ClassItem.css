@@ -21,6 +21,13 @@
     overflow: hidden;
     white-space: nowrap;
 }
+.className a{
+    text-decoration: none;
+    color: black;
+}
+.className a:hover{
+    color:blue;
+}
 .classTopic{
     display: block;
     align-self: center;

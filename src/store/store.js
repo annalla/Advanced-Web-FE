@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 
 const AuthContext = React.createContext({
   isAuthenticated: false,
-  token: "",
-  id: "",
-  name: "",
-  avatarUrl: "",
+  user: {
+    token: "",
+    id: "",
+    name: "",
+    avatarUrl: ""
+  },
   teachingClass: [],
   enrolledClass: [],
   handleEnrolled: (data) => {},
@@ -13,13 +15,20 @@ const AuthContext = React.createContext({
   onLogout: () => {},
   onLogin: (data) => {},
 });
-
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [teachingClass, setTeachingClass] = useState([]);
   const [enrolledClass, setEnrolledClass] = useState([]);
 
+  const changeStringToList=(string)=>{
+    let strArr=string.split(',');
+    let results=[];
+    for (let str in strArr){
+      results.push(strArr[str]);
+    }
+    return results;
+  }
   useEffect(() => {
     const storedUserLoggedInInformation =
       localStorage.getItem("isAuthenticated");
@@ -38,19 +47,20 @@ export const AuthContextProvider = (props) => {
         name: storedUserNameInformation,
         avatarUrl: storedUserAvatarInformation,
       };
-      // console.log(currentUser);
       setUser(currentUser);
-      const EnrolledClass=localStorage.getItem("enrolled");
-      const TeachingClass=localStorage.getItem("teaching");
-      if(!EnrolledClass){
+      const EnrolledClass = localStorage.getItem("enrolled");
+      const TeachingClass = localStorage.getItem("teaching");
+      if (!EnrolledClass) {
         setEnrolledClass([]);
       } else {
-        setEnrolledClass(EnrolledClass);
+        const enrolled=changeStringToList(EnrolledClass);
+        setEnrolledClass(enrolled);
       }
-      if (TeachingClass.length === 0) {
+      if (!TeachingClass) {
         setTeachingClass([]);
       } else {
-        setTeachingClass(TeachingClass);
+        const teaching=changeStringToList(TeachingClass);
+        setTeachingClass(teaching);
       }
     }
   }, []);
@@ -96,7 +106,6 @@ export const AuthContextProvider = (props) => {
       name: data.name,
       avatarUrl: data.avatarUrl,
     };
-    console.log(user);
     setUser(currentUser);
   };
 

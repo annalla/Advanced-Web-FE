@@ -13,15 +13,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { SRC_IMG } from "../../constants/const";
-
+import { PATH } from "../../constants/paths";
+import { Fragment } from "react";
 
 export function ClassItem({ data, isOwner }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const srcCoverImg =
     data.coverImageUrl === "" ? SRC_IMG.COVER_IMAGE_CLASS : data.coverImageUrl;
-    const srcAvatarImg =
-    data.ownerAvatar=== "" ? SRC_IMG.DEFAULT_AVATAR : data.ownerAvatar;
+  const srcAvatarImg =
+    data.ownerAvatar === "" ? SRC_IMG.DEFAULT_AVATAR : data.ownerAvatar;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,6 +30,7 @@ export function ClassItem({ data, isOwner }) {
     setAnchorEl(null);
   };
   return (
+    <Fragment>
     <Card sx={{ width: 300, height: 280 }}>
       <CardMedia
         component="img"
@@ -39,7 +41,7 @@ export function ClassItem({ data, isOwner }) {
       <CardContent>
         {!isOwner ? (
           <span className="teacherBlockImg">
-            <img src={srcAvatarImg} alt="owner"/>
+            <img src={srcAvatarImg} alt="owner" />
           </span>
         ) : (
           ""
@@ -47,7 +49,7 @@ export function ClassItem({ data, isOwner }) {
         <span className="contentInformation">
           <span>
             <span className="classNameBlock">
-              <span className="className">{data.name}</span>
+                <span className="className"><a href={PATH.DETAIL_CLASS+data.id}>{data.name}</a></span>
               <span>
                 <IconButton
                   id="fade-button"
@@ -94,5 +96,6 @@ export function ClassItem({ data, isOwner }) {
         </span>
       </CardContent>
     </Card>
+    </Fragment>
   );
 }

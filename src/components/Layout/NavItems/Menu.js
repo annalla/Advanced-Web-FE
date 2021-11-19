@@ -1,9 +1,9 @@
-import React ,{useContext}from "react";
+import React, { useContext } from "react";
 import { Fragment } from "react";
 import "../Nav.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import "./menu.css"
+import "./menu.css";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,7 +15,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import ClassIcon from '@mui/icons-material/Class';
+import ClassIcon from "@mui/icons-material/Class";
 import AuthContext from "../../../store/store";
 
 const theme = createTheme({
@@ -27,7 +27,7 @@ const theme = createTheme({
   },
 });
 function MenuDrawer() {
-  const AuthCtx=useContext(AuthContext);
+  const AuthCtx = useContext(AuthContext);
   //setMenu on Left
   const anchorr = "left";
   const [state, setState] = React.useState({
@@ -36,8 +36,8 @@ function MenuDrawer() {
     bottom: false,
     right: false,
   });
-  const [teachingList,setTeachingList]=React.useState([])
-  const [enrolledList,setEnrolledList]=React.useState([])
+  const [teachingList, setTeachingList] = React.useState([]);
+  const [enrolledList, setEnrolledList] = React.useState([]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -46,18 +46,18 @@ function MenuDrawer() {
     ) {
       return;
     }
-    const enrolled=AuthCtx.enrolledClass;
-    const teaching=AuthCtx.teachingClass;
-    if(enrolled!==null){
+    const enrolled = AuthCtx.enrolledClass;
+    const teaching = AuthCtx.teachingClass;
+    if (enrolled) {
       setEnrolledList(enrolled);
     }
-    if(teaching!==null){
+    if (teaching) {
       setTeachingList(teaching);
     }
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor,enrolledList,teachingList) => (
+  const list = (anchor, enrolledList, teachingList) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
@@ -92,9 +92,11 @@ function MenuDrawer() {
           <ListItem button key={text}>
             <ListItemIcon>
               {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-              <ClassIcon/> 
+              <ClassIcon />
             </ListItemIcon>
-            <ListItemText><span>{text}</span></ListItemText>
+            <ListItemText>
+              <span>{text}</span>
+            </ListItemText>
           </ListItem>
         ))}
       </List>
@@ -104,7 +106,7 @@ function MenuDrawer() {
         {enrolledList.map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
-            <ClassIcon/> 
+              <ClassIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -124,7 +126,7 @@ function MenuDrawer() {
         open={state[anchorr]}
         onClose={toggleDrawer(anchorr, false)}
       >
-        {list(anchorr,enrolledList,teachingList)}
+        {list(anchorr, enrolledList, teachingList)}
       </Drawer>
     </Fragment>
   );

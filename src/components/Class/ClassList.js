@@ -81,4 +81,4 @@ const ClassList = ({ isTeaching }) => {
     );
   }
 };
-export { ClassList }; //new
+export { ClassList }; 
