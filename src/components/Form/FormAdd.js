@@ -74,7 +74,6 @@ function FormAdd({ onclose }) {
             }
         })
             .then((response) => {
-                console.log(response.data)
                 if (response.data.status === 1) {
                     history.push(PATH.ADD_CLASS);
                     onclose();
