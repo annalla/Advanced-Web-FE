@@ -8,7 +8,6 @@ import { Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
