@@ -6,6 +6,7 @@ import RegisterRoutes from "./RegisterRoutes"
 import AddClassRoutes from "./AddClassRoutes"
 import DetailClassRoutes from "./DetailClassRoutes"
 import ManageProfileRoutes from "./ManageProfile"
+import DetailClassPeopleRoutes from './DetailClassPeopleRoutes'
 
 export default function Routes() {
   return (

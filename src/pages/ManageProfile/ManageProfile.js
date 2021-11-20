@@ -30,7 +30,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './ManageProfile.css'
 import Loading from '../../components/Loading/Loading'
 import { STATUS } from './ManageProfile.const'
-import { Nav2 } from "../../components/Layout/Nav2";
+import { Nav } from "../../components/Layout/Nav";
 import { getUserApi, updateUserApi } from "../../apis/user.api";
 import { convertUnixToHTMLTime } from "../../utils/convertUnixtoHTMLTime"
 
@@ -177,7 +177,7 @@ export default function ManageProfile() {
     };
 
     return (<div>
-        <Nav2 />
+        <Nav />
 
         <ThemeProvider theme={theme}>
             {isLoading && <Loading></Loading>}
