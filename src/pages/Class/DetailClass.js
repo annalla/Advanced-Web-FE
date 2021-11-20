@@ -3,25 +3,28 @@ import { useContext } from "react";
 import { Nav2 } from "../../components/Layout/Nav2";
 import { Fragment } from "react";
 import { Stream } from "../../components/DetailedClass/Stream";
-import { SRC_IMG,VALUE_TAB } from "../../constants/const";
-import {PATH} from "../../constants/paths";
+import { SRC_IMG, VALUE_TAB } from "../../constants/const";
+import { PATH } from "../../constants/paths";
 import { useLocation } from "react-router";
 import { getClassById } from "../../apis/class.api";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
+import { useMemo } from "react";
 
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
   const [classroom, setClassroom] = React.useState({});
+  // const [classroom2, setClassroom2] = React.useState({});
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
-
+  const classInformation=useMemo(() => classroom,[classroom])
   // const myFunction = (data) => {
   //   setClassroom(data);
   // };
   useEffect(() => {
-    const id = splitPath(location.pathname,PATH.DETAIL_CLASS);
-    getClassById(AuthCtx.user.token, id)
+    console.log("here")
+    const id = splitPath(location.pathname, PATH.DETAIL_CLASS);
+    const result = getClassById(AuthCtx.user.token, id)
       .then((res) => {
         if (res.status === 1) {
           const information = {
@@ -46,14 +49,16 @@ const DetailClass = () => {
       .catch((err) => {
         setError(err);
       });
+      console.log("dm");
+      console.log(result);
   }, []);
   if (error) {
     return <div>Error: {error.message}</div>;
   } else {
     return (
       <Fragment>
-        <Nav2 data={classroom} valueTab={VALUE_TAB.TAB_STREAM}/>
-        <Stream data={classroom} />
+        <Nav2 data={classInformation} valueTab={VALUE_TAB.TAB_STREAM} />
+        <Stream data={classInformation} />
       </Fragment>
     );
   }

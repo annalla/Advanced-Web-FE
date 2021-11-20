@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { loginApi } from "../../apis/user.api";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/paths";
 import AuthContext from "../../store/store";
 
@@ -27,7 +27,7 @@ const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const history = useHistory();
+  const history = useNavigate();
   const handleUsername = (event) => {
     setUsername(event.target.value);
   };
@@ -44,7 +44,7 @@ const Login = (props) => {
       .then((res) => {
         if (res.status === 1) {
           AuthCtx.onLogin(res.data);
-          history.push(PATH.HOME);
+          history(PATH.HOME);
         } else {
           //switch Error here
           setError(res.code.replace("_"," "));

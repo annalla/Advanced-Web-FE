@@ -11,9 +11,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
-import { useHistory } from 'react-router';
 import { PATH } from '../../constants/paths';
 import { createClassApi } from '../../apis/class.api';
+import { useNavigate } from 'react-router';
 
 const theme = createTheme({
     palette: {
@@ -25,7 +25,7 @@ const theme = createTheme({
 
 function FormAdd({ onclose }) {
 
-    const history = useHistory();
+    const history = useNavigate();
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadFile, setUploadFile] = useState();
@@ -71,7 +71,7 @@ function FormAdd({ onclose }) {
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
-                    history.push(PATH.ADD_CLASS);
+                    history(PATH.ADD_CLASS);
                     onclose();
                 }
                 else if (response.status === 0) {

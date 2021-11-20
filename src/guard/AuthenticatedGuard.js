@@ -1,12 +1,13 @@
 import React, { useContext } from "react"
 import {
     Route,
-    Redirect,
 } from "react-router-dom"
 import AuthContext from "../store/store"
 import {PATH} from "../constants/paths"
+import { useNavigate } from "react-router"
 
 function AuthenticatedGuard(props) {
+    const navigate=useNavigate();
     const { component: Component, ...rest } = props
     const AuthCtx = useContext(AuthContext)
     const isAuthenticated = AuthCtx.isAuthenticated
@@ -15,7 +16,8 @@ function AuthenticatedGuard(props) {
             {...rest}
             render={props => {
                 if (!isAuthenticated && !localStorage.getItem("token")) {
-                    return <Redirect to={PATH.LOGIN} />
+                    navigate(PATH.LOGIN)
+                    // return <Redirect to={PATH.LOGIN} />
                 }
                 return <Component {...props} />
             }}

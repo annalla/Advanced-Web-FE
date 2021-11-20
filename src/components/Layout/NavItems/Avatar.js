@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { SRC_IMG } from "../../../constants/const";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths'
 
 const theme = createTheme({
@@ -27,7 +27,7 @@ const theme = createTheme({
 });
 
 function AvatarIcon() {
-  const history = useHistory();
+  const history = useNavigate();
   const AuthCtx = useContext(AuthContext);
   const srcAvatar =
     AuthCtx.user.avatarUrl === ""
@@ -41,9 +41,9 @@ function AvatarIcon() {
   };
   const handleLogout = () => {
     AuthCtx.onLogout();
-    history.push(PATH.LOGIN)
+    history(PATH.LOGIN)
   };
-  const handleManageProfile = () => history.push(PATH.MANAGE_PROFILE);
+  const handleManageProfile = () => history(PATH.MANAGE_PROFILE);
   const handleCloseAccountMenu = () => {
     setAnchorElAccountMenu(null);
   };

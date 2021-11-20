@@ -5,21 +5,16 @@ import "./index.css";
 // import { ClassList } from './components/Class/ClassList';
 // import { Nav } from './components/Layout/Nav';
 // import { Header } from './components/Form/Add';
-import Routes from "./routes/routes";
 import { AuthContextProvider } from "./store/store";
-
+import { BrowserRouter } from "react-router-dom";
+import {AppApp} from"./AppApp";
 function App() {
   return (
-    //   <Router>
-    //   <Nav/>
-    //   <Switch>
-    //     <Route exact path="/" component={ClassList} />
-    //     <Route exact path="/add" component={Header} />
-    //   </Switch>
-    // </Router>
-    <AuthContextProvider>
-      <Routes />
-    </AuthContextProvider>
+    <BrowserRouter>
+      <AuthContextProvider>
+        <AppApp></AppApp>
+      </AuthContextProvider>
+    </BrowserRouter>
   );
 }
 export { App };

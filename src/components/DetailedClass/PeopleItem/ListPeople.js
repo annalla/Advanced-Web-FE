@@ -79,7 +79,7 @@ export default function ListPeople({ data, isTeacher }) {
             <ListItem
               alignItems="flex-start"
               sx={{ width: "100%", height: "10vh" }}
-              key={item.name}
+              key={item.email}
             >
               <ListItemAvatar align="center">
                 <Avatar
@@ -95,7 +95,6 @@ export default function ListPeople({ data, isTeacher }) {
                   noWrap={true}
                   sx={{
                     fontSize: "18px",
-                    // width: "50%",
                     fontWeight: "400",
                     pt: "8px",
                     pl: "20px",
@@ -104,6 +103,7 @@ export default function ListPeople({ data, isTeacher }) {
                   {item.name}
                 </Typography>
               </ListItemText>
+              {!isTeacher?
               <ListItemText sx={{ width: "40%" }}>
                 <Typography
                   align="right"
@@ -112,13 +112,14 @@ export default function ListPeople({ data, isTeacher }) {
                     fontSize: "18px",
                     pt: "8px",
                     pr: "20px",
-                    // width: "40%",
                     fontWeight: "400",
                   }}
                 >
                   {item.code}
                 </Typography>
               </ListItemText>
+              :""
+              }
             </ListItem>
           </Fragment>
         ))}
