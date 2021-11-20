@@ -1,11 +1,10 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import {PATH} from '../../constants/paths'
+import { useNavigate } from 'react-router';
 const Header = () => {
+    const navigate=useNavigate()
     return (
-        <div>
-            <Redirect to={PATH.HOME}/>
-        </div>
+        navigate(PATH.HOME)
     )
 };
 export { Header } ;

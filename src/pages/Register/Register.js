@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 // import { loginApi } from "../../apis/user.api"
 // import { Title } from "./Register.styles"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { PATH } from "../../constants/paths"
 
 import * as React from 'react';
@@ -50,7 +50,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-    const history = useHistory();
+    const history = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [birthday, setBirthday] = useState("1900-01-01")
@@ -76,7 +76,7 @@ export default function SignUp() {
         setNotify("");
         setOpen(false);
         if (status === STATUS.SUCCESSFULLY) {
-            history.push(PATH.HOME);
+            history(PATH.HOME);
         }
     };
 
