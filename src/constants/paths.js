@@ -4,5 +4,6 @@ export const PATH = {
   LOGIN: "/login",
   REGISTER: "/register",
   ADD_CLASS:"/addClass",
-  DETAIL_CLASS:"/detailedClass/:code"
+  DETAIL_CLASS:"/detailedClass/:code",
+  MANAGE_PROFILE: '/user'
 }

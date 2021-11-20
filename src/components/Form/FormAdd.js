@@ -13,7 +13,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 import Loading from '../Loading/Loading';
 import { useHistory } from 'react-router';
-import { PATH } from '../../constants/paths'
+import { PATH } from '../../constants/paths';
+import { createClassApi } from '../../apis/class.api';
 
 const theme = createTheme({
     palette: {
@@ -69,19 +70,13 @@ function FormAdd({ onclose }) {
 
         dataArray.append("coverImage", uploadFile);
 
-        axios.post("http://localhost:8002/api/v1/classroom/", dataArray, {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`,
-                "Content-Type": "multipart/form-data",
-            }
-        })
-            .then((response) => {
-                if (response.data.status === 1) {
+        createClassApi(dataArray).then((response) => {
+                if (response.status === 1) {
                     history.push(PATH.ADD_CLASS);
                     onclose();
                 }
-                else if (response.data.status === 0) {
-                    setErrorResponse(response.data.code);
+                else if (response.status === 0) {
+                    setErrorResponse(response.code);
                 }
             })
         setIsLoading(false);
