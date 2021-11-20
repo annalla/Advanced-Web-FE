@@ -5,7 +5,8 @@ import HomeRoutes from "./HomeRoutes"
 import RegisterRoutes from "./RegisterRoutes"
 import AddClassRoutes from "./AddClassRoutes"
 import DetailClassRoutes from "./DetailClassRoutes"
-import DetailClassPeopleRoutes from "./DetailClassPeopleRoutes"
+import ManageProfileRoutes from "./ManageProfile"
+
 export default function Routes() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ export default function Routes() {
       <RegisterRoutes />
       <DetailClassRoutes/>
       <DetailClassPeopleRoutes/>
+      <ManageProfileRoutes />
     </BrowserRouter>
   )
 }

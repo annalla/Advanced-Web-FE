@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { SRC_IMG } from "../../../constants/const";
+import { useHistory } from "react-router";
+import { PATH } from '../../../constants/paths'
 
 const theme = createTheme({
   palette: {
@@ -25,6 +27,7 @@ const theme = createTheme({
 });
 
 function AvatarIcon() {
+  const history = useHistory();
   const AuthCtx = useContext(AuthContext);
   const srcAvatar =
     AuthCtx.user.avatarUrl === ""
@@ -38,7 +41,9 @@ function AvatarIcon() {
   };
   const handleLogout = () => {
     AuthCtx.onLogout();
+    history.push(PATH.LOGIN)
   };
+  const handleManageProfile = () => history.push(PATH.MANAGE_PROFILE);
   const handleCloseAccountMenu = () => {
     setAnchorElAccountMenu(null);
   };
@@ -88,7 +93,7 @@ function AvatarIcon() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
+          <MenuItem onClick={handleManageProfile}>
             <ListItemText color="secondary">
             <Typography align='center'>
                 {AuthCtx.user.name}
@@ -96,11 +101,11 @@ function AvatarIcon() {
             </ListItemText>
           </MenuItem>
           <Divider />
-
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" color="secondary" />
             </ListItemIcon>
+            
             <ListItemText color="secondary">Settings</ListItemText>
           </MenuItem>
           <MenuItem onClick={handleLogout}>

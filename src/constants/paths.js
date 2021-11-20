@@ -6,4 +6,6 @@ export const PATH = {
   ADD_CLASS:"/addClass",
   DETAIL_CLASS:"/detailedClass/code/",
   DETAIL_CLASS_PEOPLE:"/detailedClass/people/code/",
+  DETAIL_CLASS:"/detailedClass/:code",
+  MANAGE_PROFILE: '/user'
 }
