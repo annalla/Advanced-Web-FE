@@ -15,12 +15,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { SRC_IMG } from "../../../constants/const";
+
 const theme = createTheme({
   palette: {
     secondary: {
-      // This is green.A700 as hex.
       main: "#2D2C2C",
-      // main: '#ffffff',
     },
   },
 });

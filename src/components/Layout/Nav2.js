@@ -6,9 +6,7 @@ import { AvatarIcon } from "./NavItems/Avatar";
 import { MenuDrawer } from "./NavItems/Menu";
 import { TabsItem } from "./NavItems/TabsItem";
 
-function Nav2() {
-  //set button Add
-  //   const [isOpenAdd, setIsOpenAdd] = useState(false);
+function Nav2({data,valueTab}) {
   return (
     <Fragment>
       <header>
@@ -18,13 +16,13 @@ function Nav2() {
               <span>
                 <MenuDrawer />
               </span>
-              <div className="blockName">
-                <span>Cla sdjf skejf sjfd esjr sdjifh sdfh dsfhssName</span>
-                <span className="code">MMH</span>
+              <div className="blockName2">
+                {data.name}
+                {/* <span className="code">{data.code}</span> */}
               </div>
             </div>
             <div className="tabs">
-              <TabsItem value={0} />
+              <TabsItem value={valueTab} />
             </div>
           </div>
 
@@ -39,7 +37,6 @@ function Nav2() {
       </header>
       <Divider />
       <div className="divide"></div>
-      {/* {isOpenAdd ? <FormAdd onclose={() => setIsOpenAdd(false)} /> : ""} */}
     </Fragment>
   );
 }

@@ -1,20 +1,17 @@
 import React, { lazy, Suspense } from "react";
-// import { Switch } from "react-router-dom";
 import AuthenticatedGuard from "../guard/AuthenticatedGuard";
 import { PATH } from "../constants/paths";
 import Loading from "../components/Loading/Loading";
 import { BrowserRouter as  Switch } from "react-router-dom";
-// import DetailClass from "../pages/Class/DetailClass";
-const DetailClass = lazy(() => import("../pages/Class/DetailClass"));
-export default function DetailClassRoutes() {
+const DetailClassPeople = lazy(() => import("../pages/Class/DetailClassPeople.js"));
+export default function DetailClassPeopleRoutes() {
   return (
     <Switch>
       <AuthenticatedGuard
-        // exact
-        path={PATH.DETAIL_CLASS}
+        path={PATH.DETAIL_CLASS_PEOPLE}
         component={() => (
           <Suspense fallback={<Loading />}>
-            <DetailClass />
+            <DetailClassPeople />
           </Suspense>
         )}
       />

@@ -58,23 +58,14 @@
   height: 0.17rem;
   background-color: #2d2c2c;
 }
-.logo2 .blockName {
+.logo2 .blockName2 {
   display: flex;
-  flex-direction: column;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   width: 350px;
   height: 52px;
+  line-height: 40px;
   overflow: hidden;
   white-space: nowrap;
-}
-.logo2 .blockName .code {
-  /* display: block; */
-  font-size: 0.8rem;
-  opacity: 70%;
-  max-width: 400px;
   text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0;
-  margin: 0;
 }
+

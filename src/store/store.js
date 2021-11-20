@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+
 const AuthContext = React.createContext({
   isAuthenticated: false,
   user: {
     token: "",
     id: "",
     name: "",
-    avatarUrl: ""
+    avatarUrl: "",
   },
   teachingClass: [],
   enrolledClass: [],
@@ -21,14 +22,14 @@ export const AuthContextProvider = (props) => {
   const [teachingClass, setTeachingClass] = useState([]);
   const [enrolledClass, setEnrolledClass] = useState([]);
 
-  const changeStringToList=(string)=>{
-    let strArr=string.split(',');
-    let results=[];
-    for (let str in strArr){
+  const changeStringToList = (string) => {
+    let strArr = string.split(",");
+    let results = [];
+    for (let str in strArr) {
       results.push(strArr[str]);
     }
     return results;
-  }
+  };
   useEffect(() => {
     const storedUserLoggedInInformation =
       localStorage.getItem("isAuthenticated");
@@ -53,13 +54,13 @@ export const AuthContextProvider = (props) => {
       if (!EnrolledClass) {
         setEnrolledClass([]);
       } else {
-        const enrolled=changeStringToList(EnrolledClass);
+        const enrolled = changeStringToList(EnrolledClass);
         setEnrolledClass(enrolled);
       }
       if (!TeachingClass) {
         setTeachingClass([]);
       } else {
-        const teaching=changeStringToList(TeachingClass);
+        const teaching = changeStringToList(TeachingClass);
         setTeachingClass(teaching);
       }
     }

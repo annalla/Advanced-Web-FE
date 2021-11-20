@@ -17,32 +17,20 @@ const DetailClass = () => {
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
 
-  // const myFunction = (data) => {
-  //   setClassroom(data);
-  // };
   useEffect(() => {
-    const id = splitPath(location.pathname,PATH.DETAIL_CLASS_PEOPLE);
+    const id = splitPath(location.pathname, PATH.DETAIL_CLASS_PEOPLE);
     getClassById(AuthCtx.user.token, id)
       .then((res) => {
         if (res.status === 1) {
-          // res.data.coverImageUrl =
-          //   res.data.coverImageUrl === ""
-          //     ? SRC_IMG.COVER_IMAGE_CLASS
-          //     : res.data.coverImageUrl;
-          const data={
-            name:res.data.name,
-            id:res.data.id,
-            inviteStudentCode:res.data.inviteStudentCode,
-            inviteTeacherCode:res.data.inviteTeacherCode,
-            studentArray:res.data.studentArray,
-            teacherArray:res.data.teacherArray
-          }
+          const data = {
+            name: res.data.name,
+            id: res.data.id,
+            inviteStudentCode: res.data.inviteStudentCode,
+            inviteTeacherCode: res.data.inviteTeacherCode,
+            studentArray: res.data.studentArray,
+            teacherArray: res.data.teacherArray,
+          };
           setClassroom(data);
-          console.log(data);
-          // myFunction(information);
-          // return () => {
-          //   setClassroom({});
-          // };
         } else {
           setError(res);
         }
@@ -57,7 +45,7 @@ const DetailClass = () => {
     return (
       <Fragment>
         <Nav2 data={classroom} valueTab={VALUE_TAB.TAB_PEOPLE} />
-        <People data={classroom}/>
+        <People data={classroom} />
       </Fragment>
     );
   }

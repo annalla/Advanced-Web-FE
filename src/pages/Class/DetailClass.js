@@ -3,10 +3,12 @@ import { useContext } from "react";
 import { Nav2 } from "../../components/Layout/Nav2";
 import { Fragment } from "react";
 import { Stream } from "../../components/DetailedClass/Stream";
-import { SRC_IMG } from "../../constants/const";
+import { SRC_IMG,VALUE_TAB } from "../../constants/const";
+import {PATH} from "../../constants/paths";
 import { useLocation } from "react-router";
 import { getClassById } from "../../apis/class.api";
 import AuthContext from "../../store/store";
+import { splitPath } from "../../utils/util";
 
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
@@ -18,9 +20,7 @@ const DetailClass = () => {
   //   setClassroom(data);
   // };
   useEffect(() => {
-    let str = location.pathname.split("/:code");
-    str = str[str.length - 1].split("?");
-    const id = str[0];
+    const id = splitPath(location.pathname,PATH.DETAIL_CLASS);
     getClassById(AuthCtx.user.token, id)
       .then((res) => {
         if (res.status === 1) {
@@ -52,7 +52,7 @@ const DetailClass = () => {
   } else {
     return (
       <Fragment>
-        <Nav2 />
+        <Nav2 data={classroom} valueTab={VALUE_TAB.TAB_STREAM}/>
         <Stream data={classroom} />
       </Fragment>
     );
