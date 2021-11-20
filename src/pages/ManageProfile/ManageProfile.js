@@ -111,6 +111,11 @@ export default function ManageProfile() {
         setUploadFile(e.target.files[0])
     }
 
+    const handleRemoveFile = () => {
+        setPreview(undefined);
+        setUploadFile("");
+    }
+
     useEffect(() => {
         if (!uploadFile) {
             setPreview(undefined)
@@ -317,6 +322,7 @@ export default function ManageProfile() {
                                 <Grid item xs={12} sm={6}>
                                     <InputLabel id="avatarInputLabel">Avatar</InputLabel>
                                     <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={handleUploadFile} /> </Button>
+                                    {(uploadFile || preview) && <Button variant="contained" component="label" id="removeFile" onClick={handleRemoveFile}> Remove File </Button>}
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     {(uploadFile || preview) && <img id="previewImage" src={preview} width="300px" />}
