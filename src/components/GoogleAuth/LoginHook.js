@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useGoogleLogin } from 'react-google-login';
 import GoogleButton from 'react-google-button'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+
 import { PATH } from '../../constants/paths';
-import { useRef } from 'react';
+import AuthContext from '../../store/store';
 
 // refresh token
 import { refreshTokenSetup } from '../../utils/refreshToken';
@@ -13,14 +14,9 @@ const clientId =
     '318817895430-f6ck70ste47549mqi49f5m6vnum18sup.apps.googleusercontent.com';
 
 function LoginHooks() {
-    const isMountedRef = useRef(null);
     const history = useNavigate();
+    const AuthCtx = useContext(AuthContext);
     const onSuccess = (res) => {
-        isMountedRef.current = true;
-        console.log('Login Success: currentUser:', res.profileObj);
-        //alert(
-        //    `Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
-        //);
         refreshTokenSetup(res);
         const googleId = res.googleId;
         const email = res.profileObj.email;
@@ -29,18 +25,18 @@ function LoginHooks() {
         axios.post("http://localhost:8002/api/v1/account/google-login", { googleId })
             .then((response) => {
                 if (response.data.code === "GOOGLE_ID_NOT_EXISTED") {
-                    if(isMountedRef.current){
                     history(PATH.REGISTER, { state: { googleId: googleId, email: email, givenName: givenName, familyName: familyName } })
-                    }
+                }
+                else if (response.data.code === "SUCCESS"){
+                    AuthCtx.onLogin(response.data.data);
+                    history(PATH.HOME)
                 }
             })
-        isMountedRef.current = false;
     };
 
     const onFailure = (res) => {
-        console.log('Login failed: res:', res);
         alert(
-            `Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
+            `Failed to login. 😢 Please try again. `
         );
     };
 

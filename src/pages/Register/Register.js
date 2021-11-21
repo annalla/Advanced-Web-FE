@@ -68,6 +68,7 @@ export default function SignUp() {
     const AuthCtx = useContext(AuthContext);
     const location = useLocation();
     const googleLoginMode = location.state;
+    const [authData, setAuthData] = useState({});
 
     const [open, setOpen] = useState(true);
 
@@ -77,6 +78,7 @@ export default function SignUp() {
         setOpen(false);
         if (status === STATUS.SUCCESSFULLY) {
             history(PATH.HOME);
+            AuthCtx.onLogin(authData);
         }
     };
 
@@ -135,23 +137,21 @@ export default function SignUp() {
         // free memory when ever this component is unmounted
         return () => {
             URL.revokeObjectURL(objectUrl);
-            setPreview();
-            setUploadFile();
         }
     }, [uploadFile])
 
-    //useEffect(() => {
-    //    if (googleLoginMode) {
-    //        setEmail(googleLoginMode.email)
-    //        setFirstName(googleLoginMode.givenName)
-    //        setLastName(googleLoginMode.familyName)
-    //    }
-    //    return () => {
-    //        setEmail();
-    //        setFirstName();
-    //        setLastName();
-    //    }
-    //}, [])
+    useEffect(() => {
+        if (googleLoginMode) {
+            setEmail(googleLoginMode.email)
+            setFirstName(googleLoginMode.givenName)
+            setLastName(googleLoginMode.familyName)
+        }
+        return () => {
+            setEmail();
+            setFirstName();
+            setLastName();
+        }
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -169,8 +169,7 @@ export default function SignUp() {
         dataArray.append("gender", gender);
         dataArray.append("identityCard", identityCard);
         dataArray.append("avatar", uploadFile);
-        googleLoginMode && googleLoginMode.googleId && dataArray.append("googleId", googleLoginMode.googleId);
-
+        if(googleLoginMode && googleLoginMode.googleId) dataArray.append("googleId", googleLoginMode.googleId);
 
         axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
             headers: {
@@ -181,8 +180,7 @@ export default function SignUp() {
                 if (response.data.status === 1) {
                     setOpen(true);
                     setStatus(STATUS.SUCCESSFULLY);
-                    console.log(response.data.data);
-                    AuthCtx.onLogin(response.data.data);
+                    setAuthData(response.data.data);
                     setNotify('Register successfully!');
                 }
                 else if (response.data.status === 0) {
