@@ -68,6 +68,7 @@ export const AuthContextProvider = (props) => {
 
   const logoutHandler = () => {
     setIsAuthenticated(false);
+    localStorage.setItem("isAuthenticated","0");
     localStorage.removeItem("id");
     localStorage.removeItem("name");
     localStorage.removeItem("avatarUrl");

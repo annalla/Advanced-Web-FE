@@ -22,7 +22,6 @@ const DetailClass = () => {
   //   setClassroom(data);
   // };
   useEffect(() => {
-    console.log("here")
     const id = splitPath(location.pathname, PATH.DETAIL_CLASS);
     const result = getClassById(AuthCtx.user.token, id)
       .then((res) => {
@@ -38,6 +37,7 @@ const DetailClass = () => {
                 : res.data.coverImageUrl,
           };
           setClassroom(information);
+          console.log(res.data);
           // myFunction(information);
           // return () => {
           //   setClassroom({});
@@ -49,8 +49,6 @@ const DetailClass = () => {
       .catch((err) => {
         setError(err);
       });
-      console.log("dm");
-      console.log(result);
   }, []);
   if (error) {
     return <div>Error: {error.message}</div>;

@@ -165,16 +165,25 @@ function TabsItem({ value }) {
   const location = useLocation();
   const [path, setPath] = useState(null);
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     const id = splitPath(location.pathname, "/:code");
-    console.log(id);
-    if (newValue === VALUE_TAB.TAB_PEOPLE) {
-      setPath(PATH.DETAIL_CLASS_PEOPLE + id);
+    let pathNew = "";
+    switch (newValue) {
+      case VALUE_TAB.TAB_PEOPLE:
+        pathNew = PATH.DETAIL_CLASS_PEOPLE + id;
+        break;
+      case VALUE_TAB.TAB_STREAM:
+        pathNew = PATH.DETAIL_CLASS + id;
+        break;
+      default:
+        break;
     }
-    else if (newValue === VALUE_TAB.TAB_STREAM) {
-      setPath(PATH.DETAIL_CLASS + id);
-    }
-    navigate(path);
+    // if (newValue === VALUE_TAB.TAB_PEOPLE) {
+    //   setPath(PATH.DETAIL_CLASS_PEOPLE + id);
+    //   pathNew = PATH.DETAIL_CLASS_PEOPLE + id;
+    // } else if (newValue === VALUE_TAB.TAB_STREAM) {
+    //   pathNew = PATH.DETAIL_CLASS + id;
+    // }
+    navigate(pathNew);
   };
   return (
     <ThemeProvider theme={theme}>

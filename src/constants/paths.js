@@ -1,5 +1,4 @@
 export const PATH = {
-  PUBLIC:"/dsfhk",
   HOME: "/",
   PRODUCT: "/product",
   LOGIN: "/login",

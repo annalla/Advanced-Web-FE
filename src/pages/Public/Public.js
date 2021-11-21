@@ -1,10 +1,9 @@
 import React from 'react';
-import {PATH} from '../../constants/paths'
-import { useNavigate } from 'react-router';
+
+import Login from "../Login/Login"
 const Public = () => {
-    const navigate=useNavigate()
     return (
-        navigate(PATH.LOGIN)
+        <Login/>
     )
 };
 export { Public } ;
