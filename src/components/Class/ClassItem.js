@@ -15,8 +15,12 @@ import Fade from "@mui/material/Fade";
 import { SRC_IMG } from "../../constants/const";
 import { PATH } from "../../constants/paths";
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
+// import CardActions from "@mui/material/CardActions";
+// import { CardActionArea } from "@mui/material";
 
 export function ClassItem({ data, isOwner }) {
+  // const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const srcCoverImg =
@@ -29,73 +33,80 @@ export function ClassItem({ data, isOwner }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  // const handleClickDetailClass = (id) => {
+  //   console.log("dm");
+  //   navigate(PATH.DETAIL_CLASS + id);
+  // };
   return (
     <Fragment>
-    <Card sx={{ width: 300, height: 280 }}>
-      <CardMedia
-        component="img"
-        height="110"
-        image={srcCoverImg}
-        alt="coverImage"
-      />
-      <CardContent>
-        {!isOwner ? (
-          <span className="teacherBlockImg">
-            <img src={srcAvatarImg} alt="owner" />
-          </span>
-        ) : (
-          ""
-        )}
-        <span className="contentInformation">
-          <span>
-            <span className="classNameBlock">
+      <Card sx={{ width: 300, height: 280 }}>
+        <CardMedia
+          component="img"
+          height="110"
+          image={srcCoverImg}
+          alt="coverImage"
+        />
+        <CardContent>
+          {!isOwner ? (
+            <span className="teacherBlockImg">
+              <img src={srcAvatarImg} alt="owner" />
+            </span>
+          ) : (
+            ""
+          )}
+          <span className="contentInformation">
+            <span>
+              <span className="classNameBlock">
+                {/* <CardActionArea onClick={handleClickDetailClass(data.id)}>
+                  <span className="className">{data.name}</span>
+                </CardActionArea> */}
                 <span className="className"><a href={PATH.DETAIL_CLASS+data.id}>{data.name}</a></span>
-              <span>
-                <IconButton
-                  id="fade-button"
-                  aria-controls="fade-menu"
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
-                >
-                  <MoreVertIcon color="action" sx={{ fontSize: 20 }} />
-                </IconButton>
-                <Menu
-                  id="fade-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "fade-button",
-                  }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}
-                >
-                  <MenuItem onClick={handleClose}>Edit</MenuItem>
-                </Menu>
+                <span>
+                  <IconButton
+                    id="fade-button"
+                    aria-controls="fade-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <MoreVertIcon color="action" sx={{ fontSize: 20 }} />
+                  </IconButton>
+                  <Menu
+                    id="fade-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "fade-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Fade}
+                  >
+                    <MenuItem onClick={handleClose}>Edit</MenuItem>
+                  </Menu>
+                </span>
+              </span>
+              <Typography variant="body2" color="text.secondary">
+                <span className="classTopic"> {data.description}</span>
+              </Typography>
+              {!isOwner ? (
+                <Typography>
+                  <span className="teacherBlock">
+                    <span>{data.ownerName}</span>
+                  </span>
+                </Typography>
+              ) : (
+                ""
+              )}
+            </span>
+            <span className="blockEnd">
+              <Divider sx={{ color: "primary.main" }} />
+              <span className="work">
+                <AssignmentIndOutlinedIcon sx={{ fontSize: 30 }} color="" />
               </span>
             </span>
-            <Typography variant="body2" color="text.secondary">
-              <span className="classTopic"> {data.description}</span>
-            </Typography>
-            {!isOwner ? (
-              <Typography>
-                <span className="teacherBlock">
-                  <span>{data.ownerName}</span>
-                </span>
-              </Typography>
-            ) : (
-              ""
-            )}
           </span>
-          <span className="blockEnd">
-            <Divider sx={{ color: "primary.main" }} />
-            <span className="work">
-              <AssignmentIndOutlinedIcon sx={{ fontSize: 30 }} color="" />
-            </span>
-          </span>
-        </span>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
     </Fragment>
   );
 }

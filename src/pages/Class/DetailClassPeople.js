@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useContext } from "react";
 import { Nav2 } from "../../components/Layout/Nav2";
 import { Fragment } from "react";
@@ -9,44 +9,60 @@ import AuthContext from "../../store/store";
 import { PATH } from "../../constants/paths";
 import { splitPath } from "../../utils/util";
 import { People } from "../../components/DetailedClass/People";
-import { useMemo } from "react";
 
+var dict = {};
 const DetailClassPeople = () => {
   const [error, setError] = React.useState(null);
   const location = useLocation();
   const Id = splitPath(location.pathname, PATH.DETAIL_CLASS_PEOPLE);
-  const [classroom, setClassroom] = React.useState({ id: Id });
+  const [classroom, setClassroom] = React.useState({});
   const AuthCtx = useContext(AuthContext);
-  const classInformation = useMemo(() => classroom, [classroom]);
+  const token = AuthCtx.user.token;
+  const information = useMemo(() => {
+    if (Id in dict) {
+      return dict[Id];
+    }
+    return classroom;
+  }, [Id, classroom]);
   useEffect(() => {
-    getClassById(AuthCtx.user.token, Id)
-      .then((res) => {
-        if (res.status === 1) {
-          const data = {
-            name: res.data.name,
-            id: res.data.id,
-            inviteStudentCode: res.data.inviteStudentCode,
-            inviteTeacherCode: res.data.inviteTeacherCode,
-            studentArray: res.data.studentArray,
-            teacherArray: res.data.teacherArray,
-          };
-          setClassroom(data);
-          console.log(res.data);
-        } else {
-          setError(res);
-        }
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  }, []);
+    if (Id in dict) {
+    } else {
+      getClassById(token, Id)
+        .then((res) => {
+          if (res.status === 1) {
+            const data = {
+              name: res.data.name,
+              id: res.data.id,
+              inviteStudentCode: res.data.inviteStudentCode,
+              inviteTeacherCode: res.data.inviteTeacherCode,
+              studentArray: res.data.studentArray,
+              teacherArray: res.data.teacherArray,
+            };
+            setClassroom(data);
+            dict[Id] = data;
+            // if (Id in dict) {
+            //   console.log("existed")
+            // } else {
+            //   dict[Id] = data;
+            //   console.log("nottontai")
+            // }
+            console.log(res.data);
+          } else {
+            setError(res);
+          }
+        })
+        .catch((err) => {
+          setError(err);
+        });
+    }
+  }, [Id,token]);
   if (error) {
     return <div>Error: {error.message}</div>;
   } else {
     return (
       <Fragment>
-        <Nav2 data={classInformation} valueTab={VALUE_TAB.TAB_PEOPLE} />
-        <People data={classInformation} />
+        <Nav2 data={information} valueTab={VALUE_TAB.TAB_PEOPLE} />
+        <People data={information} />
       </Fragment>
     );
   }
