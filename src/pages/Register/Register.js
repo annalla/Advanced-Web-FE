@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-// import { loginApi } from "../../apis/user.api"
-// import { Title } from "./Register.styles"
 import { useNavigate } from "react-router-dom"
 import { PATH } from "../../constants/paths"
 
@@ -28,7 +25,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import AuthContext from "../../store/store"
+import AuthContext from "../../store/store";
+import { useLocation } from 'react-router-dom';
 
 import './Register.css'
 import Loading from '../../components/Loading/Loading'
@@ -67,7 +65,9 @@ export default function SignUp() {
     const [preview, setPreview] = useState()
     const [status, setStatus] = useState(STATUS.START);
     const [notify, setNotify] = useState("");
-    const AuthCtx = useContext(AuthContext)
+    const AuthCtx = useContext(AuthContext);
+    const location = useLocation();
+    const googleLoginMode = location.state;
 
     const [open, setOpen] = useState(true);
 
@@ -133,10 +133,27 @@ export default function SignUp() {
         setPreview(objectUrl)
 
         // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
+        return () => {
+            URL.revokeObjectURL(objectUrl);
+            setPreview();
+            setUploadFile();
+        }
     }, [uploadFile])
 
-    const handleSubmit = async (event) => {
+    //useEffect(() => {
+    //    if (googleLoginMode) {
+    //        setEmail(googleLoginMode.email)
+    //        setFirstName(googleLoginMode.givenName)
+    //        setLastName(googleLoginMode.familyName)
+    //    }
+    //    return () => {
+    //        setEmail();
+    //        setFirstName();
+    //        setLastName();
+    //    }
+    //}, [])
+
+    const handleSubmit = (event) => {
         event.preventDefault();
         setIsLoading(true);
         const dataArray = new FormData();
@@ -152,9 +169,10 @@ export default function SignUp() {
         dataArray.append("gender", gender);
         dataArray.append("identityCard", identityCard);
         dataArray.append("avatar", uploadFile);
+        googleLoginMode && googleLoginMode.googleId && dataArray.append("googleId", googleLoginMode.googleId);
 
 
-        await axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
+        axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -163,6 +181,7 @@ export default function SignUp() {
                 if (response.data.status === 1) {
                     setOpen(true);
                     setStatus(STATUS.SUCCESSFULLY);
+                    console.log(response.data.data);
                     AuthCtx.onLogin(response.data.data);
                     setNotify('Register successfully!');
                 }
@@ -280,6 +299,7 @@ export default function SignUp() {
                                         autoComplete="email"
                                         value={email}
                                         onChange={handleEmail}
+                                        disabled={googleLoginMode ? true : false}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -355,7 +375,7 @@ export default function SignUp() {
                                     <Button variant="contained" component="label" > Upload File <input type="file" hidden onChange={handleUploadFile} /> </Button>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    {uploadFile && <img id="previewImage" src={preview} width="300px" />}
+                                    {uploadFile && <img id="previewImage" alt="previewImage" src={preview} width="300px" />}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField

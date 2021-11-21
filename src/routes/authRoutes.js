@@ -25,8 +25,6 @@ const AuthRoutes = () => {
         <Route exact path={PATH.HOME} element={<Home />} />
         <Route exact path={PATH.DETAIL_CLASS} element={<DetailClass />} />
         <Route exact path={PATH.MANAGE_PROFILE} element={<ManageProfile />} />
-        <Route exact path={PATH.LOGIN} element={<Login />} />
-        <Route exact path={PATH.REGISTER} element={<Register />} />
       </Routes>
     </Suspense>
   );
