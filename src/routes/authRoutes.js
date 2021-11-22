@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Loading from "../components/Loading/Loading";
 import {PATH} from "../constants/paths"
-import { Header } from "../components/Form/Add";
+
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
 
@@ -20,7 +20,6 @@ const AuthRoutes = () => {
   return (
     <Suspense fallback={<Loading/>}>
       <Routes>
-        <Route exact path={PATH.ADD_CLASS} element={<Header />} />
         <Route exact path={PATH.DETAIL_CLASS_PEOPLE} element={<DetailClassPeople />} />
         <Route exact path={PATH.HOME} element={<Home />} />
         <Route exact path={PATH.DETAIL_CLASS} element={<DetailClass />} />

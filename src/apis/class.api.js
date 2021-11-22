@@ -26,19 +26,34 @@ export const getClassById = async (token, id) => {
         .catch(function (error) {
             return error;
         });
+    }
+
+export const sendInvitaionByMail = async (requestInvite) => {
+  
+  return axios
+    .post(CLASSROOM_API + "invite", requestInvite, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+    });
+
 };
 
-
 export const createClassApi = async (classroom) => {
-    const headers = {
-        "Authorization": `Bearer ${localStorage.getItem('token')}`,
-        "Content-Type": "multipart/form-data",
-    }
-    return axios.post(CLASSROOM_API, classroom, { headers })
-        .then(function (response) {
-            return response.data
-        })
-        .catch(function (error) {
-            return error
-        })
-}
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type": "multipart/form-data",
+  };
+  return axios
+    .post(CLASSROOM_API, classroom, { headers })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};

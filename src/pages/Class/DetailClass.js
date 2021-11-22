@@ -15,7 +15,6 @@ const DetailClass = () => {
   const [classroom, setClassroom] = React.useState({});
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
-  const classInformation = useMemo(() => classroom, [classroom]);
   const id = splitPath(location.pathname, PATH.DETAIL_CLASS);
   const token = AuthCtx.user.token;
   const information = useMemo(() => {

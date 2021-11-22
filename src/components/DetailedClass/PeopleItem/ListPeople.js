@@ -63,17 +63,21 @@ export default function ListPeople({ data, isTeacher }) {
             <AddTeacherIcon
               code={
                 DOMAIN.LOCAL +
-                PATH.JOIN_CLASS_BY_TEACHER + +"?" +
+                PATH.JOIN_CLASS_BY_TEACHER +
                 data.inviteTeacherCode
               }
+              id={data.id}
+              isTeacher={isTeacher}
             />
           ) : (
             <AddStudentIcon
               code={
                 DOMAIN.LOCAL +
-                PATH.JOIN_CLASS_BY_STUDENT + "?" +
+                PATH.JOIN_CLASS_BY_STUDENT +
                 data.inviteStudentCode
               }
+              id={data.id}
+              isTeacher={isTeacher}
             />
           )}
         </Typography>

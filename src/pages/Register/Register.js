@@ -153,7 +153,7 @@ export default function SignUp() {
             setFirstName();
             setLastName();
         }
-    }, [])
+    }, [googleLoginMode])
 
     const handleSubmit = (event) => {
         event.preventDefault();
