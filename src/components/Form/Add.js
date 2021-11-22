@@ -1,10 +1,9 @@
-import React from 'react';
-import {PATH} from '../../constants/paths'
+import { PATH } from '../../constants/paths'
 import { useNavigate } from 'react-router';
 const Header = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     return (
         navigate(PATH.HOME)
     )
 };
-export { Header } ;
+export { Header };

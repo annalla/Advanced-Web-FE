@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
 const AuthContext = React.createContext({
   isAuthenticated: false,
   user: {
