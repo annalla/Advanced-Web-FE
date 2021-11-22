@@ -33,12 +33,13 @@ export default function AddTeacherIcon({ code,id,isTeacher }) {
   const constrolEmails = (email) => {
     setEmails(email);
   };
-  const handleInviteTeacher = () => {
-    const result = sendMail(id, emails,isTeacher);
-    if (result === 1) {
+  const handleInviteTeacher = async () => {
+    const result = await sendMail(id, emails,isTeacher);
+    console.log(result);
+    if (result === true) {
       handleClose();
     } else {
-      setMessage(result.message);
+      setMessage("Something wrong here");
     }
   };
   return (

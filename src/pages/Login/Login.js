@@ -17,10 +17,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FiLock } from "react-icons/fi";
+import { FE_URL } from "../../constants/const";
 
 import LoginHooks from "../../components/GoogleAuth/LoginHook";
 
 import "./Login.css";
+import { splitDomain } from "../../utils/util";
 
 const Login = (props) => {
   const AuthCtx = useContext(AuthContext);
@@ -38,17 +40,26 @@ const Login = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const payload = { username, password };
     loginApi(payload)
       .then((res) => {
         if (res.status === 1) {
-            console.log(res.data);
           AuthCtx.onLogin(res.data);
-          history(PATH.HOME);
+          let locate = localStorage.getItem("history");
+
+          if (
+            locate !== undefined &&
+            locate.includes(PATH.JOIN_CLASS_INVITATION)
+          ) {
+            localStorage.removeItem("history");
+            locate = splitDomain(locate, FE_URL);
+            history(locate);
+          } else {
+            history(PATH.HOME);
+          }
         } else {
           //switch Error here
-          setError(res.code.replace("_"," "));
+          setError(res.code.replace("_", " "));
         }
       })
       .catch((err) => {

@@ -2,10 +2,9 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Loading from "../components/Loading/Loading";
 import {PATH} from "../constants/paths"
-
+import { HandleJoin } from "../pages/Invite/HandleJoin";
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
-
 
 const DetailClassPeople = lazy(() =>
   import("../pages/Class/DetailClassPeople.js")
@@ -26,6 +25,7 @@ const AuthRoutes = () => {
         <Route exact path={PATH.MANAGE_PROFILE} element={<ManageProfile />} />
         <Route exact path={PATH.LOGIN} element={<Login />} />
         <Route exact path={PATH.REGISTER} element={<Register />} />
+        <Route exact path={PATH.JOIN_CLASS} element={<HandleJoin/>} />
       </Routes>
     </Suspense>
   );

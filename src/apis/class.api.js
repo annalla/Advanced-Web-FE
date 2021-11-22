@@ -29,9 +29,21 @@ export const getClassById = async (token, id) => {
     }
 
 export const sendInvitaionByMail = async (requestInvite) => {
-  
   return axios
     .post(CLASSROOM_API + "invite", requestInvite, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+    });
+
+};
+export const joinClassByCode = async (code) => {
+  return axios
+    .get(CLASSROOM_API + "join?code="+code, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
     .then(function (response) {

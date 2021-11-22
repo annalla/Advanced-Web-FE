@@ -1,4 +1,4 @@
-import { API_URL } from "./const"
+import { FE_URL } from "./const"
 export const PATH = {
   HOME: "/",
   PRODUCT: "/product",
@@ -7,8 +7,8 @@ export const PATH = {
   DETAIL_CLASS:"/detailedClass/:code",
   DETAIL_CLASS_PEOPLE:"/detailedClass/people/:code",
   MANAGE_PROFILE: '/user',
-  JOIN_CLASS_BY_TEACHER:'/join?code=',
-  JOIN_CLASS_BY_STUDENT:'/join?code=',
+  JOIN_CLASS:'/join',
+  JOIN_CLASS_INVITATION:'/join?code=',
 }
 
-export const DOMAIN = API_URL;
+export const DOMAIN = FE_URL;

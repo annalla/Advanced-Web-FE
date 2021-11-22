@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 export const JWT_TYPE = {
   JWT_TYPE_TEACHER: "1",
@@ -15,5 +15,12 @@ export const VALUE_TAB = {
   TAB_GRADE: 3,
 };
 
-export const API_URL = 
-    ((process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PRODUCTION_API : process.env.REACT_APP_DEVELOPMENT_API)
+export const API_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_API
+    : process.env.REACT_APP_DEVELOPMENT_API;
+    
+export const FE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_FE
+    : process.env.REACT_APP_DEVELOPMENT_FE;

@@ -7,9 +7,7 @@ function AppApp() {
   const authCtx = useContext(AuthContext);
   return (
     <Fragment>
-      {/* {authCtx.isAuthenticated ? <AuthRoutes /> : <UnauthRoutes />} */}
       {authCtx.isAuthenticated ? <AuthRoutes /> : <UnauthRoutes />}
-
     </Fragment>
   );
 }

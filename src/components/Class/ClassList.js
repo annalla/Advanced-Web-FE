@@ -7,10 +7,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 import { JWT_TYPE } from "../../constants/const";
-import { useLocation } from "react-router";
 
 const ClassList = ({ isTeaching }) => {
-  // const [path,setPath]=useState();
   const isTeachingConst=isTeaching;
   const AuthCtx = useContext(AuthContext);
   const [error, setError] = useState(null);

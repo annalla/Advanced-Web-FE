@@ -12,7 +12,8 @@ import Box from "@mui/material/Box";
 import AddTeacherIcon from "./AddTeacherIcon";
 import { SRC_IMG } from "../../../constants/const";
 import AddStudentIcon from "./AddStudentIcon";
-import { PATH, DOMAIN } from "../../../constants/paths";
+import { PATH} from "../../../constants/paths";
+import { FE_URL } from "../../../constants/const";
 
 const theme = createTheme({
   palette: {
@@ -62,8 +63,8 @@ export default function ListPeople({ data, isTeacher }) {
           {isTeacher ? (
             <AddTeacherIcon
               code={
-                DOMAIN.LOCAL +
-                PATH.JOIN_CLASS_BY_TEACHER +
+                FE_URL +
+                PATH.JOIN_CLASS_INVITATION +
                 data.inviteTeacherCode
               }
               id={data.id}
@@ -72,8 +73,8 @@ export default function ListPeople({ data, isTeacher }) {
           ) : (
             <AddStudentIcon
               code={
-                DOMAIN.LOCAL +
-                PATH.JOIN_CLASS_BY_STUDENT +
+                FE_URL +
+                PATH.JOIN_CLASS_INVITATION +
                 data.inviteStudentCode
               }
               id={data.id}

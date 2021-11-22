@@ -37,7 +37,7 @@ export default function AddStudentIcon({ code,id,isTeacher }) {
   };
   //modal
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {setOpen(true)};
   const handleClose = () => setOpen(false);
   const [emails, setEmails] = React.useState([]);
   const [message, setMessage] = React.useState(null);
@@ -45,12 +45,12 @@ export default function AddStudentIcon({ code,id,isTeacher }) {
   const constrolEmails = (email) => {
     setEmails(email);
   };
-  const handleInviteStudent = () => {
-    const result = sendMail(id, emails,isTeacher);
+  const handleInviteStudent = async() => {
+    const result = await sendMail(id, emails,isTeacher);
     if (result === 1) {
       handleClose();
     } else {
-      setMessage(result.message);
+      setMessage("Something wrong here");
     }
   };
   return (
