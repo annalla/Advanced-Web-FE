@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router';
 import { PATH } from '../../constants/paths';
 import AuthContext from '../../store/store';
 
-import { API_URL } from '../../constants/const';
+import { API_URL, GOOGLE_LOGIN_CLIENT_ID } from '../../constants/const';
 
 // refresh token
 // import { refreshTokenSetup } from '../../utils/refreshToken';
 
-const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
+const clientId = GOOGLE_LOGIN_CLIENT_ID
 
 function LoginHooks() {
     const history = useNavigate();

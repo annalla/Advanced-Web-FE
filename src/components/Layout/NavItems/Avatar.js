@@ -18,8 +18,9 @@ import { SRC_IMG } from "../../../constants/const";
 import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths';
 import { useGoogleLogout } from 'react-google-login';
+import { GOOGLE_LOGIN_CLIENT_ID } from "../../../constants/const";
 
-const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
+const clientId = GOOGLE_LOGIN_CLIENT_ID
 const theme = createTheme({
     palette: {
         secondary: {

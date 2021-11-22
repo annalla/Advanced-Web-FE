@@ -17,3 +17,6 @@ export const VALUE_TAB = {
 
 export const API_URL = 
     ((process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PRODUCTION_API : process.env.REACT_APP_DEVELOPMENT_API)
+
+export const GOOGLE_LOGIN_CLIENT_ID = 
+    ((process.env.NODE_ENV === 'production') ? process.env.REACT_APP_PRODUCTION_GOOGLE_LOGIN_CLIENT_ID : process.env.REACT_APP_DEVELOPMENT_GOOGLE_LOGIN_CLIENT_ID)
