@@ -10,8 +10,7 @@ import AuthContext from '../../store/store';
 // refresh token
 import { refreshTokenSetup } from '../../utils/refreshToken';
 
-const clientId =
-    '318817895430-t92c9mfh6hg2qe4io5196o55jvr82k47.apps.googleusercontent.com';
+const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
 
 function LoginHooks() {
     const history = useNavigate();

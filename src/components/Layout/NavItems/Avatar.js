@@ -20,8 +20,7 @@ import { PATH } from '../../../constants/paths';
 import LogoutHook from '../../GoogleAuth/LogoutHook';
 import { useGoogleLogout } from 'react-google-login';
 
-const clientId =
-    '318817895430-t92c9mfh6hg2qe4io5196o55jvr82k47.apps.googleusercontent.com';
+const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
 const theme = createTheme({
     palette: {
         secondary: {
