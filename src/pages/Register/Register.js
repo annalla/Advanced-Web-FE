@@ -32,6 +32,8 @@ import './Register.css'
 import Loading from '../../components/Loading/Loading'
 import { STATUS } from './Register.const'
 
+import { API_URL } from "../../constants/const";
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -171,7 +173,7 @@ export default function SignUp() {
         dataArray.append("avatar", uploadFile);
         if(googleLoginMode && googleLoginMode.googleId) dataArray.append("googleId", googleLoginMode.googleId);
 
-        axios.post("http://localhost:8002/api/v1/account/register", dataArray, {
+        axios.post(API_URL + "account/register", dataArray, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }

@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import { SRC_IMG } from "../../../constants/const";
 import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths';
-import LogoutHook from '../../GoogleAuth/LogoutHook';
 import { useGoogleLogout } from 'react-google-login';
 
 const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
@@ -32,6 +31,7 @@ const theme = createTheme({
 function AvatarIcon() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
+    console.log(AuthCtx.user)
     const srcAvatar =
         AuthCtx.user.avatarUrl === ""
             ? SRC_IMG.DEFAULT_AVATAR
@@ -58,8 +58,8 @@ function AvatarIcon() {
     });
     const handleLogout = () => {
         signOut();
+        AuthCtx.onLogout()
         history(PATH.LOGIN)
-        AuthCtx.onLogout();
     };
     const handleManageProfile = () => history(PATH.MANAGE_PROFILE);
     const handleCloseAccountMenu = () => {

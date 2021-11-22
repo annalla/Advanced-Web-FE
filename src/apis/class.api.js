@@ -1,10 +1,11 @@
 import axios from "axios";
+import { API_URL } from "../constants/const";
 
+const CLASSROOM_API = API_URL + "classroom/"
 export const getClassListApi = async (token, jwt_type) => {
     return axios
         .get(
-            "http://localhost:8002/api/v1/classroom/get-list-classroom-by-jwt-type?jwt_type=" +
-            jwt_type,
+            CLASSROOM_API + "get-list-classroom-by-jwt-type?jwt_type=" + jwt_type,
             { headers: { Authorization: `Bearer ${token}` } }
         )
         .then(function (response) {
@@ -16,7 +17,7 @@ export const getClassListApi = async (token, jwt_type) => {
 };
 export const getClassById = async (token, id) => {
     return axios
-        .get("http://localhost:8002/api/v1/classroom/" + id, {
+        .get(CLASSROOM_API + id, {
             headers: { Authorization: `Bearer ${token}` },
         })
         .then(function (response) {
@@ -33,7 +34,7 @@ export const createClassApi = async (classroom) => {
         "Authorization": `Bearer ${localStorage.getItem('token')}`,
         "Content-Type": "multipart/form-data",
     }
-    return axios.post('http://localhost:8002/api/v1/classroom/', classroom, { headers })
+    return axios.post(CLASSROOM_API, classroom, { headers })
         .then(function (response) {
             return response.data
         })

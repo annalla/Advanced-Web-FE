@@ -105,7 +105,7 @@ export const AuthContextProvider = (props) => {
       token: data.token,
       id: data.id,
       name: data.name,
-      avatarUrl: data.avatarUrl,
+      avatarUrl: data.avatarUrl
     };
     setUser(currentUser);
   };

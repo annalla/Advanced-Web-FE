@@ -43,6 +43,7 @@ const Login = (props) => {
     loginApi(payload)
       .then((res) => {
         if (res.status === 1) {
+            console.log(res.data);
           AuthCtx.onLogin(res.data);
           history(PATH.HOME);
         } else {

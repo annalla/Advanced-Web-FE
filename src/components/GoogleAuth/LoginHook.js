@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router';
 import { PATH } from '../../constants/paths';
 import AuthContext from '../../store/store';
 
+import { API_URL } from '../../constants/const';
+
 // refresh token
-import { refreshTokenSetup } from '../../utils/refreshToken';
+// import { refreshTokenSetup } from '../../utils/refreshToken';
 
 const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID
 
@@ -16,12 +18,12 @@ function LoginHooks() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
     const onSuccess = (res) => {
-        refreshTokenSetup(res);
+        // refreshTokenSetup(res);
         const googleId = res.googleId;
         const email = res.profileObj.email;
         const givenName = res.profileObj.givenName;
         const familyName = res.profileObj.familyName;
-        axios.post("http://localhost:8002/api/v1/account/google-login", { googleId })
+        axios.post(API_URL + "account/google-login", { googleId })
             .then((response) => {
                 if (response.data.code === "GOOGLE_ID_NOT_EXISTED") {
                     history(PATH.REGISTER, { state: { googleId: googleId, email: email, givenName: givenName, familyName: familyName } })
