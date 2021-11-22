@@ -23,26 +23,22 @@ const style = {
   justifyContent: "space-between",
 };
 //code la linkTeacher
-export default function AddTeacherIcon({ code }) {
+export default function AddTeacherIcon({ code,id,isTeacher }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [emails, setEmails] = React.useState([]);
   const [message, setMessage] = React.useState(null);
-  const [isSuccess, setIsSuccess] = React.useState(false);
   
   const constrolEmails = (email) => {
     setEmails(email);
   };
   const handleInviteTeacher = () => {
-    console.log(emails);
-    const result = sendMail(code, emails);
+    const result = sendMail(id, emails,isTeacher);
     if (result === 1) {
       handleClose();
-      setIsSuccess(true);
     } else {
       setMessage(result.message);
-      // setMessage("false");
     }
   };
   return (

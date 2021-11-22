@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import { SRC_IMG } from "../../../constants/const";
 import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths';
-import LogoutHook from '../../GoogleAuth/LogoutHook';
 import { useGoogleLogout } from 'react-google-login';
 
 const clientId =

@@ -7,25 +7,30 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 import { JWT_TYPE } from "../../constants/const";
+import { useLocation } from "react-router";
 
 const ClassList = ({ isTeaching }) => {
+  // const [path,setPath]=useState();
+  const isTeachingConst=isTeaching;
   const AuthCtx = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [isHeader, setIsHeader] = useState(false);
   const headerList = isTeaching ? "Teaching" : "Enrolled";
+  const jwt_type = isTeaching
+  ? JWT_TYPE.JWT_TYPE_TEACHER
+  : JWT_TYPE.JWT_TYPE_STUDENT;
+  const token=AuthCtx.user.token;
+
   useEffect(() => {
-    const jwt_type = isTeaching
-      ? JWT_TYPE.JWT_TYPE_TEACHER
-      : JWT_TYPE.JWT_TYPE_STUDENT;
-    getClassListApi(AuthCtx.user.token, jwt_type)
+    getClassListApi(token, jwt_type)
       .then((res) => {
         if (res.status === 1) {
           setIsLoaded(true);
           setItems(res.data);
           if (res.data.length > 0) {
-            if (isTeaching) {
+            if (isTeachingConst) {
               AuthCtx.handleTeaching(res.data);
             } else {
               AuthCtx.handleEnrolled(res.data);
@@ -40,7 +45,7 @@ const ClassList = ({ isTeaching }) => {
       .catch((err) => {
         setIsLoaded(true);
       });
-  }, []);
+  }, [token,jwt_type,isTeachingConst]);
 
   if (error) {
     return <div>Error: {error.message}</div>;

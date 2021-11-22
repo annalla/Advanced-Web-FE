@@ -26,7 +26,6 @@ const theme = createTheme({
 function FormAdd({ onclose }) {
 
     const history = useNavigate();
-    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadFile, setUploadFile] = useState();
     const [preview, setPreview] = useState();
@@ -71,7 +70,8 @@ function FormAdd({ onclose }) {
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
-                    history(PATH.ADD_CLASS);
+                    console.log(response);
+                    // history(PATH.DETAIL_CLASS+"116");
                     onclose();
                 }
                 else if (response.status === 0) {
@@ -80,9 +80,6 @@ function FormAdd({ onclose }) {
             })
         setIsLoading(false);
     };
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
     const { ref, ...inputProps } = register("classname", {
         required: "Classname is required"
     });

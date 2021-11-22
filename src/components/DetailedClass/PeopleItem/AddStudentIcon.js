@@ -11,7 +11,6 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Snackbar from "@mui/material/Snackbar";
-import Slide from "@mui/material/Slide";
 
 const style = {
   position: "absolute",
@@ -28,10 +27,9 @@ const style = {
   justifyContent: "space-between",
 };
 
-export default function AddStudentIcon({ code }) {
+export default function AddStudentIcon({ code,id,isTeacher }) {
   //snackbar
   const [openSnackBar, setOpenSnackBar] = React.useState(false);
-  const [transition, setTransition] = React.useState(undefined);
 
 
   const handleCloseSnackBar = () => {
@@ -43,20 +41,16 @@ export default function AddStudentIcon({ code }) {
   const handleClose = () => setOpen(false);
   const [emails, setEmails] = React.useState([]);
   const [message, setMessage] = React.useState(null);
-  const [isSuccess, setIsSuccess] = React.useState(false);
 
   const constrolEmails = (email) => {
     setEmails(email);
   };
   const handleInviteStudent = () => {
-    console.log(emails);
-    const result = sendMail(code, emails);
+    const result = sendMail(id, emails,isTeacher);
     if (result === 1) {
       handleClose();
-      setIsSuccess(true);
     } else {
       setMessage(result.message);
-      // setMessage("false");
     }
   };
   return (
@@ -91,7 +85,6 @@ export default function AddStudentIcon({ code }) {
                 label="Copy link"
                 disabled
                 defaultValue={code}
-                // defaultValue="codedsjf"
                 variant="standard"
                 sx={{ width: "90%" }}
               />
