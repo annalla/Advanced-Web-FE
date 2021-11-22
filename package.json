@@ -29,9 +29,10 @@
   },
   "scripts": {
     "start": "set PORT=8001 && react-scripts start",
-    "build": "react-scripts build",
+    "build": "PORT=8001 && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-ubuntu": "PORT=8001 && react-scripts start"
   },
   "eslintConfig": {
     "extends": [
