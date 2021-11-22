@@ -6,6 +6,12 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { EmailAutocomplete } from "./EmailAutocomplete";
 import Button from "@mui/material/Button";
+import { sendMail } from "../../../utils/util_sendMail";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Snackbar from "@mui/material/Snackbar";
+import Slide from "@mui/material/Slide";
 
 const style = {
   position: "absolute",
@@ -16,16 +22,43 @@ const style = {
   bgcolor: "background.paper",
   border: "0px solid #000",
   p: 2,
-  minHeight: 300,
+  minHeight: 450,
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
 };
-export default function AddStudentIcon({code}) {
+
+export default function AddStudentIcon({ code }) {
+  //snackbar
+  const [openSnackBar, setOpenSnackBar] = React.useState(false);
+  const [transition, setTransition] = React.useState(undefined);
+
+
+  const handleCloseSnackBar = () => {
+    setOpenSnackBar(false);
+  };
+  //modal
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [emails, setEmails] = React.useState([]);
+  const [message, setMessage] = React.useState(null);
+  const [isSuccess, setIsSuccess] = React.useState(false);
 
+  const constrolEmails = (email) => {
+    setEmails(email);
+  };
+  const handleInviteStudent = () => {
+    console.log(emails);
+    const result = sendMail(code, emails);
+    if (result === 1) {
+      handleClose();
+      setIsSuccess(true);
+    } else {
+      setMessage(result.message);
+      // setMessage("false");
+    }
+  };
   return (
     <Fragment>
       <PersonAddAltIcon onClick={handleOpen} />
@@ -38,16 +71,49 @@ export default function AddStudentIcon({code}) {
         <Box sx={style}>
           <Box sx={{ width: "100%", maxHeight: "45vh" }}>
             <Typography
-              sx={{ mb: "15px" }}
+              sx={{ mb: "10px" }}
               id="modal-modal-title"
               variant="h6"
               component="h2"
             >
               Invite students
             </Typography>
-            <Box sx={{display:"flex",width:"100%"}}>
-
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                pb: "18px",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextField
+                id="standard-required"
+                label="Copy link"
+                disabled
+                defaultValue={code}
+                // defaultValue="codedsjf"
+                variant="standard"
+                sx={{ width: "90%" }}
+              />
+              <IconButton
+                aria-label="delete"
+                sx={{ width: "10%" }}
+                onClick={() => {
+                  navigator.clipboard.writeText(code);
+                  setOpenSnackBar(true);
+                }}
+              >
+                <ContentCopyIcon />
+              </IconButton>
             </Box>
+            {message ? (
+              <Typography sx={{ mb: "5px" }} fontSize="15px" color="error">
+                {message}
+              </Typography>
+            ) : (
+              ""
+            )}
+            <EmailAutocomplete control={constrolEmails} />
           </Box>
           <Box
             sx={{
@@ -56,12 +122,32 @@ export default function AddStudentIcon({code}) {
               width: "100%",
             }}
           >
+            {emails.length === 0 ? (
+              <Button variant="outlined" sx={{ ml: "10px" }} disabled>
+                Invite
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                sx={{ ml: "10px" }}
+                onClick={handleInviteStudent}
+              >
+                Invite
+              </Button>
+            )}
+
             <Button variant="outlined" color="error" onClick={handleClose}>
               Cancel
             </Button>
           </Box>
         </Box>
       </Modal>
+      <Snackbar
+        open={openSnackBar}
+        onClose={handleCloseSnackBar}
+        message="Copied Link"
+        key={'snackbar'}
+      />
     </Fragment>
   );
 }

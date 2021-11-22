@@ -40,13 +40,6 @@ const DetailClassPeople = () => {
             };
             setClassroom(data);
             dict[Id] = data;
-            // if (Id in dict) {
-            //   console.log("existed")
-            // } else {
-            //   dict[Id] = data;
-            //   console.log("nottontai")
-            // }
-            console.log(res.data);
           } else {
             setError(res);
           }

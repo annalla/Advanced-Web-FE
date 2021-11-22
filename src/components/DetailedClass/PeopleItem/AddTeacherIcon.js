@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { EmailAutocomplete } from "./EmailAutocomplete";
 import Button from "@mui/material/Button";
+import { sendMail } from "../../../utils/util_sendMail";
 
 const style = {
   position: "absolute",
@@ -22,18 +23,28 @@ const style = {
   justifyContent: "space-between",
 };
 //code la linkTeacher
-export default function AddPeopleIcon({code}) {
+export default function AddTeacherIcon({ code }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [emails, setEmails] = React.useState([]);
+  const [message, setMessage] = React.useState(null);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  
   const constrolEmails = (email) => {
     setEmails(email);
   };
-  const handleInviteTeacher=()=>{
-    console.log(emails)
-    //emailJs
-  }
+  const handleInviteTeacher = () => {
+    console.log(emails);
+    const result = sendMail(code, emails);
+    if (result === 1) {
+      handleClose();
+      setIsSuccess(true);
+    } else {
+      setMessage(result.message);
+      // setMessage("false");
+    }
+  };
   return (
     <Fragment>
       <PersonAddAltIcon onClick={handleOpen} />
@@ -46,13 +57,24 @@ export default function AddPeopleIcon({code}) {
         <Box sx={style}>
           <Box sx={{ width: "100%", maxHeight: "45vh" }}>
             <Typography
-              sx={{ mb: "15px" }}
+              sx={{ mb: "10px" }}
               id="modal-modal-title"
               variant="h6"
               component="h2"
             >
               Invite teachers
             </Typography>
+            {message ? (
+              <Typography
+                sx={{ mb: "5px" }}
+                fontSize="15px"
+                color='error'
+              >
+                {message}
+              </Typography>
+            ) : (
+              ""
+            )}
             <EmailAutocomplete control={constrolEmails} />
           </Box>
           <Box
@@ -67,7 +89,11 @@ export default function AddPeopleIcon({code}) {
                 Invite
               </Button>
             ) : (
-              <Button variant="outlined" sx={{ ml: "10px" }} onClick={handleInviteTeacher}>
+              <Button
+                variant="outlined"
+                sx={{ ml: "10px" }}
+                onClick={handleInviteTeacher}
+              >
                 Invite
               </Button>
             )}

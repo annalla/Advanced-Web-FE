@@ -9,9 +9,10 @@ import Typography from "@mui/material/Typography";
 import { Fragment } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import AddPeopleIcon from "./AddPeopleIcon";
+import AddTeacherIcon from "./AddTeacherIcon";
 import { SRC_IMG } from "../../../constants/const";
 import AddStudentIcon from "./AddStudentIcon";
+import { PATH, DOMAIN } from "../../../constants/paths";
 
 const theme = createTheme({
   palette: {
@@ -38,7 +39,7 @@ const theme = createTheme({
 export default function ListPeople({ data, isTeacher }) {
   const header = isTeacher ? "Teachers" : "Students";
   let array = isTeacher ? data.teacherArray : data.studentArray;
-  
+
   array = array ? array : [];
 
   return (
@@ -58,7 +59,23 @@ export default function ListPeople({ data, isTeacher }) {
         </ThemeProvider>
 
         <Typography align="right" sx={{ pt: "10px", pr: "10px", width: "30%" }}>
-          {isTeacher?<AddPeopleIcon code={data.inviteTeacherCode} />:<AddStudentIcon code={data.inviteStudentCode}/>}
+          {isTeacher ? (
+            <AddTeacherIcon
+              code={
+                DOMAIN.LOCAL +
+                PATH.JOIN_CLASS_BY_TEACHER + +"?" +
+                data.inviteTeacherCode
+              }
+            />
+          ) : (
+            <AddStudentIcon
+              code={
+                DOMAIN.LOCAL +
+                PATH.JOIN_CLASS_BY_STUDENT + "?" +
+                data.inviteStudentCode
+              }
+            />
+          )}
         </Typography>
       </Box>
       <Box
@@ -104,23 +121,24 @@ export default function ListPeople({ data, isTeacher }) {
                   {item.name}
                 </Typography>
               </ListItemText>
-              {!isTeacher?
-              <ListItemText sx={{ width: "40%" }}>
-                <Typography
-                  align="right"
-                  noWrap={true}
-                  sx={{
-                    fontSize: "18px",
-                    pt: "8px",
-                    pr: "20px",
-                    fontWeight: "400",
-                  }}
-                >
-                  {item.code}
-                </Typography>
-              </ListItemText>
-              :""
-              }
+              {!isTeacher ? (
+                <ListItemText sx={{ width: "40%" }}>
+                  <Typography
+                    align="right"
+                    noWrap={true}
+                    sx={{
+                      fontSize: "18px",
+                      pt: "8px",
+                      pr: "20px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    {item.code}
+                  </Typography>
+                </ListItemText>
+              ) : (
+                ""
+              )}
             </ListItem>
           </Fragment>
         ))}
