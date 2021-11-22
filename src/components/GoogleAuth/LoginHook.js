@@ -11,7 +11,7 @@ import AuthContext from '../../store/store';
 import { refreshTokenSetup } from '../../utils/refreshToken';
 
 const clientId =
-    '318817895430-f6ck70ste47549mqi49f5m6vnum18sup.apps.googleusercontent.com';
+    '318817895430-t92c9mfh6hg2qe4io5196o55jvr82k47.apps.googleusercontent.com';
 
 function LoginHooks() {
     const history = useNavigate();
@@ -35,6 +35,7 @@ function LoginHooks() {
     };
 
     const onFailure = (res) => {
+        console.log(res);
         alert(
             `Failed to login. 😢 Please try again. `
         );
