@@ -37,9 +37,6 @@ function LoginHooks() {
 
     const onFailure = (res) => {
         console.log(res);
-        alert(
-            `Failed to login. 😢 Please try again. `
-        );
     };
 
     const { signIn } = useGoogleLogin({
