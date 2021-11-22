@@ -16,24 +16,16 @@ const style = {
   bgcolor: "background.paper",
   border: "0px solid #000",
   p: 2,
-  minHeight: 400,
+  minHeight: 300,
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
 };
-//code la linkTeacher
-export default function AddPeopleIcon({code}) {
+export default function AddStudentIcon({code}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [emails, setEmails] = React.useState([]);
-  const constrolEmails = (email) => {
-    setEmails(email);
-  };
-  const handleInviteTeacher=()=>{
-    console.log(emails)
-    //emailJs
-  }
+
   return (
     <Fragment>
       <PersonAddAltIcon onClick={handleOpen} />
@@ -51,9 +43,11 @@ export default function AddPeopleIcon({code}) {
               variant="h6"
               component="h2"
             >
-              Invite teachers
+              Invite students
             </Typography>
-            <EmailAutocomplete control={constrolEmails} />
+            <Box sx={{display:"flex",width:"100%"}}>
+
+            </Box>
           </Box>
           <Box
             sx={{
@@ -62,16 +56,6 @@ export default function AddPeopleIcon({code}) {
               width: "100%",
             }}
           >
-            {emails.length === 0 ? (
-              <Button variant="outlined" sx={{ ml: "10px" }} disabled>
-                Invite
-              </Button>
-            ) : (
-              <Button variant="outlined" sx={{ ml: "10px" }} onClick={handleInviteTeacher}>
-                Invite
-              </Button>
-            )}
-
             <Button variant="outlined" color="error" onClick={handleClose}>
               Cancel
             </Button>

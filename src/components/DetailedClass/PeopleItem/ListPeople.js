@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import AddPeopleIcon from "./AddPeopleIcon";
 import { SRC_IMG } from "../../../constants/const";
+import AddStudentIcon from "./AddStudentIcon";
 
 const theme = createTheme({
   palette: {
@@ -57,7 +58,7 @@ export default function ListPeople({ data, isTeacher }) {
         </ThemeProvider>
 
         <Typography align="right" sx={{ pt: "10px", pr: "10px", width: "30%" }}>
-          <AddPeopleIcon />
+          {isTeacher?<AddPeopleIcon code={data.inviteTeacherCode} />:<AddStudentIcon code={data.inviteStudentCode}/>}
         </Typography>
       </Box>
       <Box
