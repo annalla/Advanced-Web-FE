@@ -45,11 +45,6 @@ const DetailClass = () => {
             };
             setClassroom(information);
             dict[id] = information;
-            console.log(res.data);
-            // myFunction(information);
-            // return () => {
-            //   setClassroom({});
-            // };
           } else {
             setError(res);
           }
