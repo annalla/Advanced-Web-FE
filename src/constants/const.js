@@ -14,13 +14,16 @@ export const VALUE_TAB = {
   TAB_PEOPLE: 2,
   TAB_GRADE: 3,
 };
-
 export const API_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_PRODUCTION_API
     : process.env.REACT_APP_DEVELOPMENT_API;
-    
-export const FE_URL =
+
+export const GOOGLE_LOGIN_CLIENT_ID =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_GOOGLE_LOGIN_CLIENT_ID
+    : process.env.REACT_APP_DEVELOPMENT_GOOGLE_LOGIN_CLIENT_ID;
+    export const FE_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_PRODUCTION_FE
     : process.env.REACT_APP_DEVELOPMENT_FE;
