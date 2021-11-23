@@ -45,7 +45,8 @@ const Stream = ({ data }) => {
               )}
             </div>
             <div className="button">
-              <Button variant="outlined">CUSTOMIZE</Button>
+              {data.isCustom?<Button variant="outlined">CUSTOMIZE</Button>:""}
+              
             </div>
           </div>
         </Box>

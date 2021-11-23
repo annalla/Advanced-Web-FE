@@ -1,22 +1,21 @@
-import React,{ useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router";
-import {PATH} from "../../constants/paths"
+import { PATH } from "../../constants/paths";
+import AuthContext from "../../store/store";
+import {HandleJoin} from "./HandleJoin"
 
 function RedirectInvite() {
+  const authCtx = useContext(AuthContext);
+  const isAuth = authCtx.isAuthenticated;
   const navigate = useNavigate();
-  const location=useLocation().pathname;
-  const locate=window.location.href;
-  useEffect(()=>{
-      console.log(location);
+  const locate = window.location.href;
+  useEffect(() => {
+    if(!isAuth){
       console.log(locate);
-      localStorage.setItem("history",locate);
-      console.log(localStorage.getItem("history"))
+      localStorage.setItem("history", locate);
       navigate(PATH.LOGIN);
-  },[location,navigate])
-  return (
-    <div>
-    </div>
-  );
+    }
+  }, [navigate, isAuth, locate]);
+  return <HandleJoin/>;
 }
-export {RedirectInvite}
+export { RedirectInvite };

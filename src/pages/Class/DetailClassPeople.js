@@ -9,6 +9,7 @@ import AuthContext from "../../store/store";
 import { PATH } from "../../constants/paths";
 import { splitPath } from "../../utils/util";
 import { People } from "../../components/DetailedClass/People";
+import { JWT_TYPE } from "../../constants/const";
 
 var dict = {};
 const DetailClassPeople = () => {
@@ -37,6 +38,10 @@ const DetailClassPeople = () => {
               inviteTeacherCode: res.data.inviteTeacherCode,
               studentArray: res.data.studentArray,
               teacherArray: res.data.teacherArray,
+              isCustom:
+                res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
+                  ? true
+                  : false,
             };
             setClassroom(data);
             dict[Id] = data;

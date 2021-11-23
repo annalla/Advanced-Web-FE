@@ -70,8 +70,7 @@ function FormAdd({ onclose }) {
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
-                    console.log(response);
-                    // history(PATH.DETAIL_CLASS+"116");
+                    history(PATH.DETAIL_CLASS+response.data.id);
                     onclose();
                 }
                 else if (response.status === 0) {

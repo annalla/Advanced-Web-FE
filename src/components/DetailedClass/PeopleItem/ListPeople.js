@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import AddTeacherIcon from "./AddTeacherIcon";
 import { SRC_IMG } from "../../../constants/const";
 import AddStudentIcon from "./AddStudentIcon";
-import { PATH} from "../../../constants/paths";
+import { PATH } from "../../../constants/paths";
 import { FE_URL } from "../../../constants/const";
 
 const theme = createTheme({
@@ -37,12 +37,12 @@ const theme = createTheme({
   },
 });
 
-export default function ListPeople({ data, isTeacher }) {
+export default function ListPeople({ data, isTeacher, isCustom }) {
   const header = isTeacher ? "Teachers" : "Students";
   let array = isTeacher ? data.teacherArray : data.studentArray;
-
+  const isStudent = !isTeacher ? true : false;
   array = array ? array : [];
-
+  const isNotCustom = !isCustom ? true : false;
   return (
     <Fragment>
       <Box sx={{ display: "flex", bgcolor: "background.paper" }}>
@@ -60,26 +60,32 @@ export default function ListPeople({ data, isTeacher }) {
         </ThemeProvider>
 
         <Typography align="right" sx={{ pt: "10px", pr: "10px", width: "30%" }}>
-          {isTeacher ? (
+          {isTeacher && isCustom ? (
             <AddTeacherIcon
               code={
-                FE_URL +
-                PATH.JOIN_CLASS_INVITATION +
-                data.inviteTeacherCode
+                FE_URL + PATH.JOIN_CLASS_INVITATION + data.inviteTeacherCode
               }
               id={data.id}
               isTeacher={isTeacher}
             />
           ) : (
+            ""
+          )}
+          {isStudent && isCustom ? (
             <AddStudentIcon
               code={
-                FE_URL +
-                PATH.JOIN_CLASS_INVITATION +
-                data.inviteStudentCode
+                FE_URL + PATH.JOIN_CLASS_INVITATION + data.inviteStudentCode
               }
               id={data.id}
               isTeacher={isTeacher}
             />
+          ) : (
+            ""
+          )}
+          {isNotCustom && isStudent ? (
+            <Typography sx={{pr:"15px"}}>{array.length===0?"":array.length}</Typography>
+          ) : (
+            ""
           )}
         </Typography>
       </Box>
@@ -102,7 +108,7 @@ export default function ListPeople({ data, isTeacher }) {
             <ListItem
               alignItems="flex-start"
               sx={{ width: "100%", height: "10vh" }}
-              key={item.email}
+              key={item.username}
             >
               <ListItemAvatar align="center">
                 <Avatar

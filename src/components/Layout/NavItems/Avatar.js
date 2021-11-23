@@ -32,7 +32,6 @@ const theme = createTheme({
 function AvatarIcon() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
-    console.log(AuthCtx.user)
     const srcAvatar =
         AuthCtx.user.avatarUrl === ""
             ? SRC_IMG.DEFAULT_AVATAR

@@ -7,12 +7,14 @@ import "./index.css";
 // import { Header } from './components/Form/Add';
 import { AuthContextProvider } from "./store/store";
 import { BrowserRouter } from "react-router-dom";
-import {AppApp} from"./AppApp";
+import { AppApp } from "./AppApp";
 function App() {
   return (
     <BrowserRouter>
       <AuthContextProvider>
-        <AppApp></AppApp>
+        <React.StrictMode>
+          <AppApp></AppApp>
+        </React.StrictMode>
       </AuthContextProvider>
     </BrowserRouter>
   );

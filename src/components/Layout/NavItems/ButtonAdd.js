@@ -94,7 +94,7 @@ function ButtonAdd({ onOpen }) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={handleOpenAdd}>Add a new class</MenuItem>
-                <MenuItem onClick={handleClose}>Join a class</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Join a class</MenuItem> */}
             </Menu>
         </Fragment>
     );

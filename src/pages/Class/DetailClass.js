@@ -9,6 +9,7 @@ import { useLocation } from "react-router";
 import { getClassById } from "../../apis/class.api";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
+import { JWT_TYPE } from "../../constants/const";
 const dict = {};
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
@@ -32,11 +33,16 @@ const DetailClass = () => {
       getClassById(token, id)
         .then((res) => {
           if (res.status === 1) {
+            console.log(res.data);
             const information = {
               name: res.data.name,
               code: res.data.code,
               description: res.data.description,
               id: res.data.id,
+              isCustom:
+                res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
+                  ? true
+                  : false,
               coverImageUrl:
                 res.data.coverImageUrl === ""
                   ? SRC_IMG.COVER_IMAGE_CLASS

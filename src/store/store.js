@@ -10,6 +10,8 @@ const AuthContext = React.createContext({
   },
   teachingClass: [],
   enrolledClass: [],
+  idTeachingClass: [],
+  idEnrolledClass: [],
   handleEnrolled: (data) => {},
   handleTeaching: (data) => {},
   onLogout: () => {},
@@ -20,6 +22,8 @@ export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [teachingClass, setTeachingClass] = useState([]);
   const [enrolledClass, setEnrolledClass] = useState([]);
+  const [idTeachingClass, setIdTeachingClass] = useState([]);
+  const [idEnrolledClass, setIdEnrolledClass] = useState([]);
 
   const changeStringToList = (string) => {
     let strArr = string.split(",");
@@ -50,17 +54,25 @@ export const AuthContextProvider = (props) => {
       setUser(currentUser);
       const EnrolledClass = localStorage.getItem("enrolled");
       const TeachingClass = localStorage.getItem("teaching");
+      const IdEnrolledClass = localStorage.getItem("idEnrolled");
+      const IdTeachingClass = localStorage.getItem("idTeaching");
       if (!EnrolledClass) {
         setEnrolledClass([]);
+        setIdEnrolledClass([]);
       } else {
         const enrolled = changeStringToList(EnrolledClass);
         setEnrolledClass(enrolled);
+        const idEnrolled = changeStringToList(IdEnrolledClass);
+        setIdEnrolledClass(idEnrolled);
       }
       if (!TeachingClass) {
         setTeachingClass([]);
+        setIdTeachingClass([]);
       } else {
         const teaching = changeStringToList(TeachingClass);
         setTeachingClass(teaching);
+        const idTeaching = changeStringToList(IdTeachingClass);
+        setIdTeachingClass(idTeaching);
       }
     }
   }, []);
@@ -75,22 +87,32 @@ export const AuthContextProvider = (props) => {
     setUser(null);
     setTeachingClass([]);
     setEnrolledClass([]);
+    setIdTeachingClass([]);
+    setIdEnrolledClass([]);
   };
   const classListHandleTeaching = (data) => {
     var dataCustom = [];
+    var dataIdCustom=[];
     data.map((item) => {
+      dataIdCustom.push(item.id);
       return dataCustom.push(item.name);
     });
     localStorage.setItem("teaching", dataCustom);
     setTeachingClass(dataCustom);
+    localStorage.setItem("idTeaching", dataCustom);
+    setIdTeachingClass(dataIdCustom);
   };
   const classListHandleEnrolled = (data) => {
     var dataCustom = [];
+    var dataIdCustom=[]
     data.map((item) => {
+      dataIdCustom.push(item.id)
       return dataCustom.push(item.name);
     });
     localStorage.setItem("enrolled", dataCustom);
     setEnrolledClass(dataCustom);
+    localStorage.setItem("idEnrolled", dataIdCustom);
+    setIdEnrolledClass(dataIdCustom);
   };
   const loginHandler = (data) => {
     localStorage.setItem("isAuthenticated", "1");
@@ -100,6 +122,8 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("teaching", []);
     localStorage.setItem("enrolled", []);
+    localStorage.setItem("idTeaching", []);
+    localStorage.setItem("idEnrolled", []);
     setIsAuthenticated(true);
     const currentUser = {
       token: data.token,
@@ -117,6 +141,8 @@ export const AuthContextProvider = (props) => {
         user: user,
         teachingClass: teachingClass,
         enrolledClass: enrolledClass,
+        idTeachingClass: idTeachingClass,
+        idEnrolledClass: idEnrolledClass,
         handleEnrolled: classListHandleEnrolled,
         handleTeaching: classListHandleTeaching,
         onLogout: logoutHandler,

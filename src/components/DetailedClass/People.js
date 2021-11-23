@@ -25,9 +25,9 @@ const People = ({ data }) => {
               padding: 2,
             }}
           >
-            <ListPeople data={data} isTeacher={true} />
+            <ListPeople data={data} isTeacher={true} isCustom={data.isCustom} />
             <Box sx={{ width: "100%", height: "15px" }}></Box>
-            <ListPeople data={data} isTeacher={false} />
+            <ListPeople data={data} isTeacher={false} isCustom={data.isCustom} />
           </Box>
         </Box>
       </Container>

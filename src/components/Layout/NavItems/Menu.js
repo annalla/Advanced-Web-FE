@@ -17,7 +17,9 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import ClassIcon from "@mui/icons-material/Class";
 import AuthContext from "../../../store/store";
-
+import { PATH } from "../../../constants/paths";
+import { useNavigate } from "react-router-dom";
+import { joinTwoList } from "../../../utils/util";
 const theme = createTheme({
   palette: {
     secondary: {
@@ -28,6 +30,7 @@ const theme = createTheme({
 });
 function MenuDrawer() {
   const AuthCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   //setMenu on Left
   const anchorr = "left";
   const [state, setState] = React.useState({
@@ -49,14 +52,23 @@ function MenuDrawer() {
     const enrolled = AuthCtx.enrolledClass;
     const teaching = AuthCtx.teachingClass;
     if (enrolled) {
-      setEnrolledList(enrolled);
+      setEnrolledList(joinTwoList(enrolled, AuthCtx.idEnrolledClass));
+      // setIdEnrolledList(AuthCtx.idEnrolledClass);
     }
     if (teaching) {
-      setTeachingList(teaching);
+      setTeachingList(joinTwoList(teaching, AuthCtx.idTeachingClass));
+      // setIdTeachingList(AuthCtx.idTeachingClass);
     }
     setState({ ...state, [anchor]: open });
   };
-
+  const handleBackHome = () => {
+    navigate(PATH.HOME);
+  };
+  const handleToClass = (id) => {
+    console.log(id);
+    console.log(typeof id);
+    // navigate(PATH.DETAIL_CLASS + id.toString());
+  };
   const list = (anchor, enrolledList, teachingList) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -65,7 +77,7 @@ function MenuDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItemButton selected={true}>
+        <ListItemButton selected={true} onClick={handleBackHome}>
           <ListItem>
             <ListItemAvatar>
               <Avatar
@@ -89,27 +101,30 @@ function MenuDrawer() {
       <div className="headerBox">Teaching</div>
       <List>
         {teachingList.map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-              <ClassIcon />
-            </ListItemIcon>
-            <ListItemText>
-              <span>{text}</span>
-            </ListItemText>
-          </ListItem>
+          <ListItemButton key={text.id}>
+            <ListItem  key={text.id}>
+              <ListItemIcon>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <span>{text.name}</span>
+              </ListItemText>
+            </ListItem>
+          </ListItemButton>
         ))}
       </List>
       <Divider />
       <div className="headerBox">Enrolled</div>
       <List>
         {enrolledList.map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              <ClassIcon />
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+          <ListItemButton>
+            <ListItem key={text.id}>
+              <ListItemIcon>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText primary={text.name} />
+            </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Box>
