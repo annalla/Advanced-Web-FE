@@ -49,32 +49,29 @@ function MenuDrawer() {
     ) {
       return;
     }
-    const enrolled = AuthCtx.enrolledClass;
-    const teaching = AuthCtx.teachingClass;
-    if (enrolled) {
-      setEnrolledList(joinTwoList(enrolled, AuthCtx.idEnrolledClass));
-      // setIdEnrolledList(AuthCtx.idEnrolledClass);
-    }
-    if (teaching) {
-      setTeachingList(joinTwoList(teaching, AuthCtx.idTeachingClass));
-      // setIdTeachingList(AuthCtx.idTeachingClass);
+    if(open){
+      const enrolled = AuthCtx.enrolledClass;
+      const teaching = AuthCtx.teachingClass;
+      if (enrolled) {
+        setEnrolledList(joinTwoList(enrolled, AuthCtx.idEnrolledClass));
+        // setIdEnrolledList(AuthCtx.idEnrolledClass);
+      }
+      if (teaching) {
+        setTeachingList(joinTwoList(teaching, AuthCtx.idTeachingClass));
+        // setIdTeachingList(AuthCtx.idTeachingClass);
+      }
     }
     setState({ ...state, [anchor]: open });
   };
   const handleBackHome = () => {
     navigate(PATH.HOME);
   };
-  const handleToClass = (id) => {
-    console.log(id);
-    console.log(typeof id);
-    // navigate(PATH.DETAIL_CLASS + id.toString());
-  };
   const list = (anchor, enrolledList, teachingList) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         <ListItemButton selected={true} onClick={handleBackHome}>
@@ -101,8 +98,10 @@ function MenuDrawer() {
       <div className="headerBox">Teaching</div>
       <List>
         {teachingList.map((text, index) => (
-          <ListItemButton key={text.id}>
-            <ListItem  key={text.id}>
+          <ListItemButton key={text.id} onClick={(id)=>{
+            navigate(PATH.DETAIL_CLASS+text.id.toString())
+          }}>
+            <ListItem>
               <ListItemIcon>
                 <ClassIcon />
               </ListItemIcon>
@@ -117,8 +116,10 @@ function MenuDrawer() {
       <div className="headerBox">Enrolled</div>
       <List>
         {enrolledList.map((text, index) => (
-          <ListItemButton>
-            <ListItem key={text.id}>
+          <ListItemButton key={text.id} onClick={(id)=>{
+            navigate(PATH.DETAIL_CLASS+text.id.toString())
+          }}>
+            <ListItem>
               <ListItemIcon>
                 <ClassIcon />
               </ListItemIcon>

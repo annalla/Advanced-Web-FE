@@ -33,7 +33,6 @@ const DetailClass = () => {
       getClassById(token, id)
         .then((res) => {
           if (res.status === 1) {
-            console.log(res.data);
             const information = {
               name: res.data.name,
               code: res.data.code,
