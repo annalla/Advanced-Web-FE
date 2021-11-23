@@ -47,7 +47,7 @@ const Login = (props) => {
           AuthCtx.onLogin(res.data);
           let locate = localStorage.getItem("history");
           if (
-            locate !== undefined &&
+            locate !== null &&
             locate.includes(PATH.JOIN_CLASS_INVITATION)
           ) {
             localStorage.removeItem("history");
@@ -59,7 +59,7 @@ const Login = (props) => {
           }
         } else {
           //switch Error here
-          setError(res.code.replace("_", " "));
+          setError(res.code.replaceAll("_", " "));
         }
       })
       .catch((err) => {
