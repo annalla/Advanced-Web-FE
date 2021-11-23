@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Loading from "../components/Loading/Loading";
 import {PATH} from "../constants/paths"
 import { HandleJoin } from "../pages/Invite/HandleJoin";
+// const HandleJoin=lazy(()=>import("../pages/Invite/HandleJoin"))
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
 

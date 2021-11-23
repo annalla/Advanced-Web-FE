@@ -75,6 +75,9 @@ export const AuthContextProvider = (props) => {
         setIdTeachingClass(idTeaching);
       }
     }
+    else{
+      setIsAuthenticated(false);
+    }
   }, []);
 
   const logoutHandler = () => {

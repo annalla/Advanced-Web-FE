@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router';
 import { PATH } from '../../constants/paths';
 import AuthContext from '../../store/store';
 
-import { API_URL, GOOGLE_LOGIN_CLIENT_ID } from '../../constants/const';
-
+import { API_URL, GOOGLE_LOGIN_CLIENT_ID,FE_URL } from '../../constants/const';
+import { splitDomain } from '../../utils/util';
 // refresh token
 // import { refreshTokenSetup } from '../../utils/refreshToken';
 
@@ -30,7 +30,18 @@ function LoginHooks() {
                 }
                 else if (response.data.code === "SUCCESS"){
                     AuthCtx.onLogin(response.data.data);
-                    history(PATH.HOME)
+                    let locate = localStorage.getItem("history");
+                    if (
+                      locate !== null &&
+                      locate.includes(PATH.JOIN_CLASS_INVITATION)
+                    ) {
+                      localStorage.removeItem("history");
+                      console.log(localStorage.getItem("history"));
+                      locate = splitDomain(locate, FE_URL);
+                      history(locate);
+                    } else {
+                      history(PATH.HOME);
+                    }
                 }
             })
     };

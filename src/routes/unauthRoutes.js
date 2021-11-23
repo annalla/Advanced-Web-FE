@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { PATH } from "../constants/paths";
 import Loading from "../components/Loading/Loading";
 import { Public } from "../pages/Public/Public";
-import { RedirectInvite } from "../pages/Invite/RedirectInvite";
+import {RedirectInvite} from "../pages/Invite/RedirectInvite"
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
 

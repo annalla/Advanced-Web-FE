@@ -32,7 +32,8 @@ import "./Register.css";
 import Loading from "../../components/Loading/Loading";
 import { STATUS } from "./Register.const";
 
-import { API_URL } from "../../constants/const";
+import { API_URL,FE_URL } from "../../constants/const";
+import { splitDomain } from "../../utils/util";
 
 function Copyright(props) {
   return (
@@ -85,13 +86,18 @@ export default function SignUp() {
     setOpen(false);
     if (status === STATUS.SUCCESSFULLY) {
       AuthCtx.onLogin(authData);
-    //   const location = localStorage.getItem("history");
-    //   if (location && location.include(PATH.JOIN_CLASS_INVITATION)) {
-    //     localStorage.removeItem("history");
-    //     history(location);
-    //   } else {
+      let locate = localStorage.getItem("history");
+      if (
+        locate !== null &&
+        locate.includes(PATH.JOIN_CLASS_INVITATION)
+      ) {
+        localStorage.removeItem("history");
+        console.log(localStorage.getItem("history"));
+        locate = splitDomain(locate, FE_URL);
+        history(locate);
+      } else {
         history(PATH.HOME);
-    //   }
+      }
     }
   };
 
