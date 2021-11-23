@@ -33,6 +33,7 @@ import { STATUS } from './ManageProfile.const'
 import { Nav } from "../../components/Layout/Nav";
 import { getUserApi, updateUserApi } from "../../apis/user.api";
 import { convertUnixToHTMLTime } from "../../utils/convertUnixtoHTMLTime"
+import { ERROR_CODE } from "../../constants/errorCode";
 
 function Copyright(props) {
     return (
@@ -169,7 +170,7 @@ export default function ManageProfile() {
                 else if (response.status === 0) {
                     setOpen(true);
                     setStatus(STATUS.FAIL);
-                    setNotify("ERROR: " + response.code);
+                    setNotify(ERROR_CODE[response.code] || ERROR_CODE.UPDATE_FAILED);
                 }
             })
 

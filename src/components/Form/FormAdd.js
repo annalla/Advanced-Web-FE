@@ -14,6 +14,7 @@ import Loading from '../Loading/Loading';
 import { PATH } from '../../constants/paths';
 import { createClassApi } from '../../apis/class.api';
 import { useNavigate } from 'react-router';
+import { ERROR_CODE } from '../../constants/errorCode';
 
 const theme = createTheme({
     palette: {
@@ -70,11 +71,11 @@ function FormAdd({ onclose }) {
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
-                    history(PATH.DETAIL_CLASS+response.data.id);
+                    history(PATH.DETAIL_CLASS_SPLIT+response.data.id);
                     onclose();
                 }
                 else if (response.status === 0) {
-                    setErrorResponse(response.code);
+                    setErrorResponse(ERROR_CODE[response.code] || "Failed to create class!");
                 }
             })
         setIsLoading(false);

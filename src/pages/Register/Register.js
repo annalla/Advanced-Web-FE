@@ -34,6 +34,7 @@ import { STATUS } from "./Register.const";
 
 import { API_URL,FE_URL } from "../../constants/const";
 import { splitDomain } from "../../utils/util";
+import { ERROR_CODE } from "../../constants/errorCode";
 
 function Copyright(props) {
   return (
@@ -45,7 +46,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        TVX Classroom
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -56,6 +57,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  // eslint-disable-next-line no-useless-escape
+  const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
   const history = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState("");
@@ -175,6 +178,20 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
+    if(password!==retypePassword) {
+        setOpen(true);
+        setStatus(STATUS.FAIL);
+        setNotify(ERROR_CODE.PASSWORD_NOT_MATCH);
+        setIsLoading(false);
+        return;
+    }
+    if(!strongPasswordRegex.test(password)) {
+        setOpen(true);
+        setStatus(STATUS.FAIL);
+        setNotify(ERROR_CODE.PASSWORD_WEAK);
+        setIsLoading(false);
+        return;
+    }
     const dataArray = new FormData();
     dataArray.append("username", username);
     dataArray.append("password", password);
@@ -206,7 +223,7 @@ export default function SignUp() {
         } else if (response.data.status === 0) {
           setOpen(true);
           setStatus(STATUS.FAIL);
-          setNotify("ERROR: " + response.data.code.replaceAll("_"," "));
+          setNotify(ERROR_CODE[response.data.code] || "Register failed!");
         }
       });
 
@@ -267,6 +284,7 @@ export default function SignUp() {
                     autoComplete="username"
                     value={username}
                     onChange={handleUsername}
+                    autoFocus
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -277,7 +295,6 @@ export default function SignUp() {
                     fullWidth
                     id="firstName"
                     label="First Name"
-                    autoFocus
                     value={firstName}
                     onChange={handleFirstName}
                   />
@@ -331,6 +348,9 @@ export default function SignUp() {
                     autoComplete="password"
                     value={password}
                     onChange={handlePassword}
+                    inputProps={{
+                        minLength: 8,
+                      }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -344,6 +364,9 @@ export default function SignUp() {
                     autoComplete="retypePassword"
                     value={retypePassword}
                     onChange={handleRetypePassword}
+                    inputProps={{
+                        minLength: 8,
+                      }}
                   />
                 </Grid>
                 <Grid item xs={12}>

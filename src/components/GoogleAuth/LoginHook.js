@@ -9,8 +9,6 @@ import AuthContext from '../../store/store';
 
 import { API_URL, GOOGLE_LOGIN_CLIENT_ID,FE_URL } from '../../constants/const';
 import { splitDomain } from '../../utils/util';
-// refresh token
-// import { refreshTokenSetup } from '../../utils/refreshToken';
 
 const clientId = GOOGLE_LOGIN_CLIENT_ID
 
@@ -18,7 +16,6 @@ function LoginHooks() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
     const onSuccess = (res) => {
-        // refreshTokenSetup(res);
         const googleId = res.googleId;
         const email = res.profileObj.email;
         const givenName = res.profileObj.givenName;
