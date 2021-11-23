@@ -56,7 +56,7 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(
     },
   })
 );
-function TabsItem({ value }) {
+function TabsItem({ value,isCustom }) {
   const navigate = useNavigate();
   const location = useLocation();
   const handleChange = (event, newValue) => {
@@ -100,7 +100,7 @@ function TabsItem({ value }) {
           <AntTab label="Stream"></AntTab>
           <AntTab label="Classwork"></AntTab>
           <AntTab label="People"></AntTab>
-          <AntTab label="Grades"></AntTab>
+          {isCustom?<AntTab label="Grades"></AntTab>:""}
         </Tabs>
       </Box>
     </ThemeProvider>
