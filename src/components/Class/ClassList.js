@@ -8,10 +8,12 @@ import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 import { JWT_TYPE } from "../../constants/const";
 import { ERROR_CODE } from "../../constants/errorCode";
-import Loading from '../Loading/Loading'
+import Loading from "../Loading/Loading";
+import { useMemo } from "react";
+
 
 const ClassList = ({ isTeaching }) => {
-  const isTeachingConst=isTeaching;
+  const isTeachingConst = isTeaching;
   const AuthCtx = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +21,9 @@ const ClassList = ({ isTeaching }) => {
   const [isHeader, setIsHeader] = useState(false);
   const headerList = isTeaching ? "Teaching" : "Enrolled";
   const jwt_type = isTeaching
-  ? JWT_TYPE.JWT_TYPE_TEACHER
-  : JWT_TYPE.JWT_TYPE_STUDENT;
-  const token=AuthCtx.user.token;
-
+    ? JWT_TYPE.JWT_TYPE_TEACHER
+    : JWT_TYPE.JWT_TYPE_STUDENT;
+  const token = AuthCtx.user.token;
   useEffect(() => {
     setIsLoading(true);
     getClassListApi(token, jwt_type)
@@ -46,48 +47,47 @@ const ClassList = ({ isTeaching }) => {
       .catch((err) => {
         setError(err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token,jwt_type,isTeachingConst]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, jwt_type, isTeachingConst]);
 
   if (error) {
     return <div>Error: {ERROR_CODE[error.message]}</div>;
-  } 
- else {
+  } else {
     return (
-        <div>
-            {isLoading&&<Loading></Loading>}
-      <Box sx={{ backgroundColor: grey[50], ml: 1, mr: 2, borderRadius: 3 }}>
-        {isHeader ? (
-          <Fragment>
-            <Typography
-              sx={{
-                mt: 3,
-                ml: 1,
-                mb: 0,
-                fontSize: 22,
-                fontFamily: "Raleway, Arial",
-              }}
-              variant="h5"
-              gutterBottom
-              component="div"
-            >
-              {headerList}
-            </Typography>
+      <div>
+        {isLoading && <Loading></Loading>}
+        <Box sx={{ backgroundColor: grey[50], ml: 1, mr: 2, borderRadius: 3 }}>
+          {isHeader ? (
+            <Fragment>
+              <Typography
+                sx={{
+                  mt: 3,
+                  ml: 1,
+                  mb: 0,
+                  fontSize: 22,
+                  fontFamily: "Raleway, Arial",
+                }}
+                variant="h5"
+                gutterBottom
+                component="div"
+              >
+                {headerList}
+              </Typography>
 
-            <div className="classList">
-              {items.map((item) => (
-                <div className="classItem" key={item.id}>
-                  <ClassItem data={item} isOwner={isTeaching} />
-                </div>
-              ))}
-            </div>
-          </Fragment>
-        ) : (
-          ""
-        )}
-      </Box>
+              <div className="classList">
+                {items.map((item) => (
+                  <div className="classItem" key={item.id}>
+                    <ClassItem data={item} isOwner={isTeaching} />
+                  </div>
+                ))}
+              </div>
+            </Fragment>
+          ) : (
+            ""
+          )}
+        </Box>
       </div>
     );
   }
 };
-export { ClassList }; 
+export { ClassList };
