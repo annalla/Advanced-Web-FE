@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/paths";
 import AuthContext from "../../store/store";
-import { HandleJoin } from "./HandleJoin";
 
 function RedirectInvite() {
   const authCtx = useContext(AuthContext);

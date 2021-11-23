@@ -7,6 +7,7 @@ export const JWT_TYPE = {
 export const SRC_IMG = {
   COVER_IMAGE_CLASS: "/images/class/bg12.jpg",
   DEFAULT_AVATAR: "/images/avatar/avatar.jpg",
+  PAGE_NOT_FOUND:"/images/404-page-not-found.jpg"
 };
 export const VALUE_TAB = {
   TAB_STREAM: 0,

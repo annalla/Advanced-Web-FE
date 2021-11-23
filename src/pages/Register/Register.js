@@ -206,7 +206,7 @@ export default function SignUp() {
         } else if (response.data.status === 0) {
           setOpen(true);
           setStatus(STATUS.FAIL);
-          setNotify("ERROR: " + response.data.code);
+          setNotify("ERROR: " + response.data.code.replaceAll("_"," "));
         }
       });
 
