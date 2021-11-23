@@ -26,6 +26,7 @@ export const AuthContextProvider = (props) => {
   const [idEnrolledClass, setIdEnrolledClass] = useState([]);
 
   const changeStringToList = (string) => {
+    if(!string) return null;
     let strArr = string.split(",");
     let results = [];
     for (let str in strArr) {
