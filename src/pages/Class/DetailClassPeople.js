@@ -15,7 +15,7 @@ var dict = {};
 const DetailClassPeople = () => {
   const [error, setError] = React.useState(null);
   const location = useLocation();
-  const Id = splitPath(location.pathname, PATH.DETAIL_CLASS_PEOPLE);
+  const Id = splitPath(location.pathname, PATH.DETAIL_CLASS_PEOPLE_SPLIT);
   const [classroom, setClassroom] = React.useState({});
   const AuthCtx = useContext(AuthContext);
   const token = AuthCtx.user.token;

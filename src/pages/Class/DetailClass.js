@@ -16,7 +16,7 @@ const DetailClass = () => {
   const [classroom, setClassroom] = React.useState({});
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
-  const id = splitPath(location.pathname, PATH.DETAIL_CLASS);
+  const id = splitPath(location.pathname, PATH.DETAIL_CLASS_SPLIT);
   const token = AuthCtx.user.token;
   const information = useMemo(() => {
     if (id in dict) {

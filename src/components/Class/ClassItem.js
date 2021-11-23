@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { SRC_IMG } from "../../constants/const";
 import { PATH } from "../../constants/paths";
+import { Link } from "react-router-dom";
 import { Fragment } from "react";
 // import CardActions from "@mui/material/CardActions";
 // import { CardActionArea } from "@mui/material";
@@ -32,34 +33,29 @@ export function ClassItem({ data, isOwner }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // const handleClickDetailClass = (id) => {
-  //   console.log("dm");
-  //   navigate(PATH.DETAIL_CLASS + id);
-  // };
   return (
     <Fragment>
-      <Card sx={{ width: 300, height: 280 }}>
+      <Card sx={{ width: 300, height: 280, position: "relative" }}>
         <CardMedia
           component="img"
           height="110"
           image={srcCoverImg}
           alt="coverImage"
         />
+        {!isOwner ? (
+          <span className="teacherBlockImg">
+            <img src={srcAvatarImg} alt="owner" />
+          </span>
+        ) : (
+          ""
+        )}
         <CardContent>
-          {!isOwner ? (
-            <span className="teacherBlockImg">
-              <img src={srcAvatarImg} alt="owner" />
-            </span>
-          ) : (
-            ""
-          )}
           <span className="contentInformation">
             <span>
               <span className="classNameBlock">
-                {/* <CardActionArea onClick={handleClickDetailClass(data.id)}>
-                  <span className="className">{data.name}</span>
-                </CardActionArea> */}
-                <span className="className"><a href={PATH.DETAIL_CLASS+data.id}>{data.name}</a></span>
+                <span className="className">
+                  <Link to={PATH.DETAIL_CLASS_SPLIT+data.id}>{data.name}</Link>
+                </span>
                 <span>
                   <IconButton
                     id="fade-button"

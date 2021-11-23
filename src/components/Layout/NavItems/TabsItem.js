@@ -60,14 +60,26 @@ function TabsItem({ value }) {
   const navigate = useNavigate();
   const location = useLocation();
   const handleChange = (event, newValue) => {
-    const id = splitPath(location.pathname, "/:code");
+    let regex="";
+    switch (value) {
+      case VALUE_TAB.TAB_PEOPLE:
+        regex = PATH.DETAIL_CLASS_PEOPLE_SPLIT;
+        break;
+      case VALUE_TAB.TAB_STREAM:
+        regex = PATH.DETAIL_CLASS_SPLIT;
+        break;
+      default:
+        break;
+    }
+    const id = splitPath(location.pathname, regex);
+    console.log(id)
     let pathNew = "";
     switch (newValue) {
       case VALUE_TAB.TAB_PEOPLE:
-        pathNew = PATH.DETAIL_CLASS_PEOPLE + id;
+        pathNew = PATH.DETAIL_CLASS_PEOPLE_SPLIT + id;
         break;
       case VALUE_TAB.TAB_STREAM:
-        pathNew = PATH.DETAIL_CLASS + id;
+        pathNew = PATH.DETAIL_CLASS_SPLIT + id;
         break;
       default:
         break;

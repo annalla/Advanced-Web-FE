@@ -99,7 +99,7 @@ function MenuDrawer() {
       <List>
         {teachingList.map((text, index) => (
           <ListItemButton key={text.id} onClick={(id)=>{
-            navigate(PATH.DETAIL_CLASS+text.id.toString())
+            navigate(PATH.DETAIL_CLASS_SPLIT+text.id.toString())
           }}>
             <ListItem>
               <ListItemIcon>
@@ -117,7 +117,7 @@ function MenuDrawer() {
       <List>
         {enrolledList.map((text, index) => (
           <ListItemButton key={text.id} onClick={(id)=>{
-            navigate(PATH.DETAIL_CLASS+text.id.toString())
+            navigate(PATH.DETAIL_CLASS_SPLIT+text.id.toString())
           }}>
             <ListItem>
               <ListItemIcon>

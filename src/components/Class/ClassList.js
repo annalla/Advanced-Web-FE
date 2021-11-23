@@ -27,6 +27,7 @@ const ClassList = ({ isTeaching }) => {
         if (res.status === 1) {
           setIsLoaded(true);
           setItems(res.data);
+          console.log(res.data)
           if (res.data.length > 0) {
             if (isTeachingConst) {
               AuthCtx.handleTeaching(res.data);
