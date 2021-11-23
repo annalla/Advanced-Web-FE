@@ -12,6 +12,7 @@ function HandleJoin() {
   const location = window.location.href;
   const code = splitPath(location, PATH.JOIN_CLASS_INVITATION);
   useEffect(() => {
+    if(localStorage.getItem("isAuthenticated")==="1"){
       joinClassByCode(code).then((res) => {
         if (res.status === 1) {
           navigate(PATH.HOME);
@@ -20,7 +21,11 @@ function HandleJoin() {
           navigate(PATH.HOME);
         }
       });
-  
+    }
+    else{
+      localStorage.setItem("history", location);
+    navigate(PATH.LOGIN);
+    }
   }, [code,isAuth,navigate]);
   return <div></div>;
 }
