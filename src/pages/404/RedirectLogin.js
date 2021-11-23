@@ -5,7 +5,9 @@ import { PATH } from "../../constants/paths";
 function RedirectLogin() {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(PATH.LOGIN);
+    if (localStorage.getItem("isAuthenticated") === 1) {
+      navigate(PATH.HOME);
+    } else navigate(PATH.LOGIN);
   }, [navigate]);
   return <div></div>;
 }

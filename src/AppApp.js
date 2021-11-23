@@ -1,10 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { UnauthRoutes } from "./routes/unauthRoutes";
 import { AuthRoutes } from "./routes/authRoutes";
+import AuthContext from "./store/store";
 function AppApp() {
+  const ctx = useContext(AuthContext);
   return (
     <Fragment>
-      {localStorage.getItem("isAuthenticated")==="1" ? <AuthRoutes /> : <UnauthRoutes />}
+      {ctx.isAuthenticated ? <AuthRoutes /> : <UnauthRoutes />}
     </Fragment>
   );
 }

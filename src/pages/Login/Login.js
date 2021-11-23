@@ -46,14 +46,16 @@ const Login = (props) => {
       .then((res) => {
         if (res.status === 1) {
           AuthCtx.onLogin(res.data);
+          console.log(res.data)
           let locate = localStorage.getItem("history");
+          console.log(locate);
           if (
             locate !== null &&
             locate.includes(PATH.JOIN_CLASS_INVITATION)
           ) {
             localStorage.removeItem("history");
-            console.log(localStorage.getItem("history"));
             locate = splitDomain(locate, FE_URL);
+            console.log(localStorage.getItem("isAuthenticated"))
             history(locate);
           } else {
             history(PATH.HOME);

@@ -13,7 +13,6 @@ function HandleJoin() {
   const code = splitPath(location, PATH.JOIN_CLASS_INVITATION);
   useEffect(() => {
       joinClassByCode(code).then((res) => {
-        console.log(res);
         if (res.status === 1) {
           navigate(PATH.HOME);
         } else {
