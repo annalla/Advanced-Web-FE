@@ -7,12 +7,14 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 import { JWT_TYPE } from "../../constants/const";
+import { ERROR_CODE } from "../../constants/errorCode";
+import Loading from '../Loading/Loading'
 
 const ClassList = ({ isTeaching }) => {
   const isTeachingConst=isTeaching;
   const AuthCtx = useContext(AuthContext);
   const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [isHeader, setIsHeader] = useState(false);
   const headerList = isTeaching ? "Teaching" : "Enrolled";
@@ -22,12 +24,12 @@ const ClassList = ({ isTeaching }) => {
   const token=AuthCtx.user.token;
 
   useEffect(() => {
+    setIsLoading(true);
     getClassListApi(token, jwt_type)
       .then((res) => {
         if (res.status === 1) {
-          setIsLoaded(true);
+          setIsLoading(false);
           setItems(res.data);
-          console.log(res.data)
           if (res.data.length > 0) {
             if (isTeachingConst) {
               AuthCtx.handleTeaching(res.data);
@@ -37,21 +39,23 @@ const ClassList = ({ isTeaching }) => {
             setIsHeader(true);
           }
         } else {
-          setIsLoaded(true);
-          setError(res);
+          setIsLoading(false);
+          setError(ERROR_CODE[res] || "Failed to get classrooms!");
         }
       })
       .catch((err) => {
-        setIsLoaded(true);
+        setError(err);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token,jwt_type,isTeachingConst]);
 
   if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
+    return <div>Error: {ERROR_CODE[error.message]}</div>;
+  } 
+ else {
     return (
+        <div>
+            {isLoading&&<Loading></Loading>}
       <Box sx={{ backgroundColor: grey[50], ml: 1, mr: 2, borderRadius: 3 }}>
         {isHeader ? (
           <Fragment>
@@ -82,6 +86,7 @@ const ClassList = ({ isTeaching }) => {
           ""
         )}
       </Box>
+      </div>
     );
   }
 };

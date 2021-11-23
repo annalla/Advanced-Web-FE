@@ -10,7 +10,10 @@ import { getClassById } from "../../apis/class.api";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
 import { JWT_TYPE } from "../../constants/const";
+import { ERROR_CODE } from "../../constants/errorCode";
+
 const dict = {};
+
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
   const [classroom, setClassroom] = React.useState({});
@@ -50,11 +53,11 @@ const DetailClass = () => {
             setClassroom(information);
             dict[id] = information;
           } else {
-            setError(res);
+            setError(ERROR_CODE[res] || "Get class by id failed!");
           }
         })
         .catch((err) => {
-          setError(err);
+          setError(ERROR_CODE[err] || "Get class by id failed!");
         });
     }
   }, [id, token]);

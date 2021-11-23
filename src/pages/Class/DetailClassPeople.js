@@ -10,6 +10,7 @@ import { PATH } from "../../constants/paths";
 import { splitPath } from "../../utils/util";
 import { People } from "../../components/DetailedClass/People";
 import { JWT_TYPE } from "../../constants/const";
+import { ERROR_CODE } from "../../constants/errorCode";
 
 var dict = {};
 const DetailClassPeople = () => {
@@ -46,7 +47,7 @@ const DetailClassPeople = () => {
             setClassroom(data);
             dict[Id] = data;
           } else {
-            setError(res);
+            setError(ERROR_CODE[res] || "Get class by id failed!");
           }
         })
         .catch((err) => {

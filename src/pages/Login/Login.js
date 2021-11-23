@@ -23,6 +23,7 @@ import LoginHooks from "../../components/GoogleAuth/LoginHook";
 
 import "./Login.css";
 import { splitDomain } from "../../utils/util";
+import { ERROR_CODE } from "../../constants/errorCode";
 
 const Login = (props) => {
   const AuthCtx = useContext(AuthContext);
@@ -59,11 +60,11 @@ const Login = (props) => {
           }
         } else {
           //switch Error here
-          setError(res.code.replaceAll("_", " "));
+          setError(ERROR_CODE[res.code] || "Login failed!");
         }
       })
       .catch((err) => {
-        setError("Đăng nhập thất bại!");
+        setError("Login failed!");
       });
   };
 
@@ -77,7 +78,7 @@ const Login = (props) => {
       >
         {"Copyright © "}
         <Link color="inherit" href="https://mui.com/">
-          Your Website
+          TVX Classroom
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}
@@ -168,16 +169,11 @@ const Login = (props) => {
                 </Grid>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid>
                     <LoginHooks></LoginHooks>
                   </Grid>
-                  <Grid item>
+                  <Grid item xs>
                     <NavLink to={PATH.REGISTER}>
-                      Don't have an account? Sign Up
+                      Don't have an account? Sign up
                     </NavLink>
                   </Grid>
                 </Grid>

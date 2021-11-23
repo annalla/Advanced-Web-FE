@@ -111,7 +111,7 @@ function AvatarIcon() {
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                    <MenuItem onClick={handleManageProfile}>
+                    <MenuItem>
                         <ListItemText color="secondary">
                             <Typography align='center'>
                                 {AuthCtx.user.name}
@@ -119,7 +119,7 @@ function AvatarIcon() {
                         </ListItemText>
                     </MenuItem>
                     <Divider />
-                    <MenuItem>
+                    <MenuItem onClick={handleManageProfile}>
                         <ListItemIcon>
                             <Settings fontSize="small" color="secondary" />
                         </ListItemIcon>
