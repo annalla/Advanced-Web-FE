@@ -5,6 +5,9 @@ import { Fragment } from "react";
 import { CardMedia } from "@mui/material";
 import Button from "@mui/material/Button";
 import "./Stream.css";
+import AccordionAnnounce from "./StreamItem/ArcordionAnnounce";
+import UpcomingBox from "./StreamItem/UpcommingBox";
+import IntroductionBox from "./StreamItem/IntroductionBox";
 
 const Stream = ({ data }) => {
   const isDescription = data.description !== "" ? true : false;
@@ -45,10 +48,29 @@ const Stream = ({ data }) => {
               )}
             </div>
             <div className="button">
-              {data.isCustom?<Button variant="outlined">CUSTOMIZE</Button>:""}
-              
+              {data.isCustom ? (
+                <Button variant="outlined">CUSTOMIZE</Button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
+          <Box
+            sx={{
+              my: "30px",
+              width: "100%",
+              display: "flex",
+              flexDirection: "row-reverse",
+            }}
+          >
+            <Box sx={{ width: "80%" }}>
+              <AccordionAnnounce />
+              <IntroductionBox/>
+            </Box>
+            <Box sx={{ width: "20%" }}>
+              <UpcomingBox />
+            </Box>
+          </Box>
         </Box>
       </Container>
     </Fragment>
