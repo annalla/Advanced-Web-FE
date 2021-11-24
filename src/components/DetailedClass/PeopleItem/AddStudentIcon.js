@@ -47,7 +47,7 @@ export default function AddStudentIcon({ code,id,isTeacher }) {
   };
   const handleInviteStudent = async() => {
     const result = await sendMail(id, emails,isTeacher);
-    if (result === 1) {
+    if (result === true) {
       handleClose();
     } else {
       setMessage("Something wrong here");
