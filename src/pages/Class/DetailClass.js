@@ -11,18 +11,21 @@ import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
 import { JWT_TYPE } from "../../constants/const";
 import { ERROR_CODE } from "../../constants/errorCode";
+import Loading from "../../components/Loading/Loading";
 
 const dict = {};
 
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
   const [classroom, setClassroom] = React.useState({});
+  const [loading,setLoading]=React.useState(true);
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
   const id = splitPath(location.pathname, PATH.DETAIL_CLASS_SPLIT);
   const token = AuthCtx.user.token;
   const information = useMemo(() => {
     if (id in dict) {
+      setLoading(false)
       return dict[id];
     }
     return classroom;
@@ -51,6 +54,7 @@ const DetailClass = () => {
                   : res.data.coverImageUrl,
             };
             setClassroom(information);
+            setLoading(false);
             dict[id] = information;
           } else {
             setError(ERROR_CODE[res] || "Get class by id failed!");
@@ -67,6 +71,7 @@ const DetailClass = () => {
     return (
       <Fragment>
         <Nav2 data={information} valueTab={VALUE_TAB.TAB_STREAM} />
+       {loading?<Loading/>:""}
         <Stream data={information} />
       </Fragment>
     );

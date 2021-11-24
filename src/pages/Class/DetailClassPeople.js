@@ -11,6 +11,7 @@ import { splitPath } from "../../utils/util";
 import { People } from "../../components/DetailedClass/People";
 import { JWT_TYPE } from "../../constants/const";
 import { ERROR_CODE } from "../../constants/errorCode";
+import Loading from "../../components/Loading/Loading";
 
 var dict = {};
 const DetailClassPeople = () => {
@@ -20,8 +21,10 @@ const DetailClassPeople = () => {
   const [classroom, setClassroom] = React.useState({});
   const AuthCtx = useContext(AuthContext);
   const token = AuthCtx.user.token;
+  const [loading,setLoading]=React.useState(true);
   const information = useMemo(() => {
     if (Id in dict) {
+      setLoading(false);
       return dict[Id];
     }
     return classroom;
@@ -45,6 +48,7 @@ const DetailClassPeople = () => {
                   : false,
             };
             setClassroom(data);
+            setLoading(false);
             dict[Id] = data;
           } else {
             setError(ERROR_CODE[res] || "Get class by id failed!");
@@ -61,6 +65,7 @@ const DetailClassPeople = () => {
     return (
       <Fragment>
         <Nav2 data={information} valueTab={VALUE_TAB.TAB_PEOPLE} />
+        {loading?<Loading/>:""}
         <People data={information} />
       </Fragment>
     );
