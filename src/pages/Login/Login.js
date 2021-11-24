@@ -39,23 +39,20 @@ const Login = (props) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const payload = { username, password };
     loginApi(payload)
-      .then((res) => {
+      .then(async(res) => {
         if (res.status === 1) {
           AuthCtx.onLogin(res.data);
-          console.log(res.data)
           let locate = localStorage.getItem("history");
-          console.log(locate);
           if (
             locate !== null &&
             locate.includes(PATH.JOIN_CLASS_INVITATION)
           ) {
             localStorage.removeItem("history");
             locate = splitDomain(locate, FE_URL);
-            console.log(localStorage.getItem("isAuthenticated"))
             history(locate);
           } else {
             history(PATH.HOME);

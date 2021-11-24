@@ -17,6 +17,15 @@ const AuthContext = React.createContext({
   onLogout: () => {},
   onLogin: (data) => {},
 });
+const changeStringToList = (string) => {
+  if (!string) return null;
+  let strArr = string.split(",");
+  let results = [];
+  for (let str in strArr) {
+    results.push(strArr[str]);
+  }
+  return results;
+};
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -25,15 +34,6 @@ export const AuthContextProvider = (props) => {
   const [idTeachingClass, setIdTeachingClass] = useState([]);
   const [idEnrolledClass, setIdEnrolledClass] = useState([]);
 
-  const changeStringToList = (string) => {
-    if(!string) return null;
-    let strArr = string.split(",");
-    let results = [];
-    for (let str in strArr) {
-      results.push(strArr[str]);
-    }
-    return results;
-  };
   useEffect(() => {
     const storedUserLoggedInInformation =
       localStorage.getItem("isAuthenticated");
@@ -75,15 +75,14 @@ export const AuthContextProvider = (props) => {
         const idTeaching = changeStringToList(IdTeachingClass);
         setIdTeachingClass(idTeaching);
       }
-    }
-    else{
+    } else {
       setIsAuthenticated(false);
     }
   }, []);
 
   const logoutHandler = () => {
     setIsAuthenticated(false);
-    localStorage.setItem("isAuthenticated","0");
+    localStorage.setItem("isAuthenticated", "0");
     localStorage.removeItem("id");
     localStorage.removeItem("name");
     localStorage.removeItem("avatarUrl");
@@ -96,21 +95,21 @@ export const AuthContextProvider = (props) => {
   };
   const classListHandleTeaching = (data) => {
     var dataCustom = [];
-    var dataIdCustom=[];
+    var dataIdCustom = [];
     data.map((item) => {
       dataIdCustom.push(item.id);
       return dataCustom.push(item.name);
     });
     localStorage.setItem("teaching", dataCustom);
     setTeachingClass(dataCustom);
-    localStorage.setItem("idTeaching", dataCustom);
+    localStorage.setItem("idTeaching", dataIdCustom);
     setIdTeachingClass(dataIdCustom);
   };
   const classListHandleEnrolled = (data) => {
     var dataCustom = [];
-    var dataIdCustom=[]
+    var dataIdCustom = [];
     data.map((item) => {
-      dataIdCustom.push(item.id)
+      dataIdCustom.push(item.id);
       return dataCustom.push(item.name);
     });
     localStorage.setItem("enrolled", dataCustom);
@@ -133,7 +132,7 @@ export const AuthContextProvider = (props) => {
       token: data.token,
       id: data.id,
       name: data.name,
-      avatarUrl: data.avatarUrl
+      avatarUrl: data.avatarUrl,
     };
     setUser(currentUser);
   };

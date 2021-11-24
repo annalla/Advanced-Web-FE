@@ -33,7 +33,6 @@ function LoginHooks() {
                       locate.includes(PATH.JOIN_CLASS_INVITATION)
                     ) {
                       localStorage.removeItem("history");
-                      console.log(localStorage.getItem("history"));
                       locate = splitDomain(locate, FE_URL);
                       history(locate);
                     } else {
