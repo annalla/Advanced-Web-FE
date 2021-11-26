@@ -25,40 +25,19 @@ const theme = createTheme({
     },
 });
 
-function ClassSetting({ onclose }) {
+function ClassSetting({ onclose, data }) {
 
     const history = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [uploadFile, setUploadFile] = useState();
-    const [preview, setPreview] = useState();
     const [errorResponse, setErrorResponse] = useState(null);
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
-    const handleUploadFile = e => {
-        if (!e.target.files || e.target.files.length === 0) {
-            setUploadFile(undefined)
-            return
-        }
-
-        // I've kept this example simple by using the first image instead of multiple
-        setUploadFile(e.target.files[0])
-    }
+    const { register, handleSubmit, formState: { errors }, setValue  } = useForm();
 
     useEffect(() => {
-        if (!uploadFile) {
-            setPreview(undefined)
-            return
-        }
-        const objectUrl = URL.createObjectURL(uploadFile)
-        setPreview(objectUrl)
-
-        // free memory when ever this component is unmounted
-        return () => {
-            URL.revokeObjectURL(objectUrl);
-            setPreview();
-        }
-    }, [uploadFile])
+        setValue('classname', data.name);
+        data.code && setValue('code', data.code);
+        data.description && setValue('description', data.description);
+    }, [data, setValue])
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -67,8 +46,6 @@ function ClassSetting({ onclose }) {
         dataArray.append("code", data.code);
 
         if (data.description) dataArray.append("description", data.description);
-
-        dataArray.append("coverImage", uploadFile);
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
@@ -95,7 +72,8 @@ function ClassSetting({ onclose }) {
                             Class Settings
                         </Typography>
                         <ThemeProvider theme={theme}>
-                            <form onSubmit={handleSubmit(onSubmit)}>
+                            <form onSubmit={handleSubmit(onSubmit)} id="theme">
+                                <div>Class Details</div>
                                 <TextField
                                     name="classname"
                                     error={!!errors.classname}
@@ -125,14 +103,23 @@ function ClassSetting({ onclose }) {
                                     {...register("description")}
                                     fullWidth
                                 />
-                                <Grid container id="imageContainer">
-                                    <Grid item xs={12} sm={6}>
-                                        <Button variant="contained" component="label" id="coverImage"> Cover Image <input type="file" hidden onChange={handleUploadFile} /> </Button>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        {uploadFile && <img alt="coverIamge" id="previewImage" src={preview} width="150" />}
-                                    </Grid>
+                                <Grid container justifyContent="center">
+                                    <FormHelperText error>{errorResponse}</FormHelperText>
                                 </Grid>
+                                <Grid container justifyContent="flex-end">
+                                    <Button
+                                        sx={{ mt: 3, ml: 2 }}
+                                        color="primary"
+                                        type="submit"
+                                        variant="outlined"
+                                    // fullWidth
+                                    >
+                                        Save
+                                    </Button>
+                                </Grid>
+                            </form>
+                            <form onSubmit={handleSubmit(onSubmit)} id="theme">
+                                <div>Grading</div>
                                 <Grid container justifyContent="center">
                                     <FormHelperText error>{errorResponse}</FormHelperText>
                                 </Grid>

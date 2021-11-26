@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./Nav2.css";
 import Divider from "@mui/material/Divider";
 import { FiSettings } from 'react-icons/fi';
@@ -9,7 +9,10 @@ import { TabsItem } from "./NavItems/TabsItem";
 import { ClassSetting } from "../ClassSetting/ClassSetting";
 
 function Nav2({ data, valueTab }) {
-    const [isOpenSetting, setIsOpenSetting] = useState(false); 
+    const [isOpenSetting, setIsOpenSetting] = useState(false);
+    //useEffect(() => {
+    //    console.log(data)
+    //}, [data])
     return (
         <Fragment>
             <header>
@@ -42,7 +45,7 @@ function Nav2({ data, valueTab }) {
             </header>
             <Divider />
             <div className="divide"></div>
-            {isOpenSetting ? <ClassSetting onclose={() => setIsOpenSetting(false)} /> : ""}
+            {isOpenSetting ? <ClassSetting onclose={() => setIsOpenSetting(false)}  data={data} /> : ""}
         </Fragment>
     );
 }
