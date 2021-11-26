@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-import { useGoogleLogin } from "react-google-login";
-import GoogleButton from "react-google-button";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { GoogleLogin } from "react-google-login";
@@ -51,21 +49,7 @@ function LoginHooks() {
       console.log(res);
   };
 
-  // const { signIn } = useGoogleLogin({
-  //     onSuccess,
-  //     onFailure,
-  //     clientId,
-  //     isSignedIn: true,
-  //     accessType: 'offline',
-  //     // responseType: 'code',
-  //     // prompt: 'consent',
-  // });
-
   return (
-    // <GoogleButton
-    //     type="light" // can be light or dark
-    //     onClick={signIn}
-    // />
     <GoogleLogin
       clientId={clientId}
       buttonText="Login with Google"

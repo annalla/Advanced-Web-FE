@@ -9,7 +9,6 @@ import { grey } from "@mui/material/colors";
 import { JWT_TYPE } from "../../constants/const";
 import { ERROR_CODE } from "../../constants/errorCode";
 import Loading from "../Loading/Loading";
-import { useMemo } from "react";
 
 
 const ClassList = ({ isTeaching }) => {
