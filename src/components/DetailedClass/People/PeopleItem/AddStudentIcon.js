@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { EmailAutocomplete } from "./EmailAutocomplete";
 import Button from "@mui/material/Button";
-import { sendMail } from "../../../utils/util_sendMail";
+import { sendMail } from "../../../../utils/util_sendMail";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";

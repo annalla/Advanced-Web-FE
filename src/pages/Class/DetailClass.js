@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useContext } from "react";
-import { Nav2 } from "../../components/Layout/Nav2";
+import { Nav2 } from "../../components/Nav/Nav2";
 import { Fragment } from "react";
-import { Stream } from "../../components/DetailedClass/Stream";
+import { Stream } from "../../components/DetailedClass/Stream/Stream";
 import { SRC_IMG, VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
 import { useLocation } from "react-router";

@@ -10,10 +10,10 @@ import { Fragment } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import AddTeacherIcon from "./AddTeacherIcon";
-import { SRC_IMG } from "../../../constants/const";
+import { SRC_IMG } from "../../../../constants/const";
 import AddStudentIcon from "./AddStudentIcon";
-import { PATH } from "../../../constants/paths";
-import { FE_URL } from "../../../constants/const";
+import { PATH } from "../../../../constants/paths";
+import { FE_URL } from "../../../../constants/const";
 
 const theme = createTheme({
   palette: {

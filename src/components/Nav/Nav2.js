@@ -1,12 +1,13 @@
-import React, { Fragment, useState} from "react";
+import React, { Fragment, useState } from "react";
 import "./Nav2.css";
 import Divider from "@mui/material/Divider";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { AvatarIcon } from "./NavItems/Avatar";
 import { MenuDrawer } from "./NavItems/Menu";
 import { TabsItem } from "./NavItems/TabsItem";
 import { ClassSetting } from "../ClassSetting/ClassSetting";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 
 function Nav2({ data, valueTab }) {
   const [isOpenSetting, setIsOpenSetting] = useState(false);
@@ -35,11 +36,20 @@ function Nav2({ data, valueTab }) {
           <nav>
             <ul>
               <li>
-                <Box sx={{py:"30%",height:"80%",alignItems:"center",mt:"30%"}}>
+                <Box
+                  sx={{
+                    py: "20%",
+                    height: "80%",
+                    alignItems: "center",
+                  }}
+                >
                   {" "}
-                  <div onClick={() => setIsOpenSetting(true)}>
-                    <SettingsOutlinedIcon color="action" sx={{ fontSize: 25 }}/>
-                  </div>
+                  <IconButton onClick={() => setIsOpenSetting(true)}>
+                    <SettingsOutlinedIcon
+                      color="action"
+                      sx={{ fontSize: 25 }}
+                    />
+                  </IconButton>
                 </Box>
               </li>
               <li>

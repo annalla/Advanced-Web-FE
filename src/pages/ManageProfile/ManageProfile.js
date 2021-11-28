@@ -30,7 +30,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './ManageProfile.css'
 import Loading from '../../components/Loading/Loading'
 import { STATUS } from './ManageProfile.const'
-import { Nav } from "../../components/Layout/Nav";
+import { Nav } from "../../components/Nav/Nav";
 import { getUserApi, updateUserApi } from "../../apis/user.api";
 import { convertUnixToHTMLTime } from "../../utils/convertUnixtoHTMLTime"
 import { ERROR_CODE } from "../../constants/errorCode";

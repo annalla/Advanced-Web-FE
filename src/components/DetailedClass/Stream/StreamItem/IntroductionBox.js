@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import {SRC_IMG} from "../../../constants/const"
+import {SRC_IMG} from "../../../../constants/const"
 
 export default function IntroductionBox() {
   return (
