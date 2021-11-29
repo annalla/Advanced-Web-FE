@@ -16,6 +16,7 @@ import { PATH } from '../../constants/paths';
 import { createClassApi } from '../../apis/class.api';
 import { useNavigate } from 'react-router';
 import { ERROR_CODE } from '../../constants/errorCode';
+import GradeStructure from '../GradeStructure/GradeStructure'
 
 const theme = createTheme({
     palette: {
@@ -120,27 +121,9 @@ function ClassSetting({ onclose, data }) {
                             </form>
                             <form onSubmit={handleSubmit(onSubmit)} id="theme">
                                 <div>Grading</div>
+                                <GradeStructure class={data.id}></GradeStructure>
                                 <Grid container justifyContent="center">
                                     <FormHelperText error>{errorResponse}</FormHelperText>
-                                </Grid>
-                                <Grid container justifyContent="flex-end">
-                                    <Button
-                                        sx={{ mt: 3, }}
-                                        color="primary"
-                                        variant="outlined"
-                                        onClick={onclose}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        sx={{ mt: 3, ml: 2 }}
-                                        color="primary"
-                                        type="submit"
-                                        variant="outlined"
-                                    // fullWidth
-                                    >
-                                        Add
-                                    </Button>
                                 </Grid>
                             </form>
                         </ThemeProvider>
