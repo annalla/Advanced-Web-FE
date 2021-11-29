@@ -32,12 +32,10 @@ function GradeStructure(props) {
         setGradeStructure(tempData);
     }
     const handleAddGradeStructure = () => {
-        //const newGradeStructure = [...gradeStructure, { "name": namePointAdd, "maxPoint": maxPointAdd }]
-        //setGradeStructure(newGradeStructure);
         const gradeItem = {
             "name": namePointAdd,
-            "maxPoint": maxPointAdd,
-            "classroomId": props.class,
+            "maxPoint": parseFloat(maxPointAdd),
+            "classroomId": parseInt(props.class),
             "ordinalNumber": gradeStructure.length + 1
         }
         console.log(gradeItem);
@@ -45,13 +43,16 @@ function GradeStructure(props) {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
         axios.post('http://localhost:8002/api/v1/classroom/grade/add', gradeItem, { headers })
-        .then(function (response) {
-            console.log(response);
-            return response.data
-        })
-        .catch(function (error) {
-            return error
-        })
+            .then(function (response) {
+                console.log(response);
+                if (response.data.status === 1) {
+                    const newGradeStructure = [...gradeStructure, { "name": namePointAdd, "maxPoint": maxPointAdd }]
+                    setGradeStructure(newGradeStructure);
+                }
+            })
+            .catch(function (error) {
+                return error
+            })
         setMaxPointAdd(0);
         setNamePointAdd('');
     }
