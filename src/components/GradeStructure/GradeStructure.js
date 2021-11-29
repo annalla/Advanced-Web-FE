@@ -3,24 +3,30 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
-import { AiOutlineSave } from 'react-icons/ai';
+import { AiOutlineCheck, AiFillDelete } from 'react-icons/ai';
+import { CircularProgress } from '@material-ui/core';
 
 import './GradeStructure.css'
-
 
 function GradeStructure(props) {
     const [gradeStructure, setGradeStructure] = useState([])
     const [namePointAdd, setNamePointAdd] = useState('');
     const [maxPointAdd, setMaxPointAdd] = useState(0.0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [chosenGrade, setChosenGrade] = useState({ "id": null });
+    const [namePointEdit, setNamePointEdit] = useState('');
+    const [maxPointEdit, setMaxPointEdit] = useState(null);
+
     useEffect(() => {
+        setIsLoading(true);
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`,
         };
         axios.get('http://localhost:8002/api/v1/classroom/grade/' + props.class, { headers })
             .then(response => {
                 if (response.data.data) {
-                    console.log(response.data.data)
-                    setGradeStructure(response.data.data)
+                    setGradeStructure(response.data.data);
+                    setIsLoading(false);
                 }
             });
     }, [props.class])
@@ -32,22 +38,23 @@ function GradeStructure(props) {
         setGradeStructure(tempData);
     }
     const handleAddGradeStructure = () => {
+        setIsLoading(true);
         const gradeItem = {
             "name": namePointAdd,
             "maxPoint": parseFloat(maxPointAdd),
             "classroomId": parseInt(props.class),
             "ordinalNumber": gradeStructure.length + 1
         }
-        console.log(gradeItem);
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
         axios.post('http://localhost:8002/api/v1/classroom/grade/add', gradeItem, { headers })
             .then(function (response) {
-                console.log(response);
                 if (response.data.status === 1) {
-                    const newGradeStructure = [...gradeStructure, { "name": namePointAdd, "maxPoint": maxPointAdd }]
+                    const data = response.data.data;
+                    const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber }]
                     setGradeStructure(newGradeStructure);
+                    setIsLoading(false)
                 }
             })
             .catch(function (error) {
@@ -57,66 +64,117 @@ function GradeStructure(props) {
         setNamePointAdd('');
     }
 
-    return <div> <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="droppable-1">
-            {(provider) => (
-                <div
-                    className="text-capitalize"
-                    ref={provider.innerRef}
-                    {...provider.droppableProps}
-                >
-                    {gradeStructure?.map((gradeItem, index) => (
-                        <div key={gradeItem.name}>
-                            <Draggable
-                                key={gradeItem.name}
-                                draggableId={gradeItem.name}
-                                index={index}
-                            >
-                                {(provider) => (
-                                    <div {...provider.draggableProps} ref={provider.innerRef}>
-                                        <span {...provider.dragHandleProps}>
-                                            <TextField
-                                                name="name"
-                                                label="Name"
-                                                sx={{ mt: 3 }}
-                                                required
-                                                value={gradeItem.name}
-                                                className="nameInput"
-                                            />
-                                            <TextField
-                                                name="maxPoint"
-                                                label="Max point"
-                                                sx={{ mt: 3 }}
-                                                required
-                                                value={gradeItem.maxPoint}
-                                            />
-                                        </span>
-                                        <Button
-                                            sx={{ mt: 3, ml: 2 }}
-                                            color="primary"
-                                            type="submit"
-                                            variant="outlined"
-                                            key={"save" + gradeItem.name}
-                                            id="saveButton"
-                                        >
-                                            <AiOutlineSave />
-                                        </Button>
-                                    </div>
-                                )}
-                            </Draggable>
+    const handleUpdateGradeStructure = (grade) => {
+        if(grade.id!==chosenGrade.id)
+            return;
+        setIsLoading(true);
+        const gradeUpdateItem = {
+            "name": namePointEdit,
+            "maxPoint": parseFloat(maxPointEdit),
+            "id": chosenGrade.id,
+            "ordinalNumber": chosenGrade.ordinalNumber
+        }
+        const headers = {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+        axios.post('http://localhost:8002/api/v1/classroom/grade/update', gradeUpdateItem, { headers })
+            .then(function (response) {
+                if (response.data.status === 1) {
+                    const data = response.data.data;
+                    const newGradeStructure = gradeStructure;
+                    newGradeStructure.forEach(function (item, i) { if (item.id === data.id) { item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber } });
+                    // const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber }]
+                    setNamePointEdit(data.name);
+                    setMaxPointEdit(data.maxPoint);
+                    setGradeStructure(newGradeStructure);
+                    setIsLoading(false)
+                }
+            })
+            .catch(function (error) {
+                return error
+            })
+    }
 
-                        </div>
-                    ))}
-                    {provider.placeholder}
-                </div>
-            )}
-        </Droppable>
-    </DragDropContext>
+    const onChoose = (item) => {
+        if(item.id===chosenGrade.id)
+            return;
+        setChosenGrade(item);
+        setNamePointEdit(item.name);
+        setMaxPointEdit(item.maxPoint);
+    }
+
+    return <div>
+        {isLoading && <CircularProgress id="circularProgress"></CircularProgress>}
+        <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="droppable-1">
+                {(provider) => (
+                    <div
+                        className="text-capitalize"
+                        ref={provider.innerRef}
+                        {...provider.droppableProps}
+                    >
+                        {gradeStructure?.map((gradeItem, index) => (
+                            <div key={gradeItem.id} onClick={() => onChoose(gradeItem)}>
+                                <Draggable
+                                    key={gradeItem.id}
+                                    draggableId={gradeItem.name}
+                                    index={index}
+                                >
+                                    {(provider) => (
+                                        <div {...provider.draggableProps} ref={provider.innerRef}>
+                                            <span {...provider.dragHandleProps}>
+                                                <TextField
+                                                    name="name"
+                                                    label="Name"
+                                                    sx={{ mt: 3 }}
+                                                    required
+                                                    value={(gradeItem.id === chosenGrade.id) ? namePointEdit : gradeItem.name}
+                                                    className="nameInput"
+                                                    onChange={(e) => { setNamePointEdit(e.target.value) }}
+                                                />
+                                                <TextField
+                                                    name="maxPoint"
+                                                    label="Max point"
+                                                    sx={{ mt: 3 }}
+                                                    required
+                                                    value={(gradeItem.id === chosenGrade.id) ? maxPointEdit : gradeItem.maxPoint}
+                                                    onChange={(e) => { setMaxPointEdit(e.target.value) }}
+                                                />
+                                            </span>
+                                            <Button
+                                                sx={{ mt: 3, ml: 2 }}
+                                                color="primary"
+                                                variant="outlined"
+                                                key={"save" + gradeItem.id}
+                                                id="saveButton"
+                                                onClick={() => handleUpdateGradeStructure(gradeItem)}
+                                            >
+                                                <AiOutlineCheck />
+                                            </Button>
+                                            <Button
+                                                sx={{ mt: 3, ml: 2 }}
+                                                color="primary"
+                                                variant="outlined"
+                                                key={"delete" + gradeItem.id}
+                                                id="deleteButton"
+                                            >
+                                                <AiFillDelete />
+                                            </Button>
+                                        </div>
+                                    )}
+                                </Draggable>
+
+                            </div>
+                        ))}
+                        {provider.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
         <TextField
             name="namePointAdd"
             label="Name"
             sx={{ mt: 3 }}
-            required
             className="nameInput"
             value={namePointAdd}
             onChange={(e) => { setNamePointAdd(e.target.value) }}
@@ -125,7 +183,6 @@ function GradeStructure(props) {
             name="maxPointAdd"
             label="Max point"
             sx={{ mt: 3 }}
-            required
             value={maxPointAdd}
             onChange={(e) => { setMaxPointAdd(e.target.value) }}
         />

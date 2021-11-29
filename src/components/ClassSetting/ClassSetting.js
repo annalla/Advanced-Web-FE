@@ -113,7 +113,6 @@ function ClassSetting({ onclose, data }) {
                                         color="primary"
                                         type="submit"
                                         variant="outlined"
-                                    // fullWidth
                                     >
                                         Save
                                     </Button>
@@ -121,7 +120,7 @@ function ClassSetting({ onclose, data }) {
                             </form>
                             <form onSubmit={handleSubmit(onSubmit)} id="theme">
                                 <div>Grading</div>
-                                <GradeStructure class={data.id}></GradeStructure>
+                                <GradeStructure class={data.id} isLoading={isLoading}></GradeStructure>
                                 <Grid container justifyContent="center">
                                     <FormHelperText error>{errorResponse}</FormHelperText>
                                 </Grid>

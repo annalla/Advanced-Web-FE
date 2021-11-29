@@ -5,3 +5,12 @@
 .nameInput{
     padding-right: 10px;
 }
+
+#circularProgress {
+    margin-left: 50%;
+}
+
+#deleteButton{
+    background-color: red;
+    margin-top: 35px !important;
+}
