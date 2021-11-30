@@ -30,5 +30,8 @@ export const ERROR_CODE = {
     INVALID_CLASSROOM_INVITE_CODE: "Invalid classroom invite code!",
     USER_ALREADY_IN_CLASSROOM: "User already in classroom!",
     USER_ALREADY_OWNER_OF_CLASSROOM: "User is owner of this classroom!",
-    ONLY_OWNER_CAN_INVITE_MEMBER_TO_CLASS: "Only owner can invite member to classroom!"
+    ONLY_OWNER_CAN_INVITE_MEMBER_TO_CLASS: "Only owner can invite member to classroom!",
+
+    // Grade
+    EXISTED_GRADE_IN_CLASSROOM: "Grade existed in this classroom. Please pick up another grade!"
 }

@@ -5,9 +5,11 @@ import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import { AiOutlineCheck, AiFillDelete } from 'react-icons/ai';
 import { CircularProgress } from '@material-ui/core';
+import FormHelperText from '@mui/material/FormHelperText';
 
 import { API_URL } from "../../constants/const";
 import './GradeStructure.css'
+import { ERROR_CODE } from "../../constants/errorCode";
 
 const API_URL_GRADE = API_URL + 'classroom/grade/'
 
@@ -19,6 +21,7 @@ function GradeStructure(props) {
     const [chosenGrade, setChosenGrade] = useState({ "id": null });
     const [namePointEdit, setNamePointEdit] = useState('');
     const [maxPointEdit, setMaxPointEdit] = useState(null);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         setIsLoading(true);
@@ -59,6 +62,8 @@ function GradeStructure(props) {
                 }
             })
             .catch(function (error) {
+                setError(error);
+                setIsLoading(false);
                 return error
             })
     }
@@ -106,8 +111,13 @@ function GradeStructure(props) {
                     setGradeStructure(newGradeStructure);
                     setIsLoading(false)
                 }
+                else if (response.data.status === 0 && response.data.code === "EXISTED_GRADE_IN_CLASSROOM")
+                    setError(ERROR_CODE.EXISTED_GRADE_IN_CLASSROOM)
+                    setIsLoading(false)
             })
             .catch(function (error) {
+                setError(error)
+                setIsLoading(false)
                 return error
             })
         setMaxPointAdd(0);
@@ -144,6 +154,8 @@ function GradeStructure(props) {
                 }
             })
             .catch(function (error) {
+                setError(error);
+                setIsLoading(false);
                 return error
             })
     }
@@ -170,11 +182,14 @@ function GradeStructure(props) {
                 }
             })
             .catch(function (error) {
+                setError(error);
+                setIsLoading(false);
                 return error
             })
     }
     return <div>
         {isLoading && <CircularProgress id="circularProgress"></CircularProgress>}
+        {error && <FormHelperText error={true}>{error}</FormHelperText>}
         <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="droppable-1">
                 {(provider) => (
