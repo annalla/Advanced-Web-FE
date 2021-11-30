@@ -38,6 +38,7 @@ function GradeStructure(props) {
     }, [props.class])
 
     const updateOrdinalNumber = (grade) => {
+        setError('');
         setIsLoading(true);
         const gradeUpdateItem = {
             "name": grade.name,
@@ -53,9 +54,9 @@ function GradeStructure(props) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
                     const newGradeStructure = gradeStructure;
-                    newGradeStructure.forEach(function (item, i) { 
+                    newGradeStructure.forEach(function (item, i) {
                         if (item.id === data.id) {
-                             item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber 
+                            item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber
                         }
                     });
                     setIsLoading(false);
@@ -67,7 +68,7 @@ function GradeStructure(props) {
                 return error
             })
     }
-    
+
 
     const handleDragEnd = (e) => {
         if (!e.destination) return;
@@ -84,7 +85,7 @@ function GradeStructure(props) {
         }
 
         // Sort list ordinal number
-        listOrdinalNumber.sort(function(a, b){return a-b});
+        listOrdinalNumber.sort(function (a, b) { return a - b });
 
         // Set list ordinal number to data
         for (let i = 0; i < tempData.length; i++) {
@@ -92,8 +93,9 @@ function GradeStructure(props) {
             updateOrdinalNumber(tempData[i]);
         }
     }
-    
+
     const handleAddGradeStructure = () => {
+        setError('');
         setIsLoading(true);
         const gradeItem = {
             "name": namePointAdd,
@@ -109,11 +111,10 @@ function GradeStructure(props) {
                     const data = response.data.data;
                     const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber }]
                     setGradeStructure(newGradeStructure);
-                    setIsLoading(false)
                 }
                 else if (response.data.status === 0 && response.data.code === "EXISTED_GRADE_IN_CLASSROOM")
-                    setError(ERROR_CODE.EXISTED_GRADE_IN_CLASSROOM)
-                    setIsLoading(false)
+                    setError(ERROR_CODE.EXISTED_GRADE_IN_CLASSROOM);
+                setIsLoading(false)
             })
             .catch(function (error) {
                 setError(error)
@@ -125,6 +126,7 @@ function GradeStructure(props) {
     }
 
     const handleUpdateGradeStructure = (grade) => {
+        setError('');
         if (grade.id !== chosenGrade.id)
             return;
         setIsLoading(true);
@@ -142,9 +144,9 @@ function GradeStructure(props) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
                     const newGradeStructure = gradeStructure;
-                    newGradeStructure.forEach(function (item, i) { 
+                    newGradeStructure.forEach(function (item, i) {
                         if (item.id === data.id) {
-                             item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber 
+                            item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber
                         }
                     });
                     setNamePointEdit(data.name);
@@ -169,6 +171,7 @@ function GradeStructure(props) {
     }
 
     const handleDeleteGradeStructure = (gradeId) => {
+        setError('');
         setIsLoading(true);
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -220,6 +223,8 @@ function GradeStructure(props) {
                                                 <TextField
                                                     name="maxPoint"
                                                     label="Max point"
+                                                    type="number"
+                                                    step="0.1"
                                                     sx={{ mt: 3 }}
                                                     required
                                                     value={(gradeItem.id === chosenGrade.id) ? maxPointEdit : gradeItem.maxPoint}
