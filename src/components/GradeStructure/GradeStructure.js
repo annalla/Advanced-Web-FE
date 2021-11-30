@@ -6,7 +6,10 @@ import { Button, TextField } from "@mui/material";
 import { AiOutlineCheck, AiFillDelete } from 'react-icons/ai';
 import { CircularProgress } from '@material-ui/core';
 
+import { API_URL } from "../../constants/const";
 import './GradeStructure.css'
+
+const API_URL_GRADE = API_URL + 'classroom/grade/'
 
 function GradeStructure(props) {
     const [gradeStructure, setGradeStructure] = useState([])
@@ -22,7 +25,7 @@ function GradeStructure(props) {
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`,
         };
-        axios.get('http://localhost:8002/api/v1/classroom/grade/' + props.class, { headers })
+        axios.get(API_URL_GRADE + props.class, { headers })
             .then(response => {
                 if (response.data.data) {
                     setGradeStructure(response.data.data);
@@ -42,7 +45,7 @@ function GradeStructure(props) {
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
-        axios.post('http://localhost:8002/api/v1/classroom/grade/update', gradeUpdateItem, { headers })
+        axios.post(API_URL_GRADE + 'update', gradeUpdateItem, { headers })
             .then(function (response) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
@@ -68,7 +71,6 @@ function GradeStructure(props) {
         let [source_data] = tempData.splice(e.source.index, 1);
         tempData.splice(e.destination.index, 0, source_data);
         setGradeStructure(tempData);
-        console.log(tempData)
 
         // Get list ordinal number
         let listOrdinalNumber = [];
@@ -97,7 +99,7 @@ function GradeStructure(props) {
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
-        axios.post('http://localhost:8002/api/v1/classroom/grade/add', gradeItem, { headers })
+        axios.post(API_URL_GRADE + 'add', gradeItem, { headers })
             .then(function (response) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
@@ -126,7 +128,7 @@ function GradeStructure(props) {
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
-        axios.post('http://localhost:8002/api/v1/classroom/grade/update', gradeUpdateItem, { headers })
+        axios.post(API_URL_GRADE + 'update', gradeUpdateItem, { headers })
             .then(function (response) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
@@ -160,7 +162,7 @@ function GradeStructure(props) {
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
-        axios.get('http://localhost:8002/api/v1/classroom/grade/delete/' + gradeId, { headers })
+        axios.get(API_URL_GRADE + 'delete/' + gradeId, { headers })
             .then(function (response) {
                 if (response.data.status === 1) {
                     let newGradeStructure = gradeStructure;
