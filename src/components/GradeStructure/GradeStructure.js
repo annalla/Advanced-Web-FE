@@ -66,7 +66,7 @@ function GradeStructure(props) {
 
     const handleDragEnd = (e) => {
         if (!e.destination) return;
-        // if (e.destination.index === e.source.index) return;
+        if (e.destination.index === e.source.index) return;
         let tempData = Array.from(gradeStructure);
         let [source_data] = tempData.splice(e.source.index, 1);
         tempData.splice(e.destination.index, 0, source_data);
@@ -93,8 +93,7 @@ function GradeStructure(props) {
         const gradeItem = {
             "name": namePointAdd,
             "maxPoint": parseFloat(maxPointAdd),
-            "classroomId": parseInt(props.class),
-            "ordinalNumber": gradeStructure.length + 1
+            "classroomId": parseInt(props.class)
         }
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
