@@ -30,13 +30,62 @@ function GradeStructure(props) {
                 }
             });
     }, [props.class])
+
+    const updateOrdinalNumber = (grade) => {
+        setIsLoading(true);
+        const gradeUpdateItem = {
+            "name": grade.name,
+            "maxPoint": parseFloat(grade.maxPoint),
+            "id": grade.id,
+            "ordinalNumber": grade.ordinalNumber
+        }
+        const headers = {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+        axios.post('http://localhost:8002/api/v1/classroom/grade/update', gradeUpdateItem, { headers })
+            .then(function (response) {
+                if (response.data.status === 1) {
+                    const data = response.data.data;
+                    const newGradeStructure = gradeStructure;
+                    newGradeStructure.forEach(function (item, i) { 
+                        if (item.id === data.id) {
+                             item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber 
+                        }
+                    });
+                    setIsLoading(false);
+                }
+            })
+            .catch(function (error) {
+                return error
+            })
+    }
+    
+
     const handleDragEnd = (e) => {
         if (!e.destination) return;
+        // if (e.destination.index === e.source.index) return;
         let tempData = Array.from(gradeStructure);
         let [source_data] = tempData.splice(e.source.index, 1);
         tempData.splice(e.destination.index, 0, source_data);
         setGradeStructure(tempData);
+        console.log(tempData)
+
+        // Get list ordinal number
+        let listOrdinalNumber = [];
+        for (let i = 0; i < tempData.length; i++) {
+            if (tempData[i].ordinalNumber) listOrdinalNumber.push(tempData[i].ordinalNumber);
+        }
+
+        // Sort list ordinal number
+        listOrdinalNumber.sort(function(a, b){return a-b});
+
+        // Set list ordinal number to data
+        for (let i = 0; i < tempData.length; i++) {
+            tempData[i].ordinalNumber = listOrdinalNumber[i];
+            updateOrdinalNumber(tempData[i]);
+        }
     }
+    
     const handleAddGradeStructure = () => {
         setIsLoading(true);
         const gradeItem = {
@@ -65,7 +114,7 @@ function GradeStructure(props) {
     }
 
     const handleUpdateGradeStructure = (grade) => {
-        if(grade.id!==chosenGrade.id)
+        if (grade.id !== chosenGrade.id)
             return;
         setIsLoading(true);
         const gradeUpdateItem = {
@@ -82,8 +131,11 @@ function GradeStructure(props) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
                     const newGradeStructure = gradeStructure;
-                    newGradeStructure.forEach(function (item, i) { if (item.id === data.id) { item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber } });
-                    // const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber }]
+                    newGradeStructure.forEach(function (item, i) { 
+                        if (item.id === data.id) {
+                             item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber 
+                        }
+                    });
                     setNamePointEdit(data.name);
                     setMaxPointEdit(data.maxPoint);
                     setGradeStructure(newGradeStructure);
@@ -96,13 +148,30 @@ function GradeStructure(props) {
     }
 
     const onChoose = (item) => {
-        if(item.id===chosenGrade.id)
+        if (item.id === chosenGrade.id)
             return;
         setChosenGrade(item);
         setNamePointEdit(item.name);
         setMaxPointEdit(item.maxPoint);
     }
 
+    const handleDeleteGradeStructure = (gradeId) => {
+        setIsLoading(true);
+        const headers = {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+        axios.get('http://localhost:8002/api/v1/classroom/grade/delete/' + gradeId, { headers })
+            .then(function (response) {
+                if (response.data.status === 1) {
+                    let newGradeStructure = gradeStructure;
+                    newGradeStructure.splice(gradeStructure.findIndex(v => v.id === gradeId), 1);
+                    setIsLoading(false);
+                }
+            })
+            .catch(function (error) {
+                return error
+            })
+    }
     return <div>
         {isLoading && <CircularProgress id="circularProgress"></CircularProgress>}
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -157,6 +226,7 @@ function GradeStructure(props) {
                                                 variant="outlined"
                                                 key={"delete" + gradeItem.id}
                                                 id="deleteButton"
+                                                onClick={() => handleDeleteGradeStructure(gradeItem.id)}
                                             >
                                                 <AiFillDelete />
                                             </Button>
