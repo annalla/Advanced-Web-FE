@@ -4,11 +4,11 @@
 }
 
 .backdrop {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 70vw;
     background-color: #33333377;
     z-index: 10;
     overflow-y: scroll;
@@ -37,6 +37,6 @@
 }
 
 #theme{
-    padding-left: 30%;
-    padding-right: 30%;
+    padding-left: 20%;
+    padding-right: 20%;
 }

@@ -8,6 +8,7 @@ import "./Stream.css";
 import AccordionAnnounce from "./StreamItem/ArcordionAnnounce";
 import UpcomingBox from "./StreamItem/UpcommingBox";
 import IntroductionBox from "./StreamItem/IntroductionBox";
+import GradeStructureBox from "./StreamItem/GradeStructureBox";
 
 const Stream = ({ data }) => {
   const isDescription = data.description !== "" ? true : false;
@@ -69,6 +70,7 @@ const Stream = ({ data }) => {
             </Box>
             <Box sx={{ width: "20%" }}>
               <UpcomingBox />
+              {/* {data.isCustom?<GradeStructureBox/>:""} */}
             </Box>
           </Box>
         </Box>
