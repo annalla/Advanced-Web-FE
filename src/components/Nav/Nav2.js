@@ -11,9 +11,6 @@ import IconButton from "@mui/material/IconButton";
 
 function Nav2({ data, valueTab }) {
   const [isOpenSetting, setIsOpenSetting] = useState(false);
-  //useEffect(() => {
-  //    console.log(data)
-  //}, [data])
   return (
     <Fragment>
       <header>
@@ -35,6 +32,7 @@ function Nav2({ data, valueTab }) {
 
           <nav>
             <ul>
+              {data.isCustom &&
               <li>
                 <Box
                   sx={{
@@ -52,6 +50,7 @@ function Nav2({ data, valueTab }) {
                   </IconButton>
                 </Box>
               </li>
+              }
               <li>
                 <AvatarIcon />
               </li>
