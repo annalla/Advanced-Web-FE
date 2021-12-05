@@ -53,11 +53,11 @@ function MenuDrawer() {
       const enrolled = AuthCtx.enrolledClass;
       const teaching = AuthCtx.teachingClass;
       if (enrolled) {
-        setEnrolledList(joinTwoList(enrolled, AuthCtx.idEnrolledClass));
+        setEnrolledList(enrolled);
         // setIdEnrolledList(AuthCtx.idEnrolledClass);
       }
       if (teaching) {
-        setTeachingList(joinTwoList(teaching, AuthCtx.idTeachingClass));
+        setTeachingList(teaching);
         // setIdTeachingList(AuthCtx.idTeachingClass);
       }
     }

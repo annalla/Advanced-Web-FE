@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {joinTwoList} from "../utils/util"
 
 const AuthContext = React.createContext({
   isAuthenticated: false,
@@ -10,8 +11,8 @@ const AuthContext = React.createContext({
   },
   teachingClass: [],
   enrolledClass: [],
-  idTeachingClass: [],
-  idEnrolledClass: [],
+  // idTeachingClass: [],
+  // idEnrolledClass: [],
   handleEnrolled: (data) => {},
   handleTeaching: (data) => {},
   onLogout: () => {},
@@ -31,8 +32,8 @@ export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [teachingClass, setTeachingClass] = useState([]);
   const [enrolledClass, setEnrolledClass] = useState([]);
-  const [idTeachingClass, setIdTeachingClass] = useState([]);
-  const [idEnrolledClass, setIdEnrolledClass] = useState([]);
+  // const [idTeachingClass, setIdTeachingClass] = useState([]);
+  // const [idEnrolledClass, setIdEnrolledClass] = useState([]);
 
   useEffect(() => {
     const storedUserLoggedInInformation =
@@ -59,21 +60,21 @@ export const AuthContextProvider = (props) => {
       const IdTeachingClass = localStorage.getItem("idTeaching");
       if (!EnrolledClass) {
         setEnrolledClass([]);
-        setIdEnrolledClass([]);
+        // setIdEnrolledClass([]);
       } else {
         const enrolled = changeStringToList(EnrolledClass);
-        setEnrolledClass(enrolled);
         const idEnrolled = changeStringToList(IdEnrolledClass);
-        setIdEnrolledClass(idEnrolled);
+        setEnrolledClass(joinTwoList(enrolled,idEnrolled));
+        // setIdEnrolledClass(idEnrolled);
       }
       if (!TeachingClass) {
         setTeachingClass([]);
-        setIdTeachingClass([]);
+        // setIdTeachingClass([]);
       } else {
         const teaching = changeStringToList(TeachingClass);
-        setTeachingClass(teaching);
         const idTeaching = changeStringToList(IdTeachingClass);
-        setIdTeachingClass(idTeaching);
+        setTeachingClass(joinTwoList(teaching,idTeaching));
+        // setIdTeachingClass(idTeaching);
       }
     } else {
       setIsAuthenticated(false);
@@ -90,8 +91,8 @@ export const AuthContextProvider = (props) => {
     setUser(null);
     setTeachingClass([]);
     setEnrolledClass([]);
-    setIdTeachingClass([]);
-    setIdEnrolledClass([]);
+    // setIdTeachingClass([]);
+    // setIdEnrolledClass([]);
   };
   const classListHandleTeaching = (data) => {
     var dataCustom = [];
@@ -101,9 +102,9 @@ export const AuthContextProvider = (props) => {
       return dataCustom.push(item.name);
     });
     localStorage.setItem("teaching", dataCustom);
-    setTeachingClass(dataCustom);
     localStorage.setItem("idTeaching", dataIdCustom);
-    setIdTeachingClass(dataIdCustom);
+    setTeachingClass(joinTwoList(dataCustom,dataIdCustom));
+    // setIdTeachingClass(dataIdCustom);
   };
   const classListHandleEnrolled = (data) => {
     var dataCustom = [];
@@ -113,9 +114,9 @@ export const AuthContextProvider = (props) => {
       return dataCustom.push(item.name);
     });
     localStorage.setItem("enrolled", dataCustom);
-    setEnrolledClass(dataCustom);
     localStorage.setItem("idEnrolled", dataIdCustom);
-    setIdEnrolledClass(dataIdCustom);
+    setEnrolledClass(joinTwoList(dataCustom,dataIdCustom));
+    // setIdEnrolledClass(dataIdCustom);
   };
   const loginHandler = (data) => {
     localStorage.setItem("isAuthenticated", "1");
@@ -144,8 +145,8 @@ export const AuthContextProvider = (props) => {
         user: user,
         teachingClass: teachingClass,
         enrolledClass: enrolledClass,
-        idTeachingClass: idTeachingClass,
-        idEnrolledClass: idEnrolledClass,
+        // idTeachingClass: idTeachingClass,
+        // idEnrolledClass: idEnrolledClass,
         handleEnrolled: classListHandleEnrolled,
         handleTeaching: classListHandleTeaching,
         onLogout: logoutHandler,
