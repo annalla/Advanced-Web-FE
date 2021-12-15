@@ -6,6 +6,7 @@ import { HandleJoin } from "../pages/Invite/HandleJoin";
 import { PageNotFound } from "../pages/404/PageNotFound";
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
+const DetailClassGrade = lazy(() => import("../pages/Class/DetailClassGrade"));
 
 const DetailClassPeople = lazy(() =>
   import("../pages/Class/DetailClassPeople.js")
@@ -28,6 +29,7 @@ const AuthRoutes = () => {
         <Route exact path={PATH.LOGIN} element={<Login />} />
         <Route exact path={PATH.REGISTER} element={<Register />} />
         <Route exact path={PATH.JOIN_CLASS} element={<HandleJoin/>} />
+        <Route exact path={PATH.GRADE} element={<DetailClassGrade />} />
         <Route exact path="*" element={<PageNotFound/>} />
       </Routes>
     </Suspense>
