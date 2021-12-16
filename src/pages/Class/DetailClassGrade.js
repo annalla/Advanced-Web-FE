@@ -36,7 +36,7 @@ const EditableCell = ({
 
     // We'll only update the external data when the input is blurred
     const onBlur = () => {
-        if (value === initialValue){
+        if (value === initialValue) {
             return;
         }
         updateMyData(index, id, value)
@@ -136,9 +136,10 @@ const DetailClassGrade = () => {
         return classroom;
     }, [id, classroom]);
 
+    const [data, setData] = React.useState([])
+
     useEffect(() => {
-        if (id in dict) {
-        } else {
+        setLoading(true);
             getClassById(token, id)
                 .then((res) => {
                     if (res.status === 1) {
@@ -147,6 +148,7 @@ const DetailClassGrade = () => {
                             code: res.data.code,
                             description: res.data.description,
                             id: res.data.id,
+                            studentArray: res.data.studentArray,
                             isCustom:
                                 res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
                                     ? true
@@ -156,8 +158,18 @@ const DetailClassGrade = () => {
                                     ? SRC_IMG.COVER_IMAGE_CLASS
                                     : res.data.coverImageUrl,
                         };
+                        console.log(information.studentArray)
                         setClassroom(information);
+                        setData(information.studentArray.map(
+                            (student) => {
+                                return {
+                                    code: student.code,
+                                    name: student.name,
+                                    subRows: 0
+                                }
+                            }))
                         dict[id] = information;
+                        setLoading(false);
                     } else {
                         setError(ERROR_CODE[res] || "Get class by id failed!");
                     }
@@ -165,7 +177,6 @@ const DetailClassGrade = () => {
                 .catch((err) => {
                     setError(ERROR_CODE[err] || "Get class by id failed!");
                 });
-        }
     }, [id, token]);
 
     const columns = React.useMemo(
@@ -174,62 +185,40 @@ const DetailClassGrade = () => {
                 Header: 'Name',
                 columns: [
                     {
-                        Header: 'First Name',
-                        accessor: 'firstName',
+                        Header: 'Code',
+                        accessor: 'code',
                     },
                     {
-                        Header: 'Last Name',
-                        accessor: 'lastName',
+                        Header: 'Name',
+                        accessor: 'name',
                     },
                 ],
             },
-            {
-                Header: 'Grade',
-                columns: [
-                    {
-                        Header: 'Age',
-                        accessor: 'age',
-                    },
-                    {
-                        Header: 'Visits',
-                        accessor: 'visits',
-                    },
-                    {
-                        Header: 'Status',
-                        accessor: 'status',
-                    },
-                    {
-                        Header: 'Profile Progress',
-                        accessor: 'progress',
-                    },
-                ],
-            },
+            //{
+            //    Header: 'Grade',
+            //    columns: [
+            //        {
+            //            Header: 'Age',
+            //            accessor: 'age',
+            //        },
+            //        {
+            //            Header: 'Visits',
+            //            accessor: 'visits',
+            //        },
+            //        {
+            //            Header: 'Status',
+            //            accessor: 'status',
+            //        },
+            //        {
+            //            Header: 'Profile Progress',
+            //            accessor: 'progress',
+            //        },
+            //    ],
+            //},
         ],
         []
     )
 
-    const [data, setData] = React.useState(() => {
-        return [
-        {
-            firstName: 'hi5',
-            lastName: 'hello5',
-            age: Math.floor(Math.random() * 30),
-            visits: Math.floor(Math.random() * 100),
-            progress: Math.floor(Math.random() * 100),
-            status: 'single',
-            subRows: 0
-        },
-        {
-            firstName: 'hi5',
-            lastName: 'hello',
-            age: Math.floor(Math.random() * 30),
-            visits: Math.floor(Math.random() * 100),
-            progress: Math.floor(Math.random() * 100),
-            status: 'single',
-            subRows: 0
-        },
-    ]
-    })
     const [skipPageReset, setSkipPageReset] = React.useState(false)
 
     // We need to keep the table from resetting the pageIndex when we
@@ -245,8 +234,6 @@ const DetailClassGrade = () => {
         setData(old =>
             old.map((row, index) => {
                 if (index === rowIndex) {
-                    //if (old[rowIndex][columnId] === value)
-                    //    return;
                     return {
                         ...old[rowIndex],
                         [columnId]: value,
@@ -269,8 +256,14 @@ const DetailClassGrade = () => {
     return (
         <Fragment>
             {error && <div>Error: {error}</div>}
-            {loading && <Loading />}
             <Nav2 data={information} valueTab={VALUE_TAB.TAB_GRADE} />
+            {loading && <Loading />}
+            {/*{!loading && <Table
+                columns={columns}
+                data={data}
+                updateMyData={updateMyData}
+                skipPageReset={skipPageReset}
+            />}*/}
             <Table
                 columns={columns}
                 data={data}
