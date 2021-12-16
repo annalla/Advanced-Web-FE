@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, Fragment, useContext } from "react";
 import { useLocation } from "react-router";
-import CssBaseline from '@material-ui/core/CssBaseline'
+import Input from '@mui/material/Input';
 import MaUTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import { useTable } from 'react-table'
+import { useTable, usePagination } from 'react-table'
 
 import { SRC_IMG, VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
@@ -21,6 +21,105 @@ import { Nav2 } from "../../components/Nav/Nav2";
 
 const dict = {};
 
+const EditableCell = ({
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData, // This is a custom function that we supplied to our table instance
+}) => {
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue)
+
+    const onChange = e => {
+        setValue(e.target.value)
+    }
+
+    // We'll only update the external data when the input is blurred
+    const onBlur = () => {
+        if (value === initialValue){
+            return;
+        }
+        updateMyData(index, id, value)
+        //console.log("index: ", index);
+        //console.log("id: ", id);
+        //console.log("value:", value);
+    }
+
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+
+    return <Input value={value} onChange={onChange} onBlur={onBlur} />
+}
+
+// Set our editable cell renderer as the default Cell renderer
+const defaultColumn = {
+    Cell: EditableCell,
+}
+
+// Be sure to pass our updateMyData and the skipPageReset option
+function Table({ columns, data, updateMyData, skipPageReset }) {
+    // For this example, we're using pagination to illustrate how to stop
+    // the current page from resetting when our data changes
+    // Otherwise, nothing is different here.
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        page
+    } = useTable(
+        {
+            columns,
+            data,
+            defaultColumn,
+            // use the skipPageReset option to disable page resetting temporarily
+            autoResetPage: !skipPageReset,
+            // updateMyData isn't part of the API, but
+            // anything we put into these options will
+            // automatically be available on the instance.
+            // That way we can call this function from our
+            // cell renderer!
+            updateMyData,
+        },
+        usePagination
+    )
+
+    // Render the UI for your table
+    return (
+        <MaUTable {...getTableProps()}>
+            <TableHead>
+                {headerGroups.map(headerGroup => (
+                    <TableRow {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map(column => (
+                            <TableCell {...column.getHeaderProps()}>
+                                {column.render('Header')}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                ))}
+            </TableHead>
+            <TableBody>
+                {page.map((row, i) => {
+                    prepareRow(row)
+                    return (
+                        <TableRow {...row.getRowProps()}>
+                            {row.cells.map(cell => {
+                                return (
+                                    <TableCell {...cell.getCellProps()}>
+                                        {cell.render('Cell')}
+                                    </TableCell>
+                                )
+                            })}
+                        </TableRow>
+                    )
+                })}
+            </TableBody>
+        </MaUTable>
+    )
+}
+
 const DetailClassGrade = () => {
     const [error, setError] = React.useState(null);
     const [classroom, setClassroom] = React.useState({});
@@ -32,7 +131,6 @@ const DetailClassGrade = () => {
 
     const information = useMemo(() => {
         if (id in dict) {
-            setLoading(true)
             return dict[id];
         }
         return classroom;
@@ -70,92 +168,117 @@ const DetailClassGrade = () => {
         }
     }, [id, token]);
 
-    const EditableCell = ({
-        value: initialValue,
-        row: { index },
-        column: { id },
-        updateMyData, // This is a custom function that we supplied to our table instance
-      }) => {
-        // We need to keep and update the state of the cell normally
-        const [value, setValue] = React.useState(initialValue)
-      
-        const onChange = e => {
-          setValue(e.target.value)
-        }
-      
-        // We'll only update the external data when the input is blurred
-        const onBlur = () => {
-          updateMyData(index, id, value)
-        }
-      
-        // If the initialValue is changed external, sync it up with our state
-        React.useEffect(() => {
-          setValue(initialValue)
-        }, [initialValue])
-      
-        return <input value={value} onChange={onChange} onBlur={onBlur} />
-      }
     const columns = React.useMemo(
         () => [
-          {
-            Header: "hello",
-            columns: [
-              {
-                Header: 'First Name',
-                accessor: 'firstName',
-              },
-              {
-                Header: 'Last Name',
-                accessor: 'lastName',
-              }
-            ]
-          }
+            {
+                Header: 'Name',
+                columns: [
+                    {
+                        Header: 'First Name',
+                        accessor: 'firstName',
+                    },
+                    {
+                        Header: 'Last Name',
+                        accessor: 'lastName',
+                    },
+                ],
+            },
+            {
+                Header: 'Grade',
+                columns: [
+                    {
+                        Header: 'Age',
+                        accessor: 'age',
+                    },
+                    {
+                        Header: 'Visits',
+                        accessor: 'visits',
+                    },
+                    {
+                        Header: 'Status',
+                        accessor: 'status',
+                    },
+                    {
+                        Header: 'Profile Progress',
+                        accessor: 'progress',
+                    },
+                ],
+            },
         ],
         []
-      )
-    const data = [{firstName: 1, lastName: 2}, {firstName: 1, lastName: 2}]
+    )
 
-    const { getTableProps, headerGroups, rows, prepareRow } = useTable({
-        columns,
-        data,
+    const [data, setData] = React.useState(() => {
+        return [
+        {
+            firstName: 'hi5',
+            lastName: 'hello5',
+            age: Math.floor(Math.random() * 30),
+            visits: Math.floor(Math.random() * 100),
+            progress: Math.floor(Math.random() * 100),
+            status: 'single',
+            subRows: 0
+        },
+        {
+            firstName: 'hi5',
+            lastName: 'hello',
+            age: Math.floor(Math.random() * 30),
+            visits: Math.floor(Math.random() * 100),
+            progress: Math.floor(Math.random() * 100),
+            status: 'single',
+            subRows: 0
+        },
+    ]
     })
+    const [skipPageReset, setSkipPageReset] = React.useState(false)
 
+    // We need to keep the table from resetting the pageIndex when we
+    // Update data. So we can keep track of that flag with a ref.
 
+    // When our cell renderer calls updateMyData, we'll use
+    // the rowIndex, columnId and new value to update the
+    // original data
+    const updateMyData = (rowIndex, columnId, value) => {
+        // We also turn on the flag to not reset the page
+        setSkipPageReset(true)
+
+        setData(old =>
+            old.map((row, index) => {
+                if (index === rowIndex) {
+                    //if (old[rowIndex][columnId] === value)
+                    //    return;
+                    return {
+                        ...old[rowIndex],
+                        [columnId]: value,
+                    }
+                }
+                return row
+            })
+        )
+    }
+
+    // After data chagnes, we turn the flag back off
+    // so that if data actually changes when we're not
+    // editing it, the page is reset
+    React.useEffect(() => {
+        setSkipPageReset(false)
+    }, [data])
+
+    // Let's add a data resetter/randomizer to help
+    // illustrate that flow...
     return (
         <Fragment>
             {error && <div>Error: {error}</div>}
-            {!loading && <Loading />}
+            {loading && <Loading />}
             <Nav2 data={information} valueTab={VALUE_TAB.TAB_GRADE} />
-            <MaUTable {...getTableProps()}>
-                <TableHead>
-                    {headerGroups.map(headerGroup => (
-                        <TableRow {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <TableCell {...column.getHeaderProps()}>
-                                    {column.render('Header')}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableHead>
-                <TableBody>
-                    {rows.map((row, i) => {
-                        prepareRow(row)
-                        return (
-                            <TableRow {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return (
-                                        <TableCell {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
-                                        </TableCell>
-                                    )
-                                })}
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </MaUTable>
+            <Table
+                columns={columns}
+                data={data}
+                updateMyData={updateMyData}
+                skipPageReset={skipPageReset}
+            />
         </Fragment>
     );
 };
+
 export default DetailClassGrade;
