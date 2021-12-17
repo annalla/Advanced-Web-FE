@@ -104,30 +104,27 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
             <TableBody>
                 {page.map((row, i) => {
                     prepareRow(row)
+                    const cell = row.cells.map(cell => {
+                        return (
+                            <TableCell {...cell.getCellProps()}>
+                                {cell.render('Cell')}
+                            </TableCell>
+                        )
+                    });
                     if (row.original.isHaveAccount)
                         return (
                             <TableRow {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return (
-                                        <TableCell {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
-                                        </TableCell>
-                                    )
-                                })}
+                                {cell}
                             </TableRow>
                         )
                     else if (!row.original.isHaveAccount) {
-                        return <TableRow {...row.getRowProps()} style={{background: "#808080"}}>
-                            {row.cells.map(cell => {
-                                return (
-                                    <TableCell {...cell.getCellProps()}>
-                                        {cell.render('Cell')}
-                                    </TableCell>
-                                )
-                            })}
+                        return <TableRow {...row.getRowProps()} style={{ background: "#808080" }}>
+                            {cell}
                         </TableRow>
                     }
-                })}
+                }
+                )
+                }
             </TableBody>
         </MaUTable>
     )
