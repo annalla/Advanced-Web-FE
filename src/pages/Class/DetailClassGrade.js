@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { useTable, usePagination } from 'react-table'
+import axios from 'axios'
 
 import { SRC_IMG, VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
@@ -140,43 +141,54 @@ const DetailClassGrade = () => {
 
     useEffect(() => {
         setLoading(true);
-            getClassById(token, id)
-                .then((res) => {
-                    if (res.status === 1) {
-                        const information = {
-                            name: res.data.name,
-                            code: res.data.code,
-                            description: res.data.description,
-                            id: res.data.id,
-                            studentArray: res.data.studentArray,
-                            isCustom:
-                                res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
-                                    ? true
-                                    : false,
-                            coverImageUrl:
-                                res.data.coverImageUrl === ""
-                                    ? SRC_IMG.COVER_IMAGE_CLASS
-                                    : res.data.coverImageUrl,
-                        };
-                        console.log(information.studentArray)
-                        setClassroom(information);
-                        setData(information.studentArray.map(
-                            (student) => {
-                                return {
-                                    code: student.code,
-                                    name: student.name,
-                                    subRows: 0
-                                }
-                            }))
-                        dict[id] = information;
-                        setLoading(false);
-                    } else {
-                        setError(ERROR_CODE[res] || "Get class by id failed!");
-                    }
-                })
-                .catch((err) => {
-                    setError(ERROR_CODE[err] || "Get class by id failed!");
-                });
+        getClassById(token, id)
+            .then((res) => {
+                if (res.status === 1) {
+                    const information = {
+                        name: res.data.name,
+                        code: res.data.code,
+                        description: res.data.description,
+                        id: res.data.id,
+                        studentArray: res.data.studentArray,
+                        isCustom:
+                            res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
+                                ? true
+                                : false,
+                        coverImageUrl:
+                            res.data.coverImageUrl === ""
+                                ? SRC_IMG.COVER_IMAGE_CLASS
+                                : res.data.coverImageUrl,
+                    };
+                    setClassroom(information);
+                    setLoading(true);
+                    let listGrade = [];
+                    axios.get(
+                        'http://localhost:8002/api/v1/classroom/grade/board/' + information.id,
+                        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+                    )
+                        .then(function (response) {
+                            setLoading(false);
+                            listGrade = response.data.data;
+
+                            setData(listGrade.map(
+                                (student) => {
+                                    return {
+                                        code: student.code,
+                                        name: student.name,
+                                        subRows: 0
+                                    }
+                                }))
+
+                        })
+
+                    dict[id] = information;
+                } else {
+                    setError(ERROR_CODE[res] || "Get class by id failed!");
+                }
+            })
+            .catch((err) => {
+                setError(ERROR_CODE[err] || "Get class by id failed!");
+            });
     }, [id, token]);
 
     const columns = React.useMemo(
@@ -258,18 +270,12 @@ const DetailClassGrade = () => {
             {error && <div>Error: {error}</div>}
             <Nav2 data={information} valueTab={VALUE_TAB.TAB_GRADE} />
             {loading && <Loading />}
-            {/*{!loading && <Table
+            {!loading && <Table
                 columns={columns}
                 data={data}
                 updateMyData={updateMyData}
                 skipPageReset={skipPageReset}
-            />}*/}
-            <Table
-                columns={columns}
-                data={data}
-                updateMyData={updateMyData}
-                skipPageReset={skipPageReset}
-            />
+            />}
         </Fragment>
     );
 };
