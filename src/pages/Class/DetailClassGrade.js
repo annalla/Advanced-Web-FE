@@ -104,8 +104,20 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
             <TableBody>
                 {page.map((row, i) => {
                     prepareRow(row)
-                    return (
-                        <TableRow {...row.getRowProps()}>
+                    if (row.original.isHaveAccount)
+                        return (
+                            <TableRow {...row.getRowProps()}>
+                                {row.cells.map(cell => {
+                                    return (
+                                        <TableCell {...cell.getCellProps()}>
+                                            {cell.render('Cell')}
+                                        </TableCell>
+                                    )
+                                })}
+                            </TableRow>
+                        )
+                    else if (!row.original.isHaveAccount) {
+                        return <TableRow {...row.getRowProps()} style={{background: "#808080"}}>
                             {row.cells.map(cell => {
                                 return (
                                     <TableCell {...cell.getCellProps()}>
@@ -114,7 +126,7 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
                                 )
                             })}
                         </TableRow>
-                    )
+                    }
                 })}
             </TableBody>
         </MaUTable>
@@ -173,12 +185,12 @@ const DetailClassGrade = () => {
                             setData(listGrade.map(
                                 (student) => {
                                     return {
-                                        code: student.code,
-                                        name: student.name,
-                                        subRows: 0
+                                        code: student.studentCode,
+                                        name: student.studentName,
+                                        subRows: 0,
+                                        isHaveAccount: (student.name ? true : false)
                                     }
                                 }))
-
                         })
 
                     dict[id] = information;
