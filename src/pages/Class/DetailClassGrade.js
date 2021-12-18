@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, Fragment, useContext } from "react";
+import React, { useEffect, useMemo, Fragment, useContext, useState } from "react";
 import { useLocation } from "react-router";
 import Input from '@mui/material/Input';
 import MaUTable from '@material-ui/core/Table'
@@ -16,11 +16,18 @@ import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
 import { JWT_TYPE } from "../../constants/const";
 import { ERROR_CODE } from "../../constants/errorCode";
+import { API_URL } from "../../constants/const";
 
 import Loading from "../../components/Loading/Loading";
 import { Nav2 } from "../../components/Nav/Nav2";
 
 const dict = {};
+
+const API_URL_GRADE = API_URL + 'classroom/grade/';
+
+const headers = {
+    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+};
 
 const EditableCell = ({
     value: initialValue,
@@ -131,9 +138,12 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
 }
 
 const DetailClassGrade = () => {
-    const [error, setError] = React.useState(null);
-    const [classroom, setClassroom] = React.useState({});
-    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = useState(null);
+    const [classroom, setClassroom] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [loadingGradeStructure, setLoadingGradeStructure] = useState(false);
+    const [loadingGradeBoard, setLoadingGradeBoard] = useState(false);
+    const [gradeStructure, setGradeStructure] = useState([]);
     const AuthCtx = useContext(AuthContext);
     const location = useLocation();
     const id = splitPath(location.pathname, PATH.GRADE_SPLIT);
@@ -170,25 +180,60 @@ const DetailClassGrade = () => {
                     };
                     setClassroom(information);
                     setLoading(true);
+                    setLoadingGradeBoard(true);
+                    setLoadingGradeStructure(true);
                     let listGrade = [];
-                    axios.get(
-                        'http://localhost:8002/api/v1/classroom/grade/board/' + information.id,
-                        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-                    )
-                        .then(function (response) {
-                            setLoading(false);
-                            listGrade = response.data.data;
-
-                            setData(listGrade.map(
-                                (student) => {
-                                    return {
-                                        code: student.studentCode,
-                                        name: student.studentName,
-                                        subRows: 0,
-                                        isHaveAccount: (student.name ? true : false)
+                    axios.get(API_URL_GRADE + information.id, { headers })
+                        .then(response => {
+                            if (response.data.data) {
+                                setLoadingGradeStructure(false);
+                                setGradeStructure(response.data.data.map(
+                                    (gradeComponent) => {
+                                        return {
+                                            maxPoint: gradeComponent.maxPoint,
+                                            name: gradeComponent.name
+                                        }
                                     }
-                                }))
+                                ));
+                            }
+                        }).then(() => {
+                            axios.get(
+                                'http://localhost:8002/api/v1/classroom/grade/board/' + information.id,
+                                { headers: headers }
+                            )
+                                .then(function (response) {
+                                    setLoadingGradeBoard(false);
+                                    listGrade = response.data.data;
+                                    setData(listGrade.map(
+                                        (student) => {
+                                            let gradeArrayObject = {};
+                                            gradeArrayObject = student.gradeArray.map((grade) => {
+                                                const gradeName = grade.name;
+                                                return {[gradeName]: grade.point};
+                                            })
+
+                                            let gradeArray = {};
+
+                                            for(let i = 0; i < gradeArrayObject.length; i++)
+                                                gradeArray = Object.assign(gradeArray, gradeArrayObject[i]);
+
+                                            //console.log(convertArrayToObject(gradeArrayObject, gradeArrayObject.gradeName));
+                                            //var keys = Object.keys(gradeArray);
+                                            // console.log(keys);
+                                            const row = {
+                                                ...gradeArray,
+                                                code: student.studentCode,
+                                                name: student.studentName,
+                                                subRows: 0,
+                                                isHaveAccount: (student.name ? true : false)
+                                            }
+                                            
+                                            // console.log(row);
+                                            return row;
+                                        }))
+                                })
                         })
+                    setLoading(false);
 
                     dict[id] = information;
                 } else {
@@ -215,29 +260,17 @@ const DetailClassGrade = () => {
                     },
                 ],
             },
-            //{
-            //    Header: 'Grade',
-            //    columns: [
-            //        {
-            //            Header: 'Age',
-            //            accessor: 'age',
-            //        },
-            //        {
-            //            Header: 'Visits',
-            //            accessor: 'visits',
-            //        },
-            //        {
-            //            Header: 'Status',
-            //            accessor: 'status',
-            //        },
-            //        {
-            //            Header: 'Profile Progress',
-            //            accessor: 'progress',
-            //        },
-            //    ],
-            //},
+            {
+                Header: 'Grade',
+                columns: gradeStructure.map((gradeStructure) => {
+                    return {
+                        Header: gradeStructure.name + " (Max: " + gradeStructure.maxPoint + " )",
+                        accessor: gradeStructure.name
+                    }
+                })
+            },
         ],
-        []
+        [gradeStructure]
     )
 
     const [skipPageReset, setSkipPageReset] = React.useState(false)
@@ -278,7 +311,7 @@ const DetailClassGrade = () => {
         <Fragment>
             {error && <div>Error: {error}</div>}
             <Nav2 data={information} valueTab={VALUE_TAB.TAB_GRADE} />
-            {loading && <Loading />}
+            {(loading || loadingGradeBoard || loadingGradeStructure) && <Loading />}
             {!loading && <Table
                 columns={columns}
                 data={data}
