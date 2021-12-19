@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -9,12 +9,12 @@ import { useForm } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormHelperText from '@mui/material/FormHelperText';
-
 import Loading from '../Loading/Loading';
 import { PATH } from '../../constants/paths';
 import { createClassApi } from '../../apis/class.api';
 import { useNavigate } from 'react-router';
 import { ERROR_CODE } from '../../constants/errorCode';
+import AuthContext from '../../store/store';
 
 const theme = createTheme({
     palette: {
@@ -25,7 +25,7 @@ const theme = createTheme({
 });
 
 function FormAdd({ onclose }) {
-
+    const ctx=useContext(AuthContext);
     const history = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [uploadFile, setUploadFile] = useState();
@@ -71,6 +71,11 @@ function FormAdd({ onclose }) {
 
         createClassApi(dataArray).then((response) => {
                 if (response.status === 1) {
+                    const data={
+                        name:response.data.name,
+                        id:response.data.id,
+                    }
+                    ctx.addClassTeaching(data);
                     history(PATH.DETAIL_CLASS_SPLIT+response.data.id);
                     onclose();
                 }

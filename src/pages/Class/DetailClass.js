@@ -70,7 +70,7 @@ const DetailClass = () => {
   } else {
     return (
       <Fragment>
-        <Nav2 data={information} valueTab={VALUE_TAB.TAB_STREAM} />
+        <Nav2 id={id} token={token}valueTab={VALUE_TAB.TAB_STREAM} />
        {loading?<Loading/>:""}
         <Stream data={information} />
       </Fragment>

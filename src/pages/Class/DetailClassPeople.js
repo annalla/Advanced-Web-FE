@@ -64,7 +64,7 @@ const DetailClassPeople = () => {
   } else {
     return (
       <Fragment>
-        <Nav2 data={information} valueTab={VALUE_TAB.TAB_PEOPLE} />
+        <Nav2 id={Id} token={token} valueTab={VALUE_TAB.TAB_PEOPLE} />
         {loading?<Loading/>:""}
         <People data={information} />
       </Fragment>

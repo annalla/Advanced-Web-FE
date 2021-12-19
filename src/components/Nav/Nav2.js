@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import "./Nav2.css";
 import Divider from "@mui/material/Divider";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
@@ -8,9 +8,37 @@ import { TabsItem } from "./NavItems/TabsItem";
 import { ClassSetting } from "../ClassSetting/ClassSetting";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import { getClassById } from "../../apis/class.api";
+import { JWT_TYPE } from "../../constants/const";
 
-function Nav2({ data, valueTab }) {
+var dict={};
+function Nav2({ id,token, valueTab }) {
   const [isOpenSetting, setIsOpenSetting] = useState(false);
+  const [data,setData]=useState({});
+  useEffect(() => {
+    if (id in dict) {
+      setData(dict[id]);
+    } else {
+      getClassById(token, id)
+        .then((res) => {
+          if (res.status === 1) {
+            const information = {
+              name: res.data.name,
+              id: res.data.id,
+              isCustom:
+                res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
+                  ? true
+                  : false,
+            };
+            setData(information);
+            dict[id] = information;
+          } else {
+          }
+        })
+        .catch((err) => {
+        });
+    }
+  }, [id, token]);
   return (
     <Fragment>
       <header>

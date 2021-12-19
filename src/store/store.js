@@ -94,6 +94,12 @@ export const AuthContextProvider = (props) => {
     // setIdTeachingClass([]);
     // setIdEnrolledClass([]);
   };
+  const addClassTeaching=(data)=>{
+    teachingClass.push(data);
+    setTeachingClass(teachingClass);
+    localStorage.setItem("teaching", localStorage.getItem("teaching")+","+data.name);
+    localStorage.setItem("idTeaching", localStorage.getItem("idTeaching")+","+data.id);
+  }
   const classListHandleTeaching = (data) => {
     var dataCustom = [];
     var dataIdCustom = [];
@@ -147,6 +153,7 @@ export const AuthContextProvider = (props) => {
         enrolledClass: enrolledClass,
         // idTeachingClass: idTeachingClass,
         // idEnrolledClass: idEnrolledClass,
+        addClassTeaching: addClassTeaching,
         handleEnrolled: classListHandleEnrolled,
         handleTeaching: classListHandleTeaching,
         onLogout: logoutHandler,
