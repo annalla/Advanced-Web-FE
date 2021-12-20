@@ -13,6 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useTable, usePagination } from "react-table";
 import axios from "axios";
+import Alert from '@mui/material/Alert';
 
 import { VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
@@ -149,6 +150,7 @@ const DetailClassGrade = () => {
     const token = AuthCtx.user.token;
 
     const [data, setData] = React.useState([]);
+    const [uploadListStudentFile, setUploadListStudentFile] = useState();
 
     useEffect(() => {
         setLoading(true);
@@ -195,7 +197,7 @@ const DetailClassGrade = () => {
                                         gradeArray,
                                         gradeArrayObject[i]
                                     );
-                                
+
                                 const row = {
                                     ...gradeArray,
                                     code: student.studentCode,
@@ -281,35 +283,79 @@ const DetailClassGrade = () => {
             .get(
                 API_URL_CLASSROOM + id + "/export-student",
                 { headers: headers }
-            ).then((response)=>{
+            ).then((response) => {
                 console.log(response.data.data);
                 const downloadLink = response.data.data;
                 window.open(downloadLink);
             })
     }
 
+    const handleUploadStudentListFile = e => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setUploadListStudentFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+        setUploadListStudentFile(e.target.files[0]);
+    }
+
+    useEffect(() => {
+        if (!uploadListStudentFile) {
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(uploadListStudentFile)
+
+        setLoading(true);
+        const headers = {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`,
+            "Content-Type": "multipart/form-data",
+        }
+
+        const dataArray = new FormData();
+        dataArray.append("import-student-file", uploadListStudentFile);
+        axios.post(API_URL_CLASSROOM + id + "/import-student", dataArray, { headers })
+            .then(function (response) {
+                if (response.data.status === 0) {
+                    setError("Please check your permission and try again later!")
+                }
+                else if (response.data.status === 1) {
+                    window.location.reload();
+                }
+            })
+            .catch(function (error) {
+                setError(error);
+                return error;
+            })
+        setLoading(false);
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [id, location, uploadListStudentFile])
+
     // Let's add a data resetter/randomizer to help
     // illustrate that flow...
     return (
         <Fragment>
-            {error && <div>Error: {error}</div>}
             <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_GRADE} />
             {(loading || loadingGradeBoard || loadingGradeStructure) && <Loading />}
-            {!loading &&
+            {error && <Alert severity="error">{error}</Alert>}
+            {!loading && !error &&
                 <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
                     <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
-                    <Button sx={{ mr: 2 }} variant="outlined">Upload Student List</Button>
+                    <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
                 </Box>
             }
             <Container>
-                {!loading && (
+                {!loading && !error &&
                     <Table
                         columns={columns}
                         data={data}
                         updateMyData={updateMyData}
                         skipPageReset={skipPageReset}
                     />
-                )}
+                }
             </Container>
         </Fragment>
     );
