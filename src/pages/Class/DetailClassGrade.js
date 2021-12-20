@@ -55,13 +55,10 @@ const EditableCell = ({
             return;
         }
         updateMyData(index, id, value);
-        //console.log("index: ", index);
-        //console.log("id: ", id);
-        //console.log("value:", value);
     };
 
     // If the initialValue is changed external, sync it up with our state
-    React.useEffect(() => {
+    useEffect(() => {
         setValue(initialValue);
     }, [initialValue]);
 
@@ -75,8 +72,7 @@ const defaultColumn = {
 
 // Be sure to pass our updateMyData and the skipPageReset option
 function Table({ columns, data, updateMyData, skipPageReset }) {
-    // For this example, we're using pagination to illustrate how to stop
-    // the current page from resetting when our data changes
+    // For this example, we're using pagination to illustrate how to stop the current page from resetting when our data changes
     // Otherwise, nothing is different here.
     const { getTableProps, getTableBodyProps, headerGroups, prepareRow, page } =
         useTable(
@@ -86,11 +82,8 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
                 defaultColumn,
                 // use the skipPageReset option to disable page resetting temporarily
                 autoResetPage: !skipPageReset,
-                // updateMyData isn't part of the API, but
-                // anything we put into these options will
-                // automatically be available on the instance.
-                // That way we can call this function from our
-                // cell renderer!
+                // updateMyData isn't part of the API, but anything we put into these options will automatically be available on the instance.
+                // That way we can call this function from our cell renderer!
                 updateMyData,
             },
             usePagination
@@ -148,6 +141,7 @@ const DetailClassGrade = () => {
     const location = useLocation();
     const id = splitPath(location.pathname, PATH.GRADE_SPLIT);
     const token = AuthCtx.user.token;
+    const [board, setBoard] = React.useState();
 
     const [data, setData] = React.useState([]);
     const [uploadListStudentFile, setUploadListStudentFile] = useState();
@@ -157,7 +151,6 @@ const DetailClassGrade = () => {
         setLoadingGradeBoard(true);
         setLoadingGradeStructure(true);
 
-        let listGrade = [];
         axios
             .get(API_URL_GRADE + id, { headers })
             .then((response) => {
@@ -181,25 +174,25 @@ const DetailClassGrade = () => {
                     )
                     .then(function (response) {
                         setLoadingGradeBoard(false);
-                        listGrade = response.data.data;
+                        const responseBoard = response.data.data;
                         setData(
-                            listGrade.map((student) => {
-                                let gradeArrayObject = {};
-                                gradeArrayObject = student.gradeArray.map((grade) => {
+                            responseBoard.map((student) => {
+                                let gradeNameAndGradeArrayObject = {};
+                                gradeNameAndGradeArrayObject = student.gradeArray.map((grade) => {
                                     const gradeName = grade.name;
                                     return { [gradeName]: grade.point };
                                 });
 
-                                let gradeArray = {};
+                                let gradeNameAndGradeArray = {};
 
-                                for (let i = 0; i < gradeArrayObject.length; i++)
-                                    gradeArray = Object.assign(
-                                        gradeArray,
-                                        gradeArrayObject[i]
+                                for (let i = 0; i < gradeNameAndGradeArrayObject.length; i++)
+                                    gradeNameAndGradeArray = Object.assign(
+                                        gradeNameAndGradeArray,
+                                        gradeNameAndGradeArrayObject[i]
                                     );
 
                                 const row = {
-                                    ...gradeArray,
+                                    ...gradeNameAndGradeArray,
                                     code: student.studentCode,
                                     name: student.studentName,
                                     subRows: 0,
@@ -209,12 +202,16 @@ const DetailClassGrade = () => {
                                 return row;
                             })
                         );
+
+                        setBoard(response.data.data.map((element) => {
+                            return element;
+                        }));
+                    })
+                    .catch((err) => {
+                        setError(ERROR_CODE[err] || "Error!");
                     });
-            })
-            .catch((err) => {
-                setError(ERROR_CODE[err] || "Error!");
+                setLoading(false);
             });
-        setLoading(false);
     }, [id, token]);
 
     const columns = React.useMemo(
@@ -258,6 +255,16 @@ const DetailClassGrade = () => {
         // We also turn on the flag to not reset the page
         setSkipPageReset(true);
 
+        //console.log("rowIndex: ", rowIndex);
+        //console.log("columnId: ", columnId);
+        //console.log("value:", value);
+        const studentId = board[rowIndex].code;
+        const gradeId = board[rowIndex].gradeArray.find(element => element.name === columnId).id;
+        const point = value;
+
+        console.log(studentId);
+        console.log(gradeId);
+        
         setData((old) =>
             old.map((row, index) => {
                 if (index === rowIndex) {
@@ -269,6 +276,7 @@ const DetailClassGrade = () => {
                 return row;
             })
         );
+
     };
 
     // After data chagnes, we turn the flag back off
@@ -284,7 +292,6 @@ const DetailClassGrade = () => {
                 API_URL_CLASSROOM + id + "/export-student",
                 { headers: headers }
             ).then((response) => {
-                console.log(response.data.data);
                 const downloadLink = response.data.data;
                 window.open(downloadLink);
             })
