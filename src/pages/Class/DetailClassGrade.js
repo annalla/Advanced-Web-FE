@@ -253,30 +253,42 @@ const DetailClassGrade = () => {
     // original data
     const updateMyData = (rowIndex, columnId, value) => {
         // We also turn on the flag to not reset the page
+        setLoading(true);
         setSkipPageReset(true);
 
         //console.log("rowIndex: ", rowIndex);
         //console.log("columnId: ", columnId);
         //console.log("value:", value);
-        const studentId = board[rowIndex].code;
+        const studentId = board[rowIndex].studentId;
         const gradeId = board[rowIndex].gradeArray.find(element => element.name === columnId).id;
-        const point = value;
+        const point = parseInt(value);
 
-        console.log(studentId);
-        console.log(gradeId);
-        
-        setData((old) =>
-            old.map((row, index) => {
-                if (index === rowIndex) {
-                    return {
-                        ...old[rowIndex],
-                        [columnId]: value,
-                    };
+        const postData = {
+            studentId,
+            gradeId,
+            point
+        }
+
+        axios.post(API_URL_GRADE + id, postData, { headers })
+            .then(function (response) {
+                if (response.data.status === 0) {
+                    setError("Occur error! Please try again later!")
                 }
-                return row;
+                else if (response.data.status === 1) {
+                    setData((old) =>
+                        old.map((row, index) => {
+                            if (index === rowIndex) {
+                                return {
+                                    ...old[rowIndex],
+                                    [columnId]: value,
+                                };
+                            }
+                            return row;
+                        })
+                    );
+                }
+                setLoading(false);
             })
-        );
-
     };
 
     // After data chagnes, we turn the flag back off
