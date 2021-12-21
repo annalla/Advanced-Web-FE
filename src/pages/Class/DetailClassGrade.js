@@ -284,6 +284,8 @@ const DetailClassGrade = () => {
     const [data, setData] = useState([]);
     const [uploadListStudentFile, setUploadListStudentFile] = useState();
 
+    const [maxTotalGrade, setMaxTotalGrade] = useState(0);
+
     useEffect(() => {
         setLoading(true);
         setLoadingGradeBoard(true);
@@ -292,10 +294,11 @@ const DetailClassGrade = () => {
         axios
             .get(API_URL_GRADE + id, { headers })
             .then((response) => {
-                if (response.data.data) {
+                const responseGradeStructure = response.data.data;
+                if (responseGradeStructure) {
                     setLoadingGradeStructure(false);
                     setGradeStructure(
-                        response.data.data.map((gradeComponent) => {
+                        responseGradeStructure.map((gradeComponent) => {
                             return {
                                 maxPoint: gradeComponent.maxPoint,
                                 name: gradeComponent.name,
@@ -303,6 +306,10 @@ const DetailClassGrade = () => {
                             };
                         })
                     );
+                    let tempMaxTotalGrade = 0;
+                    for (let i = 0; i < responseGradeStructure.length; i++)
+                        tempMaxTotalGrade += responseGradeStructure[i].maxPoint;
+                    setMaxTotalGrade(tempMaxTotalGrade)
                 }
             })
             .then(() => {
@@ -336,6 +343,7 @@ const DetailClassGrade = () => {
                                     name: student.studentName,
                                     subRows: 0,
                                     isHaveAccount: student.name ? true : false,
+                                    total: student.totalGrade
                                 };
 
                                 return row;
@@ -344,7 +352,6 @@ const DetailClassGrade = () => {
                         setBoard(response.data.data.map((element) => {
                             return element;
                         }));
-
                     })
                     .catch((err) => {
                         setError(ERROR_CODE[err] || "Error!");
@@ -371,7 +378,7 @@ const DetailClassGrade = () => {
             {
                 Header: "Grade",
                 columns: [{
-                    Header: 'Total',
+                    Header: 'Total (Max: ' + maxTotalGrade + ' )',
                     accessor: 'total'
                 }].concat(
                     gradeStructure.map((gradeStructure) => {
@@ -387,7 +394,7 @@ const DetailClassGrade = () => {
                 )
             },
         ],
-        [gradeStructure]
+        [gradeStructure, maxTotalGrade]
     );
 
     const [skipPageReset, setSkipPageReset] = React.useState(false);
