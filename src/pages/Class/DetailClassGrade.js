@@ -14,6 +14,11 @@ import TableRow from "@material-ui/core/TableRow";
 import { useTable, usePagination } from "react-table";
 import axios from "axios";
 import Alert from '@mui/material/Alert';
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { StyledEngineProvider } from '@mui/material/styles';
 
 import { VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
@@ -70,6 +75,11 @@ const defaultColumn = {
     Cell: EditableCell,
 };
 
+const options = [
+    "Download",
+    "Upload"
+];
+
 // Be sure to pass our updateMyData and the skipPageReset option
 function Table({ columns, data, updateMyData, skipPageReset }) {
     // For this example, we're using pagination to illustrate how to stop the current page from resetting when our data changes
@@ -88,7 +98,15 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
             },
             usePagination
         );
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    console.log(headerGroups)
     // Render the UI for your table
     return (
         <MaUTable {...getTableProps()}>
@@ -98,10 +116,47 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
                         {headerGroup.headers.map((column) => (
                             <TableCell {...column.getHeaderProps()}>
                                 {column.render("Header")}
+                                {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code')) && <span>
+                                    <IconButton
+                                        aria-label="more"
+                                        id="long-button"
+                                        aria-controls="long-menu"
+                                        aria-expanded={open ? "true" : undefined}
+                                        aria-haspopup="true"
+                                        onClick={handleClick}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </span>}
                             </TableCell>
                         ))}
                     </TableRow>
                 ))}
+                <Menu
+                    id="long-menu"
+                    MenuListProps={{
+                        "aria-labelledby": "long-button"
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                        style: {
+                            maxHeight: 100 * 4.5,
+                            width: "20ch",
+                            position: "absolute"
+                        }
+                    }}
+                >
+                    {options.map((option) => (
+                        <MenuItem
+                            key={option}
+                            onClick={handleClose}
+                        >
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Menu>
             </TableHead>
             <TableBody>
                 {page.map((row, i) => {
@@ -233,8 +288,11 @@ const DetailClassGrade = () => {
                 Header: "Grade",
                 columns: gradeStructure.map((gradeStructure) => {
                     return {
-                        Header:
-                            gradeStructure.name + " (Max: " + gradeStructure.maxPoint + " )",
+                        Header: () => {
+                            return <span>
+                                {gradeStructure.name} (Max: {gradeStructure.maxPoint})
+                            </span>
+                        },
                         accessor: gradeStructure.name,
                     };
                 }),
@@ -356,27 +414,29 @@ const DetailClassGrade = () => {
     // Let's add a data resetter/randomizer to help
     // illustrate that flow...
     return (
-        <Fragment>
-            <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_GRADE} />
-            {(loading || loadingGradeBoard || loadingGradeStructure) && <Loading />}
-            {error && <Alert severity="error">{error}</Alert>}
-            {!loading && !error &&
-                <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
-                    <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
-                    <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
-                </Box>
-            }
-            <Container>
+        <StyledEngineProvider injectFirst>
+            <Fragment>
+                <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_GRADE} />
+                {(loading || loadingGradeBoard || loadingGradeStructure) && <Loading />}
+                {error && <Alert severity="error">{error}</Alert>}
                 {!loading && !error &&
-                    <Table
-                        columns={columns}
-                        data={data}
-                        updateMyData={updateMyData}
-                        skipPageReset={skipPageReset}
-                    />
+                    <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
+                        <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
+                        <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
+                    </Box>
                 }
-            </Container>
-        </Fragment>
+                <Container>
+                    {!loading && !error &&
+                        <Table
+                            columns={columns}
+                            data={data}
+                            updateMyData={updateMyData}
+                            skipPageReset={skipPageReset}
+                        />
+                    }
+                </Container>
+            </Fragment>
+        </StyledEngineProvider>
     );
 };
 
