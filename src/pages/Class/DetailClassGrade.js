@@ -19,6 +19,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { StyledEngineProvider } from '@mui/material/styles';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
@@ -32,6 +33,7 @@ import { Nav2 } from "../../components/Nav/Nav2";
 import { Container } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { result } from "lodash";
 
 
 const API_URL_GRADE = API_URL + "classroom/grade/";
@@ -67,7 +69,12 @@ const EditableCell = ({
         setValue(initialValue);
     }, [initialValue]);
 
-    return <Input value={value} onChange={onChange} onBlur={onBlur} />;
+    let result;
+    if(id === 'code' || id === 'name' || id === 'total')
+        result = <Input value={value} onBlur={onBlur} disabled />
+    else
+        result = <Input value={value} onChange={onChange} onBlur={onBlur} />;
+    return result;
 };
 
 // Set our editable cell renderer as the default Cell renderer
@@ -145,7 +152,6 @@ const DetailClassGrade = () => {
             dataArray.append("gradeIdArray", [chosenGradeColumn.gradeId]);
             axios.post(API_URL_GRADE + 'board/' + id + "/import-grade-board", dataArray, { headers })
                 .then(function (response) {
-                    console.log(response);
                     if (response.data.status === 0) {
                         setError("Please try again later!")
                     }
@@ -179,6 +185,30 @@ const DetailClassGrade = () => {
                     window.open(downloadLink);
                 }).catch(error => { setError(error) })
             }
+            else if (option === 'Mark as finalize'){
+                setLoadingWithoutLoadTable(true);
+                const gradeUpdateItem = {
+                    "id": chosenGradeColumn.gradeId,
+                    "isFinalized": true,
+                    "name": chosenGradeColumn.name,
+                    "maxPoint": chosenGradeColumn.maxPoint
+                }
+                axios.post(API_URL_GRADE + 'update', gradeUpdateItem, { headers })
+                .then(function (response) {
+                    setLoadingWithoutLoadTable(false);
+                    if (response.data.status === 1) {
+                        let newGradeStructure = gradeStructure;
+                        newGradeStructure.forEach(gradeStructure => { if(gradeStructure.id === gradeUpdateItem.id) gradeStructure.isFinalized = true });
+                        setGradeStructure(newGradeStructure);
+                        setLoadingWithoutLoadTable(false);
+                        window.location.reload();
+                    }
+                })
+                .catch(function (error) {
+                    setError(error);
+                    return error
+                })
+            }
         };
         // Render the UI for your table
         return (
@@ -189,7 +219,7 @@ const DetailClassGrade = () => {
                             {headerGroup.headers.map((column) => (
                                 <TableCell {...column.getHeaderProps()}>
                                     {column.render("Header")}
-                                    {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code')) && <span>
+                                    {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code') && (column.id!=='total')) && <span>
                                         <IconButton
                                             aria-label="more"
                                             id="long-button"
@@ -201,6 +231,7 @@ const DetailClassGrade = () => {
                                             <MoreVertIcon />
                                         </IconButton>
                                     </span>}
+                                    {(gradeStructure.filter(element => (element.name === column.id && element.isFinalized)).length > 0) && <AiFillCheckCircle />}
                                 </TableCell>
                             ))}
                         </TableRow>
@@ -258,7 +289,7 @@ const DetailClassGrade = () => {
                             return (
                                 <TableRow
                                     {...row.getRowProps()}
-                                    style={{ background: "#808080" }}
+                                    style={{ background: "#B4B8B8" }}
                                 >
                                     {cell}
                                 </TableRow>
@@ -302,7 +333,8 @@ const DetailClassGrade = () => {
                             return {
                                 maxPoint: gradeComponent.maxPoint,
                                 name: gradeComponent.name,
-                                gradeId: gradeComponent.id
+                                gradeId: gradeComponent.id,
+                                isFinalized: gradeComponent.isFinalized
                             };
                         })
                     );
@@ -505,7 +537,6 @@ const DetailClassGrade = () => {
     }, [id, location, uploadListStudentFile])
 
     const downloadBoard = () => {
-        console.log(gradeStructure);
         const gradeIdArray = gradeStructure.map(structure => structure.gradeId);
         const postData = {
             gradeIdArray: gradeIdArray
