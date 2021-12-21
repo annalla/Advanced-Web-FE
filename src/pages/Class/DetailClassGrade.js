@@ -150,7 +150,7 @@ const DetailClassGrade = () => {
                         setError("Please try again later!")
                     }
                     else if (response.data.status === 1) {
-                        // window.location.reload();
+                        window.location.reload();
                     }
                 })
                 .catch(function (error) {
@@ -504,8 +504,22 @@ const DetailClassGrade = () => {
         return () => URL.revokeObjectURL(objectUrl)
     }, [id, location, uploadListStudentFile])
 
-    // Let's add a data resetter/randomizer to help
-    // illustrate that flow...
+    const downloadBoard = () => {
+        console.log(gradeStructure);
+        const gradeIdArray = gradeStructure.map(structure => structure.gradeId);
+        const postData = {
+            gradeIdArray: gradeIdArray
+        }
+            setLoadingWithoutLoadTable(true);
+            axios.post(API_URL_GRADE + 'board/' + id + '/export-grade-board',
+                postData,
+                { headers: headers }
+            ).then((response) => {
+                setLoadingWithoutLoadTable(false);
+                const downloadLink = response.data.data;
+                window.open(downloadLink);
+            }).catch(error => { setError(error) })
+    }
     return (
         <StyledEngineProvider injectFirst>
             <Fragment>
@@ -514,10 +528,13 @@ const DetailClassGrade = () => {
                 {loadingWithoutLoadTable && <Loading />}
                 {error && <Alert severity="error">{error}</Alert>}
                 {!loading && !error &&
+                    <div>
                     <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
                         <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
                         <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
+                        <Button variant="outlined" onClick={downloadBoard} sx={{ mr: 2 }}>Export all grade</Button>
                     </Box>
+                    </div>
                 }
                 <Container>
                     {!loading && !error &&
