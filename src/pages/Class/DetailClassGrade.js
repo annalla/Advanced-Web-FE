@@ -77,128 +77,213 @@ const defaultColumn = {
 
 const options = [
     "Download",
-    "Upload"
+    "Upload",
+    "Mark as finalize"
 ];
 
 // Be sure to pass our updateMyData and the skipPageReset option
-function Table({ columns, data, updateMyData, skipPageReset }) {
-    // For this example, we're using pagination to illustrate how to stop the current page from resetting when our data changes
-    // Otherwise, nothing is different here.
-    const { getTableProps, getTableBodyProps, headerGroups, prepareRow, page } =
-        useTable(
-            {
-                columns,
-                data,
-                defaultColumn,
-                // use the skipPageReset option to disable page resetting temporarily
-                autoResetPage: !skipPageReset,
-                // updateMyData isn't part of the API, but anything we put into these options will automatically be available on the instance.
-                // That way we can call this function from our cell renderer!
-                updateMyData,
-            },
-            usePagination
-        );
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    console.log(headerGroups)
-    // Render the UI for your table
-    return (
-        <MaUTable {...getTableProps()}>
-            <TableHead>
-                {headerGroups.map((headerGroup) => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                            <TableCell {...column.getHeaderProps()}>
-                                {column.render("Header")}
-                                {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code')) && <span>
-                                    <IconButton
-                                        aria-label="more"
-                                        id="long-button"
-                                        aria-controls="long-menu"
-                                        aria-expanded={open ? "true" : undefined}
-                                        aria-haspopup="true"
-                                        onClick={handleClick}
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                </span>}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                ))}
-                <Menu
-                    id="long-menu"
-                    MenuListProps={{
-                        "aria-labelledby": "long-button"
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                        style: {
-                            maxHeight: 100 * 4.5,
-                            width: "20ch",
-                            position: "absolute"
-                        }
-                    }}
-                >
-                    {options.map((option) => (
-                        <MenuItem
-                            key={option}
-                            onClick={handleClose}
-                        >
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            </TableHead>
-            <TableBody>
-                {page.map((row, i) => {
-                    prepareRow(row);
-                    const cell = row.cells.map((cell) => {
-                        return (
-                            <TableCell {...cell.getCellProps()}>
-                                {cell.render("Cell")}
-                            </TableCell>
-                        );
-                    });
-                    if (row.original.isHaveAccount)
-                        return <TableRow {...row.getRowProps()}>{cell}</TableRow>;
-                    else if (!row.original.isHaveAccount) {
-                        return (
-                            <TableRow
-                                {...row.getRowProps()}
-                                style={{ background: "#808080" }}
-                            >
-                                {cell}
-                            </TableRow>
-                        );
-                    }
-                })}
-            </TableBody>
-        </MaUTable>
-    );
-}
 
 const DetailClassGrade = () => {
+    function Table({ columns, data, updateMyData, skipPageReset }) {
+        // For this example, we're using pagination to illustrate how to stop the current page from resetting when our data changes
+        // Otherwise, nothing is different here.
+        const { getTableProps, getTableBodyProps, headerGroups, prepareRow, page } =
+            useTable(
+                {
+                    columns,
+                    data,
+                    defaultColumn,
+                    // use the skipPageReset option to disable page resetting temporarily
+                    autoResetPage: !skipPageReset,
+                    // updateMyData isn't part of the API, but anything we put into these options will automatically be available on the instance.
+                    // That way we can call this function from our cell renderer!
+                    updateMyData,
+                },
+                usePagination
+            );
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+
+        const [chosenGradeColumn, setChosenGradeColumn] = useState();
+        const [uploadAColumnGradeFile, setUploadAColumnGradeFile] = useState();
+
+        const handleChooseGradeColumn = (event, columnId) => {
+            setAnchorEl(event.currentTarget);
+            const chosenGrade = gradeStructure.find(gradeStructure => gradeStructure.name === columnId);
+            setChosenGradeColumn(chosenGrade);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        const handleUploadAColumnGradeFile = e => {
+            if (!e.target.files || e.target.files.length === 0) {
+                setUploadAColumnGradeFile(undefined)
+                return
+            }
+
+            // I've kept this example simple by using the first image instead of multiple
+            setUploadAColumnGradeFile(e.target.files[0]);
+        }
+
+        useEffect(() => {
+            if (!uploadAColumnGradeFile) {
+                return
+            }
+
+            const objectUrl = URL.createObjectURL(uploadAColumnGradeFile)
+
+            setLoading(true);
+            const headers = {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                "Content-Type": "multipart/form-data",
+            }
+
+            const dataArray = new FormData();
+            dataArray.append("import-grade-board-file", uploadAColumnGradeFile);
+            dataArray.append("gradeIdArray", [chosenGradeColumn.gradeId]);
+            axios.post(API_URL_GRADE + 'board/' + id + "/import-grade-board", dataArray, { headers })
+                .then(function (response) {
+                    console.log(response);
+                    if (response.data.status === 0) {
+                        setError("Please try again later!")
+                    }
+                    else if (response.data.status === 1) {
+                        // window.location.reload();
+                    }
+                })
+                .catch(function (error) {
+                    setError(error);
+                    return error;
+                })
+            setLoading(false);
+
+            // free memory when ever this component is unmounted
+            return () => URL.revokeObjectURL(objectUrl)
+        }, [chosenGradeColumn, uploadAColumnGradeFile])
+
+        const handleChooseMethod = (option) => {
+            setAnchorEl(null);
+            //console.log(option);
+            //console.log([chosenGradeColumn.gradeId]);
+            const postData = {
+                gradeIdArray: [chosenGradeColumn.gradeId]
+            }
+            if (option === 'Download') {
+                setLoadingWithoutLoadTable(true);
+                axios.post(API_URL_GRADE + 'board/' + id + '/export-grade-board',
+                    postData,
+                    { headers: headers }
+                ).then((response) => {
+                    setLoadingWithoutLoadTable(false);
+                    const downloadLink = response.data.data;
+                    window.open(downloadLink);
+                }).catch(error => { setError(error) })
+            }
+        };
+        // Render the UI for your table
+        return (
+            <MaUTable {...getTableProps()}>
+                <TableHead>
+                    {headerGroups.map((headerGroup) => (
+                        <TableRow {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column) => (
+                                <TableCell {...column.getHeaderProps()}>
+                                    {column.render("Header")}
+                                    {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code')) && <span>
+                                        <IconButton
+                                            aria-label="more"
+                                            id="long-button"
+                                            aria-controls="long-menu"
+                                            aria-expanded={open ? "true" : undefined}
+                                            aria-haspopup="true"
+                                            onClick={(e) => { handleChooseGradeColumn(e, column.id) }}
+                                        >
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    </span>}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            "aria-labelledby": "long-button"
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 100 * 4.5,
+                                width: "20ch",
+                                position: "absolute"
+                            }
+                        }}
+                    >
+                        {options.map((option) =>
+                            <div key={option}>
+                                {(option === 'Upload') &&
+                                    <MenuItem
+                                        component="label"
+                                    >
+                                        {option}
+                                        <input type="file" hidden onChange={handleUploadAColumnGradeFile} />
+                                    </MenuItem>
+                                }
+                                {(option !== 'Upload') &&
+                                    <MenuItem
+                                        onClick={() => { handleChooseMethod(option) }}
+                                    >
+                                        {option}
+                                    </MenuItem>
+                                }
+                            </div>
+                        )}
+                    </Menu>
+                </TableHead>
+                <TableBody>
+                    {page.map((row, i) => {
+                        prepareRow(row);
+                        const cell = row.cells.map((cell) => {
+                            return (
+                                <TableCell {...cell.getCellProps()}>
+                                    {cell.render("Cell")}
+                                </TableCell>
+                            );
+                        });
+                        if (row.original.isHaveAccount)
+                            return <TableRow {...row.getRowProps()}>{cell}</TableRow>;
+                        else if (!row.original.isHaveAccount) {
+                            return (
+                                <TableRow
+                                    {...row.getRowProps()}
+                                    style={{ background: "#808080" }}
+                                >
+                                    {cell}
+                                </TableRow>
+                            );
+                        }
+                    })}
+                </TableBody>
+            </MaUTable>
+        );
+    }
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [loadingGradeStructure, setLoadingGradeStructure] = useState(false);
     const [loadingGradeBoard, setLoadingGradeBoard] = useState(false);
+    const [loadingWithoutLoadTable, setLoadingWithoutLoadTable] = useState(false);
     const [gradeStructure, setGradeStructure] = useState([]);
     const AuthCtx = useContext(AuthContext);
     const location = useLocation();
     const id = splitPath(location.pathname, PATH.GRADE_SPLIT);
     const token = AuthCtx.user.token;
-    const [board, setBoard] = React.useState();
+    const [board, setBoard] = useState();
 
-    const [data, setData] = React.useState([]);
+    const [data, setData] = useState([]);
     const [uploadListStudentFile, setUploadListStudentFile] = useState();
 
     useEffect(() => {
@@ -216,6 +301,7 @@ const DetailClassGrade = () => {
                             return {
                                 maxPoint: gradeComponent.maxPoint,
                                 name: gradeComponent.name,
+                                gradeId: gradeComponent.id
                             };
                         })
                     );
@@ -257,10 +343,10 @@ const DetailClassGrade = () => {
                                 return row;
                             })
                         );
-
                         setBoard(response.data.data.map((element) => {
                             return element;
                         }));
+
                     })
                     .catch((err) => {
                         setError(ERROR_CODE[err] || "Error!");
@@ -352,7 +438,7 @@ const DetailClassGrade = () => {
     // After data chagnes, we turn the flag back off
     // so that if data actually changes when we're not
     // editing it, the page is reset
-    React.useEffect(() => {
+    useEffect(() => {
         setSkipPageReset(false);
     }, [data]);
 
@@ -418,6 +504,7 @@ const DetailClassGrade = () => {
             <Fragment>
                 <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_GRADE} />
                 {(loading || loadingGradeBoard || loadingGradeStructure) && <Loading />}
+                {loadingWithoutLoadTable && <Loading />}
                 {error && <Alert severity="error">{error}</Alert>}
                 {!loading && !error &&
                     <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
