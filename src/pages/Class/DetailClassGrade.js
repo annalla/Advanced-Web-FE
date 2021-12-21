@@ -165,8 +165,6 @@ const DetailClassGrade = () => {
 
         const handleChooseMethod = (option) => {
             setAnchorEl(null);
-            //console.log(option);
-            //console.log([chosenGradeColumn.gradeId]);
             const postData = {
                 gradeIdArray: [chosenGradeColumn.gradeId]
             }
@@ -372,16 +370,21 @@ const DetailClassGrade = () => {
             },
             {
                 Header: "Grade",
-                columns: gradeStructure.map((gradeStructure) => {
-                    return {
-                        Header: () => {
-                            return <span>
-                                {gradeStructure.name} (Max: {gradeStructure.maxPoint})
-                            </span>
-                        },
-                        accessor: gradeStructure.name,
-                    };
-                }),
+                columns: [{
+                    Header: 'Total',
+                    accessor: 'total'
+                }].concat(
+                    gradeStructure.map((gradeStructure) => {
+                        return {
+                            Header: () => {
+                                return <span>
+                                    {gradeStructure.name} (Max: {gradeStructure.maxPoint})
+                                </span>
+                            },
+                            accessor: gradeStructure.name,
+                        };
+                    })
+                )
             },
         ],
         [gradeStructure]
@@ -400,9 +403,6 @@ const DetailClassGrade = () => {
         setLoading(true);
         setSkipPageReset(true);
 
-        //console.log("rowIndex: ", rowIndex);
-        //console.log("columnId: ", columnId);
-        //console.log("value:", value);
         const studentId = board[rowIndex].studentId;
         const gradeId = board[rowIndex].gradeArray.find(element => element.name === columnId).id;
         const point = parseInt(value);
