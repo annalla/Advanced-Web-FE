@@ -35,12 +35,18 @@ const DetailClassPeople = () => {
       getClassById(token, Id)
         .then((res) => {
           if (res.status === 1) {
+            let students=[];
+            for (let s in res.data.studentArray){
+              if (res.data.studentArray[s].username!==""){
+                students.push(res.data.studentArray[s]);
+              }
+            };
             const data = {
               name: res.data.name,
               id: res.data.id,
               inviteStudentCode: res.data.inviteStudentCode,
               inviteTeacherCode: res.data.inviteTeacherCode,
-              studentArray: res.data.studentArray,
+              studentArray: students,
               teacherArray: res.data.teacherArray,
               isCustom:
                 res.data.jwtType.toString() === JWT_TYPE.JWT_TYPE_TEACHER
