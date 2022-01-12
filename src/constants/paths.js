@@ -10,6 +10,8 @@ export const PATH = {
   DETAIL_CLASS_PEOPLE_SPLIT:"/detailedClass/people/",
   GRADE_SPLIT:"/grade/",
   GRADE:"/grade/:code",
+  STUDENT_GRADE: "/grade/student/:code",
+  STUDENT_GRADE_SPLIT: "/grade/student/",
   MANAGE_PROFILE: '/user',
   JOIN_CLASS:'/join',
   JOIN_CLASS_INVITATION:'/join?code=',

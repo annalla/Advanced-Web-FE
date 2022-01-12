@@ -33,7 +33,6 @@ import { Nav2 } from "../../components/Nav/Nav2";
 import { Container } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { result } from "lodash";
 
 
 const API_URL_GRADE = API_URL + "classroom/grade/";

@@ -69,7 +69,8 @@ function TabsItem({ value, isCustom }) {
                 regex = PATH.DETAIL_CLASS_SPLIT;
                 break;
             case VALUE_TAB.TAB_GRADE:
-                regex = PATH.GRADE_SPLIT;
+                // regex = PATH.GRADE_SPLIT;
+                isCustom ? (regex = PATH.GRADE_SPLIT) : (regex = PATH.STUDENT_GRADE_SPLIT);
                 break;
             default:
                 break;
@@ -84,7 +85,8 @@ function TabsItem({ value, isCustom }) {
                 pathNew = PATH.DETAIL_CLASS_SPLIT + id;
                 break;
             case VALUE_TAB.TAB_GRADE:
-                pathNew = PATH.GRADE_SPLIT + id;
+                // pathNew = PATH.GRADE_SPLIT + id;
+                isCustom ? (pathNew = PATH.GRADE_SPLIT + id) : (pathNew = PATH.STUDENT_GRADE_SPLIT + id);
                 break;
             default:
                 break;
