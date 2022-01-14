@@ -71,7 +71,7 @@ img {
     justify-content: center;
 }
 
-.reviewRequestLink{
+#link{
     text-decoration: underline;
     cursor: pointer;
 }

@@ -22,6 +22,7 @@ import { PATH } from "../../constants/paths";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
 import { ERROR_CODE } from "../../constants/errorCode";
+import { FE_URL } from "../../constants/const";
 import Loading from "../../components/Loading/Loading";
 import { API_URL } from "../../constants/const";
 import "./DetailStudentGrade.css";
@@ -141,6 +142,14 @@ const DetailStudentClass = () => {
                             return <div className="gradeDetail" key={grade.id}>
                                 <h1 className="bold-text">{grade.point}/{grade.maxPoint}</h1>
                                 <h2 className="smaller-text">{grade.name}</h2>
+                                    {grade.reviewRequestedId ? <span 
+                                        id="link" className="smaller-text"
+                                        onClick={
+                                            () => 
+                                            window.open(FE_URL + '/grade/review/' + id + '?review_id=' + grade.reviewRequestedId, "_blank")
+                                        }>
+                                            Review process.
+                                    </span> : ""}
                             </div>
                         })}
                     </div>
@@ -149,7 +158,7 @@ const DetailStudentClass = () => {
                     <h1 className="totalGrade">{studentInformation.totalGrade}/{studentInformation.maxTotalGrade}</h1>
                     <h2 className="smaller-text">Not satisfied with your score? Submit a review request
                         <span> </span>
-                        <span className="reviewRequestLink" onClick={handleClickOpen}>here.</span>
+                        <span id="link" onClick={handleClickOpen}>here.</span>
                     </h2>
                 </div>
                 <Dialog open={open} onClose={handleClose} maxWidth='md'>
