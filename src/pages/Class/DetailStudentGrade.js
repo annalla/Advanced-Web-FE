@@ -54,7 +54,7 @@ const DetailStudentClass = () => {
             .then((response) => {
                 setLoading(false);
                 const data = response.data.data;
-                console.log(response.data);
+                // console.log(data.gradeArray);
                 setStudentInformation({
                     avatarUrl: data.avatar,
                     name: data.studentName ?? data.name,
@@ -64,6 +64,7 @@ const DetailStudentClass = () => {
                     totalGrade: data.totalGrade,
                     maxTotalGrade: data.maxTotalGrade
                 })
+                setStudentGrade(data.gradeArray);
             })
     }, [id, studentInformation.avatarUrl, token]);
     if (error) {
@@ -84,34 +85,16 @@ const DetailStudentClass = () => {
                         <h2 className="normal-text">{studentInformation.email}</h2>
                         <h2 className="normal-text">{studentInformation.phone}</h2>
                         <div className="social-container">
-                            <div className="followers">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Followers</h2>
-                            </div>
-                            <div className="likes">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Likes</h2>
-                            </div>
-                            <div className="photos">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Photos</h2>
-                            </div>
-                            <div className="followers">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Followers</h2>
-                            </div>
-                            <div className="likes">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Likes</h2>
-                            </div>
-                            <div className="photos">
-                                <h1 className="bold-text">{123}</h1>
-                                <h2 className="smaller-text">Photos</h2>
-                            </div>
+                            {studentGrade.map((grade) => {
+                                return <div className="gradeDetail">
+                                    <h1 className="bold-text">{grade.point}/{grade.maxPoint}</h1>
+                                    <h2 className="smaller-text">{grade.name}</h2>
+                                </div>
+                            })}
                         </div>
                         <Divider />
                         <h1 className="bold-text">Total: </h1>
-                        <h1 className="totalGrade">{studentInformation.maxTotalGrade}/{studentInformation.maxTotalGrade}</h1>
+                        <h1 className="totalGrade">{studentInformation.totalGrade}/{studentInformation.maxTotalGrade}</h1>
                         <h2 className="smaller-text">Not satisfied with your score? Submit a review request
                             <span> </span>
                             <span className="reviewRequestLink" onClick={handleClickOpen}>here.</span>

@@ -59,17 +59,10 @@ img {
 	text-align: center;
 }
 
-.followers {
+.gradeDetail {
 	flex: 1;
 }
 
-.likes {
-	flex: 1;
-}
-
-.photos {
-	flex: 1;
-}
 
 .totalGrade{
     margin-left: auto;
