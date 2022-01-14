@@ -44,7 +44,8 @@ function GradeStructure(props) {
             "name": grade.name,
             "maxPoint": parseFloat(grade.maxPoint),
             "id": grade.id,
-            "ordinalNumber": grade.ordinalNumber
+            "ordinalNumber": grade.ordinalNumber,
+            "isFinalized": grade.isFinalized
         }
         const headers = {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -56,7 +57,7 @@ function GradeStructure(props) {
                     const newGradeStructure = gradeStructure;
                     newGradeStructure.forEach(function (item, i) {
                         if (item.id === data.id) {
-                            item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber
+                            item.name = data.name; item.maxPoint = data.maxPoint; item.classroomId = data.classroomId; item.ordinalNumber = data.ordinalNumber; item.isFinalized = data.isFinalized;
                         }
                     });
                     setIsLoading(false);
@@ -109,7 +110,7 @@ function GradeStructure(props) {
             .then(function (response) {
                 if (response.data.status === 1) {
                     const data = response.data.data;
-                    const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber }]
+                    const newGradeStructure = [...gradeStructure, { "name": data.name, "maxPoint": data.maxPoint, "id": data.id, "classroomId": data.classroomId, "ordinalNumber": data.ordinalNumber, "isFinalized": data.isFinalized }]
                     setGradeStructure(newGradeStructure);
                 }
                 else if (response.data.status === 0 && response.data.code === "EXISTED_GRADE_IN_CLASSROOM")
