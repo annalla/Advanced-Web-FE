@@ -11,6 +11,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import { Nav2 } from "../../components/Nav/Nav2";
 import { VALUE_TAB } from "../../constants/const";
@@ -39,6 +43,8 @@ const DetailStudentClass = () => {
     const [studentGrade, setStudentGrade] = useState([]);
 
     const [open, setOpen] = useState(false);
+    const [notifyDialogOpen, setNotifyDialogOpen] = useState(false);
+    const [notifyContent, setNotifyContent] = useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -48,12 +54,57 @@ const DetailStudentClass = () => {
         setOpen(false);
     };
 
+    const handleCloseNotification = () => {
+        setNotifyDialogOpen(false);
+    };
+
+    const [selectedGradeId, setSelectedGradeId] = useState();
+    const [expectGrade, setExpectGrade] = useState();
+    const [explain, setExplain] = useState('');
+
+    const handleIdChange = (event) => {
+        setSelectedGradeId(event.target.value);
+    };
+
+    const handleExpectGradeChange = (event) => {
+        setExpectGrade(event.target.value);
+    };
+
+    const handleExplainChange = (event) => {
+        setExplain(event.target.value);
+    };
+
+    const handleSubmit = () => {
+        setOpen(false);
+        setLoading(true);
+        const reviewRequest = {
+            studentExpectation: parseFloat(expectGrade),
+            studentExplanation: explain
+        };
+        // id is classroom id
+        axios.post(API_URL_STUDENT_GRADE + id + '/' + selectedGradeId, reviewRequest, { headers })
+            .then(response => {
+                console.log(response.data);
+                setNotifyDialogOpen(true);
+                if (response.data.status) {
+                    setNotifyContent("You have successfully submitted an appeal for this score!")
+                }
+                else {
+                    setNotifyContent("Something went wrong, please try again later!")
+                }
+                setLoading(false);
+                setExpectGrade('');
+                setExplain('');
+            });
+    }
+
     useEffect(() => {
         setLoading(true);
         axios.get(API_URL_STUDENT_GRADE + id, { headers })
             .then((response) => {
                 setLoading(false);
                 const data = response.data.data;
+                console.log(data);
                 // console.log(data.gradeArray);
                 setStudentInformation({
                     avatarUrl: data.avatar,
@@ -65,6 +116,7 @@ const DetailStudentClass = () => {
                     maxTotalGrade: data.maxTotalGrade
                 })
                 setStudentGrade(data.gradeArray);
+                data.gradeArray && setSelectedGradeId(data.gradeArray[0].id);
             })
     }, [id, studentInformation.avatarUrl, token]);
     if (error) {
@@ -74,52 +126,82 @@ const DetailStudentClass = () => {
         return (
             <Fragment>
                 <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_GRADE} />
-                {loading ? <Loading /> :
-                    <div className="card-container">
-                        <header>
-                            <img src={studentInformation.avatarUrl} alt={"avatar"} />
-                        </header>
-                        <h1 className="bold-text">
-                            {studentInformation.name} <span className="normal-text">{studentInformation.code}</span>
-                        </h1>
-                        <h2 className="normal-text">{studentInformation.email}</h2>
-                        <h2 className="normal-text">{studentInformation.phone}</h2>
-                        <div className="social-container">
-                            {studentGrade.map((grade) => {
-                                return <div className="gradeDetail">
-                                    <h1 className="bold-text">{grade.point}/{grade.maxPoint}</h1>
-                                    <h2 className="smaller-text">{grade.name}</h2>
-                                </div>
-                            })}
-                        </div>
-                        <Divider />
-                        <h1 className="bold-text">Total: </h1>
-                        <h1 className="totalGrade">{studentInformation.totalGrade}/{studentInformation.maxTotalGrade}</h1>
-                        <h2 className="smaller-text">Not satisfied with your score? Submit a review request
-                            <span> </span>
-                            <span className="reviewRequestLink" onClick={handleClickOpen}>here.</span>
-                        </h2>
+                {loading && <Loading />}
+                <div className="card-container">
+                    <header>
+                        <img src={studentInformation.avatarUrl} alt={"avatar"} />
+                    </header>
+                    <h1 className="bold-text">
+                        {studentInformation.name} <span className="normal-text">{studentInformation.code}</span>
+                    </h1>
+                    <h2 className="normal-text">{studentInformation.email}</h2>
+                    <h2 className="normal-text">{studentInformation.phone}</h2>
+                    <div className="social-container">
+                        {studentGrade.map((grade) => {
+                            return <div className="gradeDetail" key={grade.id}>
+                                <h1 className="bold-text">{grade.point}/{grade.maxPoint}</h1>
+                                <h2 className="smaller-text">{grade.name}</h2>
+                            </div>
+                        })}
                     </div>
-                }
-                <Dialog open={open} onClose={handleClose}>
+                    <Divider />
+                    <h1 className="bold-text">Total: </h1>
+                    <h1 className="totalGrade">{studentInformation.totalGrade}/{studentInformation.maxTotalGrade}</h1>
+                    <h2 className="smaller-text">Not satisfied with your score? Submit a review request
+                        <span> </span>
+                        <span className="reviewRequestLink" onClick={handleClickOpen}>here.</span>
+                    </h2>
+                </div>
+                <Dialog open={open} onClose={handleClose} maxWidth='md'>
                     <DialogTitle>Request for a grade reviewer</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
+                        <DialogContentText id="note">
                             To submit a request for a review to the teacher of this subject, please fill out the form below.
                         </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Email Address"
-                            type="email"
-                            fullWidth
-                            variant="standard"
-                        />
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Grade name</InputLabel>
+                            <Select
+                                value={selectedGradeId}
+                                label="Grade name"
+                                onChange={handleIdChange}
+                            >
+                                {studentGrade.map((grade) => {
+                                    return <MenuItem key={grade.id} value={grade.id}>{grade.name}</MenuItem>
+                                })}
+                            </Select>
+                            <TextField
+                                margin="dense"
+                                id="expectGrade"
+                                label="Expect grade"
+                                type="number"
+                                fullWidth
+                                variant="standard"
+                                onChange={handleExpectGradeChange}
+                            />
+                            <TextField
+                                margin="dense"
+                                label="Explain"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                onChange={handleExplainChange}
+                            />
+                        </FormControl>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose}>Submit</Button>
+                        <Button onClick={handleSubmit}>Submit</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={notifyDialogOpen} onClose={handleCloseNotification} maxWidth='md'>
+                    <DialogTitle>Notification</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {notifyContent}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseNotification}>OK</Button>
                     </DialogActions>
                 </Dialog>
             </Fragment>

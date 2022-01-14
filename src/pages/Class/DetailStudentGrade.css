@@ -75,3 +75,7 @@ img {
     text-decoration: underline;
     cursor: pointer;
 }
+
+#note{
+    margin-bottom: 20px;
+}
