@@ -190,7 +190,8 @@ const DetailClassGrade = () => {
                     "id": chosenGradeColumn.gradeId,
                     "isFinalized": true,
                     "name": chosenGradeColumn.name,
-                    "maxPoint": chosenGradeColumn.maxPoint
+                    "maxPoint": chosenGradeColumn.maxPoint,
+                    "ordinalNumber": chosenGradeColumn.ordinalNumber
                 }
                 axios.post(API_URL_GRADE + 'update', gradeUpdateItem, { headers })
                 .then(function (response) {
@@ -333,7 +334,8 @@ const DetailClassGrade = () => {
                                 maxPoint: gradeComponent.maxPoint,
                                 name: gradeComponent.name,
                                 gradeId: gradeComponent.id,
-                                isFinalized: gradeComponent.isFinalized
+                                isFinalized: gradeComponent.isFinalized,
+                                ordinalNumber: gradeComponent.ordinalNumber
                             };
                         })
                     );
