@@ -4,6 +4,13 @@ import { Fragment } from "react";
 import { useLocation } from "react-router";
 import axios from "axios";
 import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import { Nav2 } from "../../components/Nav/Nav2";
 import { VALUE_TAB } from "../../constants/const";
@@ -30,6 +37,17 @@ const DetailStudentClass = () => {
     const token = AuthCtx.user.token;
     const [studentInformation, setStudentInformation] = useState({});
     const [studentGrade, setStudentGrade] = useState([]);
+
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         setLoading(true);
         axios.get(API_URL_STUDENT_GRADE + id, { headers })
@@ -92,10 +110,35 @@ const DetailStudentClass = () => {
                             </div>
                         </div>
                         <Divider />
-                            <h1 className="bold-text">Total: </h1>
-                            <h1 className="totalGrade">{studentInformation.maxTotalGrade}/{studentInformation.maxTotalGrade}</h1>
+                        <h1 className="bold-text">Total: </h1>
+                        <h1 className="totalGrade">{studentInformation.maxTotalGrade}/{studentInformation.maxTotalGrade}</h1>
+                        <h2 className="smaller-text">Not satisfied with your score? Submit a review request
+                            <span> </span>
+                            <span className="reviewRequestLink" onClick={handleClickOpen}>here.</span>
+                        </h2>
                     </div>
                 }
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Request for a grade reviewer</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            To submit a request for a review to the teacher of this subject, please fill out the form below.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Email Address"
+                            type="email"
+                            fullWidth
+                            variant="standard"
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>Submit</Button>
+                    </DialogActions>
+                </Dialog>
             </Fragment>
         );
     }
