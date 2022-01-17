@@ -335,7 +335,7 @@ const DetailClassGrade = () => {
         axios.get(API_URL_GRADE + 'review-requested/' + id, { headers })
             .then(function (response) {
                 setLoadingWithoutLoadTable(false);
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 setListGradeReviewRequest(response.data.data);
             })
             .catch(function (error) {
