@@ -5,9 +5,7 @@ import {PATH} from "../constants/paths"
 import { HandleJoin } from "../pages/Invite/HandleJoin";
 import { PageNotFound } from "../pages/404/PageNotFound";
 import DetailClassReviewGrade from "../pages/Class/DetailClassReviewGrade";
-import HandleForgotPassword from "../pages/ForgotPassword/HandleForgotPassword";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
-import DetailClassListReviewGrade from "../pages/Class/DetailClassListReviewGrade";
 
 const Login = lazy(() => import("../pages/Login/Login"));
 const Register = lazy(() => import("../pages/Register/Register"));
@@ -39,7 +37,6 @@ const AuthRoutes = () => {
         <Route exact path={PATH.GRADE_REVIEW} element={<DetailClassReviewGrade />} />
         <Route exact path={PATH.STUDENT_GRADE} element={<DetailStudentGrade />} />
         <Route exact path={PATH.VERIFY_EMAIL} element={<VerifyEmail />} />
-        <Route exact path={PATH.LIST_GRADE_REVIEW} element={<DetailClassListReviewGrade />} />
         <Route exact path="*" element={<PageNotFound/>} />
       </Routes>
     </Suspense>

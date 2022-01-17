@@ -72,10 +72,6 @@ function TabsItem({ value, isCustom }) {
                 // regex = PATH.GRADE_SPLIT;
                 isCustom ? (regex = PATH.GRADE_SPLIT) : (regex = PATH.STUDENT_GRADE_SPLIT);
                 break;
-            case VALUE_TAB.TAB_LIST_GRADE_REVIEW:
-                // regex = PATH.GRADE_SPLIT;
-                regex = PATH.LIST_GRADE_REVIEW_SPLIT
-                break;
             default:
                 break;
         }
@@ -91,10 +87,6 @@ function TabsItem({ value, isCustom }) {
             case VALUE_TAB.TAB_GRADE:
                 // pathNew = PATH.GRADE_SPLIT + id;
                 isCustom ? (pathNew = PATH.GRADE_SPLIT + id) : (pathNew = PATH.STUDENT_GRADE_SPLIT + id);
-                break;
-            case VALUE_TAB.TAB_LIST_GRADE_REVIEW:
-                // pathNew = PATH.GRADE_SPLIT + id;
-                pathNew = PATH.GRADE_SPLIT + id
                 break;
             default:
                 break;
@@ -116,7 +108,6 @@ function TabsItem({ value, isCustom }) {
                     <AntTab label="Classwork"></AntTab>
                     <AntTab label="People"></AntTab>
                     <AntTab label="Grades"></AntTab>
-                    {isCustom && <AntTab label="List grade reviews"></AntTab>}
                     {/*{isCustom && <AntTab label="Grades"></AntTab>}*/}
                 </Tabs>
             </Box>

@@ -141,11 +141,6 @@ const DetailClassReviewGrade = () => {
                 setStatus(response.data.data.isProcessed);
                 setFinalGrade(response.data.data.finalPoint);
                 setComments(response.data.data.comments);
-                // console.log(response.data.data.comments);
-                // console.log(gradeData);
-                //comments.map((comment) => {
-                //    console.log(comment.user.avatar);
-                //})
             })
     }, [API_URL_STUDENT_GRADE, id, review_id, token]);
     if (error) {

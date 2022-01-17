@@ -20,8 +20,19 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { StyledEngineProvider } from '@mui/material/styles';
 import { AiFillCheckCircle } from 'react-icons/ai';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
-import { VALUE_TAB } from "../../constants/const";
+import { FE_URL, VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
@@ -31,8 +42,6 @@ import { API_URL } from "../../constants/const";
 import Loading from "../../components/Loading/Loading";
 import { Nav2 } from "../../components/Nav/Nav2";
 import { Container } from "@material-ui/core";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 
 
 const API_URL_GRADE = API_URL + "classroom/grade/";
@@ -69,7 +78,7 @@ const EditableCell = ({
     }, [initialValue]);
 
     let result;
-    if(id === 'code' || id === 'name' || id === 'total')
+    if (id === 'code' || id === 'name' || id === 'total')
         result = <Input value={value} onBlur={onBlur} disabled />
     else
         result = <Input value={value} onChange={onChange} onBlur={onBlur} />;
@@ -184,7 +193,7 @@ const DetailClassGrade = () => {
                     window.open(downloadLink);
                 }).catch(error => { setError(error) })
             }
-            else if (option === 'Mark as finalize'){
+            else if (option === 'Mark as finalize') {
                 setLoadingWithoutLoadTable(true);
                 const gradeUpdateItem = {
                     "id": chosenGradeColumn.gradeId,
@@ -194,20 +203,20 @@ const DetailClassGrade = () => {
                     "ordinalNumber": chosenGradeColumn.ordinalNumber
                 }
                 axios.post(API_URL_GRADE + 'update', gradeUpdateItem, { headers })
-                .then(function (response) {
-                    setLoadingWithoutLoadTable(false);
-                    if (response.data.status === 1) {
-                        let newGradeStructure = gradeStructure;
-                        newGradeStructure.forEach(gradeStructure => { if(gradeStructure.id === gradeUpdateItem.id) gradeStructure.isFinalized = true });
-                        setGradeStructure(newGradeStructure);
+                    .then(function (response) {
                         setLoadingWithoutLoadTable(false);
-                        window.location.reload();
-                    }
-                })
-                .catch(function (error) {
-                    setError(error);
-                    return error
-                })
+                        if (response.data.status === 1) {
+                            let newGradeStructure = gradeStructure;
+                            newGradeStructure.forEach(gradeStructure => { if (gradeStructure.id === gradeUpdateItem.id) gradeStructure.isFinalized = true });
+                            setGradeStructure(newGradeStructure);
+                            setLoadingWithoutLoadTable(false);
+                            window.location.reload();
+                        }
+                    })
+                    .catch(function (error) {
+                        setError(error);
+                        return error
+                    })
             }
         };
         // Render the UI for your table
@@ -219,7 +228,7 @@ const DetailClassGrade = () => {
                             {headerGroup.headers.map((column) => (
                                 <TableCell {...column.getHeaderProps()}>
                                     {column.render("Header")}
-                                    {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code') && (column.id!=='total')) && <span>
+                                    {((column.parent !== undefined) && (column.id !== 'name') && (column.id !== 'code') && (column.id !== 'total')) && <span>
                                         <IconButton
                                             aria-label="more"
                                             id="long-button"
@@ -316,6 +325,34 @@ const DetailClassGrade = () => {
     const [uploadListStudentFile, setUploadListStudentFile] = useState();
 
     const [maxTotalGrade, setMaxTotalGrade] = useState(0);
+    const [open, setOpen] = React.useState(false);
+    const [listGradeReviewRequest, setListGradeReviewRequest] = useState([]);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        setLoadingWithoutLoadTable(true);
+        // API_URL_GRADE + 'review-requested/' + id
+        axios.get(API_URL_GRADE + 'review-requested/' + id, { headers })
+            .then(function (response) {
+                setLoadingWithoutLoadTable(false);
+                console.log(response.data.data);
+                setListGradeReviewRequest(response.data.data);
+            })
+            .catch(function (error) {
+                setError(error);
+                return error
+            })
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const openDetailGradeReviewRequest = (classroomId, gradeId, reviewId) => {
+        // console.log(FE_URL);
+        // http://localhost:8001/grade/review/1?review_id=6&grade_id=26
+        window.open(FE_URL + '/grade/review/' + classroomId + '?review_id=' + reviewId + '&grade_id=' + gradeId);
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -542,16 +579,17 @@ const DetailClassGrade = () => {
         const postData = {
             gradeIdArray: gradeIdArray
         }
-            setLoadingWithoutLoadTable(true);
-            axios.post(API_URL_GRADE + 'board/' + id + '/export-grade-board',
-                postData,
-                { headers: headers }
-            ).then((response) => {
-                setLoadingWithoutLoadTable(false);
-                const downloadLink = response.data.data;
-                window.open(downloadLink);
-            }).catch(error => { setError(error) })
+        setLoadingWithoutLoadTable(true);
+        axios.post(API_URL_GRADE + 'board/' + id + '/export-grade-board',
+            postData,
+            { headers: headers }
+        ).then((response) => {
+            setLoadingWithoutLoadTable(false);
+            const downloadLink = response.data.data;
+            window.open(downloadLink);
+        }).catch(error => { setError(error) })
     }
+
     return (
         <StyledEngineProvider injectFirst>
             <Fragment>
@@ -561,11 +599,11 @@ const DetailClassGrade = () => {
                 {error && <Alert severity="error">{error}</Alert>}
                 {!loading && !error &&
                     <div>
-                    <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
-                        <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
-                        <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
-                        <Button variant="outlined" onClick={downloadBoard} sx={{ mr: 2 }}>Export all grade</Button>
-                    </Box>
+                        <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "row-reverse" }}>
+                            <Button variant="outlined" onClick={downloadStudentList}>Download Student List</Button>
+                            <Button variant="outlined" component="label" sx={{ mr: 2 }}> Upload Student List <input type="file" hidden onChange={handleUploadStudentListFile} /> </Button>
+                            <Button variant="outlined" onClick={downloadBoard} sx={{ mr: 2 }}>Export all grade</Button>
+                        </Box>
                     </div>
                 }
                 <Container>
@@ -577,6 +615,34 @@ const DetailClassGrade = () => {
                             skipPageReset={skipPageReset}
                         />
                     }
+                </Container>
+                <Container>
+                    <Box sx={{ p: 2, pr: 10, display: "flex", flexDirection: "column-reverse" }}>
+                        <Button variant="outlined" onClick={handleClickOpen} id="buttonListGradeReviewRequest">List Grade Review Request</Button>
+                    </Box>
+                    <Dialog open={open} onClose={handleClose} maxWidth='xl'>
+                        <DialogTitle>List Grade Review Request</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Below is a list of review requests according to the following syntax: Student ID - Student Name - Review Score column. Please click on request for review for details.
+                            </DialogContentText>
+                            <nav aria-label="secondary mailbox folders">
+                                <List>
+                                    {listGradeReviewRequest.map((gradeReviewRequest) => {
+                                        return <ListItem disablePadding key={gradeReviewRequest.id}>
+                                            <ListItemButton onClick={() => openDetailGradeReviewRequest(gradeReviewRequest.grade.classroomId, gradeReviewRequest.grade.id, gradeReviewRequest.id)}>
+                                                <ListItemText primary={gradeReviewRequest.student.studentId + ' - ' + gradeReviewRequest.student.name + ' - ' + gradeReviewRequest.grade.name} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    })}
+
+                                </List>
+                            </nav>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Close</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Container>
             </Fragment>
         </StyledEngineProvider>
