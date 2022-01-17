@@ -17,6 +17,10 @@ export const PATH = {
   MANAGE_PROFILE: '/user',
   JOIN_CLASS:'/join',
   JOIN_CLASS_INVITATION:'/join?code=',
+  FORGOT_PASSWORD: '/forgot-password',
+  HANDLE_FORGOT_PASSWORD: '/verify',
+  UPDATE_PASSWORD: '/update-password',
+  VERIFY_EMAIL: '/verify-email'
 }
 
 export const DOMAIN = FE_URL;

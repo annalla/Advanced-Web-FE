@@ -21,7 +21,7 @@ import { VALUE_TAB } from "../../constants/const";
 import { PATH } from "../../constants/paths";
 import AuthContext from "../../store/store";
 import { splitPath } from "../../utils/util";
-import { ERROR_CODE } from "../../constants/errorCode";
+// import { ERROR_CODE } from "../../constants/errorCode";
 import { FE_URL } from "../../constants/const";
 import Loading from "../../components/Loading/Loading";
 import { API_URL } from "../../constants/const";
@@ -117,7 +117,7 @@ const DetailStudentClass = () => {
                     maxTotalGrade: data.maxTotalGrade
                 })
                 setStudentGrade(data.gradeArray);
-                data.gradeArray && setSelectedGradeId(data.gradeArray[0].id);
+                data.gradeArray.length ? setSelectedGradeId(data.gradeArray[0].id) : setSelectedGradeId(0);
             })
     }, [id, studentInformation.avatarUrl, token]);
     if (error) {
@@ -138,20 +138,26 @@ const DetailStudentClass = () => {
                     <h2 className="normal-text">{studentInformation.email}</h2>
                     <h2 className="normal-text">{studentInformation.phone}</h2>
                     <div className="social-container">
-                        {studentGrade.map((grade) => {
+                        {(studentGrade.length !== 0) ? studentGrade.map((grade) => {
                             return <div className="gradeDetail" key={grade.id}>
                                 <h1 className="bold-text">{grade.point}/{grade.maxPoint}</h1>
                                 <h2 className="smaller-text">{grade.name}</h2>
-                                    {grade.reviewRequestedId ? <span 
-                                        id="link" className="smaller-text"
-                                        onClick={
-                                            () => 
-                                            window.open(FE_URL + '/grade/review/' + id + '?review_id=' + grade.reviewRequestedId, "_blank")
-                                        }>
-                                            Review process.
-                                    </span> : ""}
+                                {grade.reviewRequestedId ? <span
+                                    id="link" className="smaller-text"
+                                    onClick={
+                                        () =>
+                                            window.open(
+                                                FE_URL +
+                                                '/grade/review/' +
+                                                id + '?review_id=' +
+                                                grade.reviewRequestedId +
+                                                '&grade_id=' + grade.id
+                                                , "_blank")
+                                    }>
+                                    Review process.
+                                </span> : ""}
                             </div>
-                        })}
+                        }) : ""}
                     </div>
                     <Divider />
                     <h1 className="bold-text">Total: </h1>
@@ -163,7 +169,7 @@ const DetailStudentClass = () => {
                 </div>
                 <Dialog open={open} onClose={handleClose} maxWidth='md'>
                     <DialogTitle>Request for a grade reviewer</DialogTitle>
-                    <DialogContent>
+                    {selectedGradeId ? <DialogContent>
                         <DialogContentText id="note">
                             To submit a request for a review to the teacher of this subject, please fill out the form below.
                         </DialogContentText>
@@ -174,9 +180,9 @@ const DetailStudentClass = () => {
                                 label="Grade name"
                                 onChange={handleIdChange}
                             >
-                                {studentGrade.map((grade) => {
+                                {(studentGrade.length !== 0) ? studentGrade.map((grade) => {
                                     return <MenuItem key={grade.id} value={grade.id}>{grade.name}</MenuItem>
-                                })}
+                                }) : ""}
                             </Select>
                             <TextField
                                 margin="dense"
@@ -196,10 +202,19 @@ const DetailStudentClass = () => {
                                 onChange={handleExplainChange}
                             />
                         </FormControl>
-                    </DialogContent>
+                    </DialogContent> :
+                        <DialogContent>
+                            <DialogContentText id="note">
+                                You don't have any score columns to review!
+                            </DialogContentText>
+                        </DialogContent>
+                    }
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleSubmit}>Submit</Button>
+                        {selectedGradeId ? <div>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button onClick={handleSubmit}>Submit</Button>
+                        </div> : <Button onClick={handleClose}>OK</Button>
+                        }
                     </DialogActions>
                 </Dialog>
                 <Dialog open={notifyDialogOpen} onClose={handleCloseNotification} maxWidth='md'>

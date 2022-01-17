@@ -88,11 +88,13 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem("name");
     localStorage.removeItem("avatarUrl");
     localStorage.removeItem("token");
+    localStorage.removeItem("teaching");
+    localStorage.removeItem("enrolled");
+    localStorage.removeItem("idTeaching");
+    localStorage.removeItem("idEnrolled");
     setUser(null);
-    setTeachingClass([]);
-    setEnrolledClass([]);
-    // setIdTeachingClass([]);
-    // setIdEnrolledClass([]);
+    //setTeachingClass([]);
+    //setEnrolledClass([]);
   };
   const addClassTeaching=(data)=>{
     teachingClass.push(data);

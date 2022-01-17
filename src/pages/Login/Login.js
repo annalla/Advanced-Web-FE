@@ -8,8 +8,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -130,7 +128,7 @@ const Login = (props) => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Username"
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -147,10 +145,9 @@ const Login = (props) => {
                   autoComplete="current-password"
                   onChange={handlePassword}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+                    <NavLink to={PATH.FORGOT_PASSWORD}>
+                      Forgot password?
+                    </NavLink>
                 <Button
                   type="submit"
                   fullWidth
@@ -174,6 +171,7 @@ const Login = (props) => {
                     <NavLink to={PATH.REGISTER}>
                       Don't have an account? Sign up
                     </NavLink>
+                    <br />
                   </Grid>
                 </Grid>
                 <Copyright sx={{ mt: 5 }} />

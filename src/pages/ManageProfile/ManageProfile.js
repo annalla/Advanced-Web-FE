@@ -65,6 +65,8 @@ export default function ManageProfile() {
     const [preview, setPreview] = useState()
     const [status, setStatus] = useState(STATUS.START);
     const [notify, setNotify] = useState("");
+    const [isCodeLocked, setIsCodeLocked] = useState();
+    const [isEmailVerified, setIsEmailVerified] = useState();
 
     const [open, setOpen] = useState(true);
 
@@ -139,6 +141,9 @@ export default function ManageProfile() {
                     setGender(data.gender);
                     setPreview(data.avatar);
                     setIdentityCard(data.identityCard);
+                    setIsCodeLocked(data.isCodeLocked);
+                    setIsEmailVerified(data.isEmailVerified);
+                    // setIsEmailVerified(true);
                 }
             }).then(
                 setIsLoading(false)
@@ -258,12 +263,12 @@ export default function ManageProfile() {
                                         autoComplete="code"
                                         value={code}
                                         onChange={handleCode}
+                                        disabled={isCodeLocked}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         required
-                                        fullWidth
                                         name="email"
                                         label="Email"
                                         type="email"
@@ -271,7 +276,19 @@ export default function ManageProfile() {
                                         autoComplete="email"
                                         value={email}
                                         onChange={handleEmail}
+                                        disabled={isEmailVerified}
+                                        style = {{width: 290}}
                                     />
+                                    <Button
+                                        // type="submit"
+                                        // fullWidth
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                        id='verifyEmailButton'
+                                        disabled={isEmailVerified}
+                                    >
+                                        {isEmailVerified ? 'Verified' : 'Verify'}
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
