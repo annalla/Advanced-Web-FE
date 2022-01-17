@@ -14,6 +14,8 @@ export const PATH = {
   STUDENT_GRADE_SPLIT: "/grade/student/",
   GRADE_REVIEW: "/grade/review/:code",
   GRADE_REVIEW_SPLIT: "/grade/review/",
+  LIST_GRADE_REVIEW: "/list-grade-review/:code",
+  LIST_GRADE_REVIEW_SPLIT: "/list-grade-review/",
   MANAGE_PROFILE: '/user',
   JOIN_CLASS:'/join',
   JOIN_CLASS_INVITATION:'/join?code=',

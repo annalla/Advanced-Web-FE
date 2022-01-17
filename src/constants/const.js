@@ -15,6 +15,7 @@ export const VALUE_TAB = {
   TAB_CLASSWORK: 1,
   TAB_PEOPLE: 2,
   TAB_GRADE: 3,
+  TAB_LIST_GRADE_REVIEW: 4
 };
 export const API_URL =
   process.env.NODE_ENV === "production"
