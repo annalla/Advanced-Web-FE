@@ -14,7 +14,6 @@ import Logout from "@mui/icons-material/Logout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { SRC_IMG } from "../../../constants/const";
 import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths';
 import { useGoogleLogout } from 'react-google-login';
@@ -32,7 +31,7 @@ const theme = createTheme({
 function AvatarIcon() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
-    const srcAvatar = AuthCtx.user.avatarUrl || SRC_IMG.DEFAULT_AVATAR;
+    const srcAvatar = AuthCtx.user.avatarUrl;
     //MenuAccount
     const [anchorElAccountMenu, setAnchorElAccountMenu] = useState(null);
     const openAccountMenu = Boolean(anchorElAccountMenu);

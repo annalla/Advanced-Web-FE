@@ -16,8 +16,7 @@ import { SRC_IMG } from "../../constants/const";
 import { PATH } from "../../constants/paths";
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
-// import CardActions from "@mui/material/CardActions";
-// import { CardActionArea } from "@mui/material";
+import { Avatar } from "@mui/material";
 
 export function ClassItem({ data, isOwner }) {
   // const navigate = useNavigate();
@@ -25,8 +24,7 @@ export function ClassItem({ data, isOwner }) {
   const open = Boolean(anchorEl);
   const srcCoverImg =
     data.coverImageUrl === "" ? SRC_IMG.COVER_IMAGE_CLASS : data.coverImageUrl;
-  const srcAvatarImg =
-    data.ownerAvatar === "" ? SRC_IMG.DEFAULT_AVATAR : data.ownerAvatar;
+  const srcAvatarImg =data.ownerAvatar;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,7 +43,8 @@ export function ClassItem({ data, isOwner }) {
         />
         {!isOwner ? (
           <span className="teacherBlockImg">
-            <img src={srcAvatarImg} alt="owner" />
+            {/* <img src={srcAvatarImg} alt="owner" /> */}
+            <Avatar sx ={{width:50,height:50,position:"absolute",right:50,top:90}}src={srcAvatarImg}/>
           </span>
         ) : (
           ""
