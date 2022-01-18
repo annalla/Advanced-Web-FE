@@ -34,7 +34,7 @@ function AvatarIcon() {
     const AuthCtx = useContext(AuthContext);
     const srcAvatar =
         AuthCtx.user.avatarUrl === ""
-            ? SRC_IMG.DEFAULT_AVATAR
+            ? ""
             : AuthCtx.user.avatarUrl;
     //MenuAccount
     const [anchorElAccountMenu, setAnchorElAccountMenu] = useState(null);

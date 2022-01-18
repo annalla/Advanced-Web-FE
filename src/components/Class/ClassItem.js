@@ -37,8 +37,9 @@ export function ClassItem({ data, isOwner }) {
     <Fragment>
       <Card sx={{ width: 300, height: 280, position: "relative" }}>
         <CardMedia
+          sx={{ mt:-1 , borderRadius: 0 }}
           component="img"
-          height="110"
+          height="120"
           image={srcCoverImg}
           alt="coverImage"
         />
@@ -54,7 +55,9 @@ export function ClassItem({ data, isOwner }) {
             <span>
               <span className="classNameBlock">
                 <span className="className">
-                  <Link to={PATH.DETAIL_CLASS_SPLIT+data.id}>{data.name}</Link>
+                  <Link to={PATH.DETAIL_CLASS_SPLIT + data.id}>
+                    {data.name}
+                  </Link>
                 </span>
                 <span>
                   <IconButton
@@ -81,7 +84,7 @@ export function ClassItem({ data, isOwner }) {
                 </span>
               </span>
               <Typography variant="body2" color="text.secondary">
-                <span className="classTopic"> {data.description}</span>
+                <span className="classTopic"> {data.code}</span>
               </Typography>
               {!isOwner ? (
                 <Typography>
