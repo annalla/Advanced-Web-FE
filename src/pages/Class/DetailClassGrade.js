@@ -102,7 +102,7 @@ const DetailClassGrade = () => {
     function Table({ columns, data, updateMyData, skipPageReset }) {
         // For this example, we're using pagination to illustrate how to stop the current page from resetting when our data changes
         // Otherwise, nothing is different here.
-        const { getTableProps, getTableBodyProps, headerGroups, prepareRow, page } =
+        const { getTableProps, headerGroups, prepareRow, page } =
             useTable(
                 {
                     columns,
@@ -304,6 +304,7 @@ const DetailClassGrade = () => {
                                 </TableRow>
                             );
                         }
+                        return null;
                     })}
                 </TableBody>
             </MaUTable>
@@ -331,11 +332,9 @@ const DetailClassGrade = () => {
     const handleClickOpen = () => {
         setOpen(true);
         setLoadingWithoutLoadTable(true);
-        // API_URL_GRADE + 'review-requested/' + id
         axios.get(API_URL_GRADE + 'review-requested/' + id, { headers })
             .then(function (response) {
                 setLoadingWithoutLoadTable(false);
-                // console.log(response.data.data);
                 setListGradeReviewRequest(response.data.data);
             })
             .catch(function (error) {
@@ -349,8 +348,6 @@ const DetailClassGrade = () => {
     };
 
     const openDetailGradeReviewRequest = (classroomId, gradeId, reviewId) => {
-        // console.log(FE_URL);
-        // http://localhost:8001/grade/review/1?review_id=6&grade_id=26
         window.open(FE_URL + '/grade/review/' + classroomId + '?review_id=' + reviewId + '&grade_id=' + gradeId);
     }
 

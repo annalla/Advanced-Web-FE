@@ -19,7 +19,7 @@ import ClassIcon from "@mui/icons-material/Class";
 import AuthContext from "../../../store/store";
 import { PATH } from "../../../constants/paths";
 import { useNavigate } from "react-router-dom";
-import { joinTwoList } from "../../../utils/util";
+
 const theme = createTheme({
   palette: {
     secondary: {
