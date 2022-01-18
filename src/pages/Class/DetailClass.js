@@ -18,14 +18,14 @@ const dict = {};
 const DetailClass = () => {
   const [error, setError] = React.useState(null);
   const [classroom, setClassroom] = React.useState({});
-  const [loading,setLoading]=React.useState(true);
+  const [loading, setLoading] = React.useState(true);
   const AuthCtx = useContext(AuthContext);
   const location = useLocation();
   const id = splitPath(location.pathname, PATH.DETAIL_CLASS_SPLIT);
   const token = AuthCtx.user.token;
   const information = useMemo(() => {
     if (id in dict) {
-      setLoading(false)
+      setLoading(false);
       return dict[id];
     }
     return classroom;
@@ -70,9 +70,8 @@ const DetailClass = () => {
   } else {
     return (
       <Fragment>
-        <Nav2 id={id} token={token}valueTab={VALUE_TAB.TAB_STREAM} />
-       {loading?<Loading/>:""}
-        <Stream data={information} />
+        <Nav2 id={id} token={token} valueTab={VALUE_TAB.TAB_STREAM} />
+        {loading ? <Loading /> : <Stream data={information} />}
       </Fragment>
     );
   }
