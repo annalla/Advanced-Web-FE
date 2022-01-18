@@ -31,7 +31,7 @@ const Stream = ({ data }) => {
               height="190"
               image={data.coverImageUrl}
               alt="cover-image"
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 2,m:0 }}
             />
 
             <div className="classInformation">
@@ -65,7 +65,7 @@ const Stream = ({ data }) => {
           >
             <Box sx={{ width: "80%" }}>
               <AccordionAnnounce />
-              <IntroductionBox/>
+              <IntroductionBox />
             </Box>
             <Box sx={{ width: "20%" }}>
               <UpcomingBox />
