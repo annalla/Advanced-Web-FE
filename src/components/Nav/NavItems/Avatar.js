@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Fragment, useState, useContext } from "react";
 import "../Nav.css";
 import AuthContext from "../../../store/store";
@@ -32,10 +32,7 @@ const theme = createTheme({
 function AvatarIcon() {
     const history = useNavigate();
     const AuthCtx = useContext(AuthContext);
-    const srcAvatar =
-        AuthCtx.user.avatarUrl
-            ? SRC_IMG.DEFAULT_AVATAR
-            : AuthCtx.user.avatarUrl;
+    const srcAvatar = AuthCtx.user.avatarUrl || SRC_IMG.DEFAULT_AVATAR;
     //MenuAccount
     const [anchorElAccountMenu, setAnchorElAccountMenu] = useState(null);
     const openAccountMenu = Boolean(anchorElAccountMenu);
@@ -65,6 +62,10 @@ function AvatarIcon() {
     const handleCloseAccountMenu = () => {
         setAnchorElAccountMenu(null);
     };
+
+    useEffect(()=>{
+        console.log(srcAvatar);
+    },[srcAvatar])
     return (
         <Fragment>
             <ThemeProvider theme={theme}>
