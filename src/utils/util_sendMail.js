@@ -8,7 +8,6 @@ export const sendMail = async (code, emailList,isTeacher) => {
       };
     await sendInvitaionByMail(requestInvite)
     .then((res)=>{
-        console.log(res);
         if(res.status===1){
             result=true;
         }else{

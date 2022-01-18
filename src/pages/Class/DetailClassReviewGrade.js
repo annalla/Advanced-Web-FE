@@ -8,14 +8,13 @@ import { Grid, Paper } from "@material-ui/core";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import { VALUE_TAB } from "../../constants/const";
 import AuthContext from "../../store/store";
 import { PATH } from "../../constants/paths";
 import { splitPath } from "../../utils/util";
 import { ERROR_CODE } from "../../constants/errorCode";
 // import { FE_URL } from "../../constants/const";
 import Loading from "../../components/Loading/Loading";
-import { API_URL } from "../../constants/const";
+import { API_URL, SRC_IMG } from "../../constants/const";
 import "./DetailClassReviewGrade.css";
 import { getClassById } from "../../apis/class.api";
 import { JWT_TYPE } from "../../constants/const";
@@ -55,15 +54,12 @@ const DetailClassReviewGrade = () => {
     }
 
     const handleClickPostComment = () => {
-        // console.log(commentContent);
-        // axios.post();
         const comment = { 
             gradeReviewRequestedId: parseInt(review_id),
             comment: commentContent
         };
         axios.post(API_URL_COMMENT, comment, { headers })
             .then(response => {
-                console.log(response)
                 if(response.status){
                     const newComment = response.data.data;
                     const updatedListComment = [...comments, newComment];
@@ -84,7 +80,6 @@ const DetailClassReviewGrade = () => {
         };
         axios.put(API_URL_SET_FINAL_GRADE, finalGrade, { headers })
             .then(response => {
-                console.log(response)
                 if(response.status) {
                     window.location.reload();
                 }
@@ -97,7 +92,6 @@ const DetailClassReviewGrade = () => {
         //get class information
         getClassById(token, id)
             .then((res) => {
-                console.log(res.data);
                 if (res.status) {
                     const information = {
                         name: res.data.name,
@@ -124,11 +118,10 @@ const DetailClassReviewGrade = () => {
         axios.get(API_URL_STUDENT_GRADE, { headers })
             .then((response) => {
                 setLoading(false);
-                console.log(response.data);
                 const studentData = response.data.data.student;
                 const gradeData = response.data.data.grade;
                 setStudent({
-                    avatarUrl: studentData.avatar,
+                    avatarUrl: studentData.avatar ?? SRC_IMG.DEFAULT_AVATAR,
                     name: studentData.studentName ?? studentData.name,
                     code: studentData.studentCode ?? studentData.code,
                     email: studentData.email,

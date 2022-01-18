@@ -37,7 +37,6 @@ export default function ForgotPassword() {
         axios.get(API_URL + 'user/forgot-password?email=' + email)
             .then(res => {
                 setLoading(false);
-                console.log(res);
                 setOpen(true);
                 if (res.data.status === 1)
                     setNotification('A confirmation email containing the link to reset your password has been sent to your email. Please check your email inbox and click the link!');

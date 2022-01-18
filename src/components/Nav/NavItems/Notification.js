@@ -1,29 +1,18 @@
-import React from "react";
-import { Fragment, useState, useContext } from "react";
-import "../Nav.css";
-import AuthContext from "../../../store/store";
+import { Fragment, useState } from "react";
 import Divider from "@mui/material/Divider";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import MailIcon from '@mui/icons-material/Mail';
 import Tooltip from "@mui/material/Tooltip";
-import Settings from "@mui/icons-material/Settings";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { ListItemText } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import axios from "axios";
 
-import { useNavigate } from "react-router";
-import { PATH } from '../../../constants/paths';
-
-import './Notification.css'
+import './Notification.css';
+import "../Nav.css";
 import { API_URL } from "../../../constants/const";
 
 const theme = createTheme({
@@ -55,7 +44,6 @@ function Notification() {
                         return notification;
                     })
                     setNotifications(resNotification);
-                    console.log(notifications);
                 }
             }
         )
@@ -80,8 +68,9 @@ function Notification() {
             <ThemeProvider theme={theme}>
                 <Tooltip title="Notifications">
                     <IconButton onClick={handleClickNotification} id="icon">
-                        <MailIcon />
+                        <MailIcon color="action" />
                     </IconButton>
+
                 </Tooltip>
                 <Menu
                     anchorEl={anchorElAccountMenu}

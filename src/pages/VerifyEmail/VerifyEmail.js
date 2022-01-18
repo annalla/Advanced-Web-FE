@@ -14,7 +14,6 @@ export default function VerifyEmail() {
     useEffect(() => {
         axios.get(API_URL + 'user/verify?code=' + code)
             .then(res => {
-                console.log(res.data)
                 if (res.data.status === 1) {
                     setNotification(<Alert severity="info">Verify email successfully...</Alert>);
                 }

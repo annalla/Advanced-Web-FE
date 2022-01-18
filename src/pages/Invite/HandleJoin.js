@@ -17,8 +17,6 @@ function HandleJoin() {
   const location = window.location.href;
   const code = splitPath(location, PATH.JOIN_CLASS_INVITATION);
   useEffect(() => {
-    // console.log(isAuth)
-    // console.log(localStorage.getItem("isAuthenticated"))
     if (localStorage.getItem("isAuthenticated") === "1") {
       if (code.length === 0) {
         setError("CODE OF CLASS IS EMPTY");

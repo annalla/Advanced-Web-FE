@@ -85,7 +85,6 @@ const DetailStudentClass = () => {
         // id is classroom id
         axios.post(API_URL_STUDENT_GRADE + id + '/' + selectedGradeId, reviewRequest, { headers })
             .then(response => {
-                console.log(response.data);
                 setNotifyDialogOpen(true);
                 if (response.data.status) {
                     setNotifyContent("You have successfully submitted an appeal for this score!")
@@ -105,8 +104,6 @@ const DetailStudentClass = () => {
             .then((response) => {
                 setLoading(false);
                 const data = response.data.data;
-                console.log(data);
-                // console.log(data.gradeArray);
                 setStudentInformation({
                     avatarUrl: data.avatar,
                     name: data.studentName ?? data.name,

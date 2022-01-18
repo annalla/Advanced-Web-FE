@@ -48,10 +48,8 @@ export default function UpdatePassword() {
         const headers = {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         };
-        console.log(headers);
         axios.put(API_URL + 'user/update-password', changePasswordData, { headers })
             .then(res => {
-                console.log(res);
                 setOpen(true);
                 if (res.data.status === 1){
                     setNotification('Successfully!');

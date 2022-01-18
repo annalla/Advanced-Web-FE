@@ -15,7 +15,6 @@ export default function HandleForgotPassword() {
     useEffect(() => {
         axios.get(API_URL + 'user/verify?code=' + code)
             .then(res => {
-                console.log(res.data)
                 if (res.data.status === 1) {
                     setNotification(<Alert severity="info">Successfully...</Alert>);
                     if (res.data.data.token) {

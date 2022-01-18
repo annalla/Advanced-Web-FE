@@ -35,7 +35,6 @@ export default function AddTeacherIcon({ code,id,isTeacher }) {
   };
   const handleInviteTeacher = async () => {
     const result = await sendMail(id, emails,isTeacher);
-    console.log(result);
     if (result === true) {
       handleClose();
     } else {
