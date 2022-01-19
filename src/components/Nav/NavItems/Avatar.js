@@ -18,7 +18,6 @@ import { useNavigate } from "react-router";
 import { PATH } from '../../../constants/paths';
 import { useGoogleLogout } from 'react-google-login';
 import { GOOGLE_LOGIN_CLIENT_ID } from "../../../constants/const";
-
 const clientId = GOOGLE_LOGIN_CLIENT_ID
 const theme = createTheme({
     palette: {
@@ -71,10 +70,9 @@ function AvatarIcon() {
                 <Tooltip title="Account settings">
                     <IconButton onClick={handleClickAccountMenu}>
                         <Avatar
-                            alt={AuthCtx.user.name}
                             sx={{ width: 37, height: 37 }}
                             src={srcAvatar}
-                        />
+                        />                        
                     </IconButton>
                 </Tooltip>
                 <Menu

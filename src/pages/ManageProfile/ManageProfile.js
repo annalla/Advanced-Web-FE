@@ -34,6 +34,7 @@ import { Nav } from "../../components/Nav/Nav";
 import { getUserApi, updateUserApi } from "../../apis/user.api";
 import { convertUnixToHTMLTime } from "../../utils/convertUnixtoHTMLTime"
 import { ERROR_CODE } from "../../constants/errorCode";
+import { SRC_IMG } from "../../constants/const";
 
 function Copyright(props) {
     return (
@@ -139,7 +140,7 @@ export default function ManageProfile() {
                     setPhone(data.phone.replace('+84', 0));
                     setBirthday(convertUnixToHTMLTime(data.birthday));
                     setGender(data.gender);
-                    setPreview(data.avatar);
+                    setPreview(data.avatar===""?SRC_IMG.DEFAULT_AVATAR:data.avatar);
                     setIdentityCard(data.identityCard);
                     setIsCodeLocked(data.isCodeLocked);
                     setIsEmailVerified(data.isEmailVerified);

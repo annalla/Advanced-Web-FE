@@ -44,7 +44,7 @@ export function ClassItem({ data, isOwner }) {
         {!isOwner ? (
           <span className="teacherBlockImg">
             {/* <img src={srcAvatarImg} alt="owner" /> */}
-            <Avatar sx ={{width:50,height:50,position:"absolute",right:50,top:90}}src={srcAvatarImg}/>
+            <Avatar sx ={{width:50,height:50,position:"absolute",right:50,top:90}}src={srcAvatarImg} alt={data.ownerName}/>
           </span>
         ) : (
           ""

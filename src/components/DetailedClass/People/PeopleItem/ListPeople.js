@@ -10,7 +10,6 @@ import { Fragment } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import AddTeacherIcon from "./AddTeacherIcon";
-import { SRC_IMG } from "../../../../constants/const";
 import AddStudentIcon from "./AddStudentIcon";
 import { PATH } from "../../../../constants/paths";
 import { FE_URL } from "../../../../constants/const";
@@ -112,12 +111,13 @@ export default function ListPeople({ data, isTeacher, isCustom }) {
             >
               <ListItemAvatar align="center">
                 <Avatar
-                  sx={{ mb: "5px" }}
+                  sx={{ mb:5}}
                   alt="avatar"
                   src={
-                    item.avatar === "" ? SRC_IMG.DEFAULT_AVATAR : item.avatar
+                    item.avatar
                   }
                 />
+                {/* <img src={item.avatar} alt="avatar"></img> */}
               </ListItemAvatar>
               <ListItemText sx={{ width: "60%" }}>
                 <Typography
